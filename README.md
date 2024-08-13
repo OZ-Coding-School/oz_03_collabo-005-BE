@@ -1,5 +1,5 @@
 # 프로젝트 밥피엔스
-# FE_GIT_COMMIT_CONVENTION
+# GIT_COMMIT_CONVENTION
 
 상태: 완료
 

@@ -1,5 +1,5 @@
 """
-WSGI config for bobpience project.
+WSGI config for bobpience_config project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bobpience.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "bobpience_config.settings")
 
 application = get_wsgi_application()

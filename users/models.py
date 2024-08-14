@@ -1,6 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        Group, Permission, PermissionsMixin)
+                                        PermissionsMixin)
 from django.db import models
+
 from common.models import CommonModel
 
 
@@ -20,9 +21,7 @@ class CustomUserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         # super user도 is_staff 기능이 있어야 admin 페이지에 접속 가능하다.
-        extra_fields.setdefault(
-            "is_staff", True
-        )
+        extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
         return self.create_user(email, password, **extra_fields)
@@ -36,20 +35,18 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
         upload_to="profile_images/", null=True, blank=True
     )
     introduction = models.TextField(null=True, blank=True)
-    fti_type = models.CharField(max_length=50)
+    fti_type = models.CharField(max_length=50, null=True)
+    taste_type = models.CharField(max_length=50, null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
 
-    groups = models.ManyToManyField(Group, related_name="customuser_set", blank=True)
-    user_permissions = models.ManyToManyField(
-        Permission, related_name="customuser_permissions_set", blank=True
-    )
-
     objects = CustomUserManager()
 
+    # 이메일을 유저네임 필드로 사용
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["nickname", "fti_type", "taste_type"]
+    # 슈퍼유저를 생성할 때 반드시 입력받아야 하는 필드
+    REQUIRED_FIELDS = []
 
     def __str__(self):
         return self.email

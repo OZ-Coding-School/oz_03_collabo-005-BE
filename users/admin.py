@@ -1,14 +1,27 @@
-from django.contrib import  admin
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+
 from .models import CustomUser
-from django.contrib.auth.models import User, Group
 
 
 @admin.register(CustomUser)
-class CustomUserAdmin(admin.ModelAdmin):
-    list_display = ["email", "nickname", "is_staff", "is_active", "created_at"]
-    search_fields = ["email", "nickname"]
+class CustomUserAdmin(BaseUserAdmin):
+    fieldsets = (
+        (
+            None,
+            {
+                "fields": (
+                    "email",
+                    "nickname",
+                    "profile_image",
+                    "introduction",
+                    "fti_type",
+                    "taste_type",
+                )
+            },
+        ),
+    )
 
-
-# admin 페이지에서 기본 User와 Group을 숨긴다.
-admin.site.unregister(User)
-admin.site.unregister(Group)
+    list_display = ("email", "nickname")
+    search_fields = ("email", "nickname")
+    ordering = ("email",)

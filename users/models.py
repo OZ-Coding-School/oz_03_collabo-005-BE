@@ -1,6 +1,7 @@
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
                                         Group, Permission, PermissionsMixin)
 from django.db import models
+from common.models import CommonModel
 
 
 class CustomUserManager(BaseUserManager):
@@ -18,15 +19,16 @@ class CustomUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password, **extra_fields):
+        # super user도 is_staff 기능이 있어야 admin 페이지에 접속 가능하다.
         extra_fields.setdefault(
             "is_staff", True
-        )  # super user도 is_staff 기능이 있어야 admin 페이지에 접속 가능하다.
+        )
         extra_fields.setdefault("is_superuser", True)
 
         return self.create_user(email, password, **extra_fields)
 
 
-class CustomUser(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
     nickname = models.CharField(max_length=50, unique=True)

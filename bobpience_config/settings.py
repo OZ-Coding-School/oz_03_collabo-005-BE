@@ -46,7 +46,7 @@ DJANGO_SYSTEM_APPS = [
 
 CUSTOM_USER_APPS = [
     "users.apps.UsersConfig",
-    "drf_spectacular",  #Swagger용 라이브러리
+    "drf_spectacular",  # Swagger용 라이브러리
 ]
 
 INSTALLED_APPS = DJANGO_SYSTEM_APPS + CUSTOM_USER_APPS
@@ -81,17 +81,17 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "bobpience_config.wsgi.application"
 
-#DRF 세팅
+# DRF 세팅
 REST_FRAMEWORK = {
-    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
-#Swagger 세팅
+# Swagger 세팅
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Bobpience',
-    'DESCRIPTION': 'Bobpience Swagger',
-    'VERSION': '1.0.0',
-    'SERVE_INCLUDE_SCHEMA': False,
+    "TITLE": "Bobpience",
+    "DESCRIPTION": "Bobpience Swagger",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
 }
 
 # Database

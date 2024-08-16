@@ -19,12 +19,12 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, email, password, **extra_fields):
+    def create_superuser(self, email, password, nickname, **extra_fields):
         # super user도 is_staff 기능이 있어야 admin 페이지에 접속 가능하다.
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
 
-        return self.create_user(email, password, **extra_fields)
+        return self.create_user(email, password, nickname, **extra_fields)
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
@@ -35,8 +35,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
         upload_to="profile_images/", null=True, blank=True
     )
     introduction = models.TextField(null=True, blank=True)
-    fti_type = models.CharField(max_length=50, null=True)
-    taste_type = models.CharField(max_length=50, null=True)
+    fti_type = models.CharField(max_length=50, null=True, blank=True)
+    taste_type = models.CharField(max_length=50, null=True, blank=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

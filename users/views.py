@@ -36,6 +36,7 @@ class CustomUserView(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 #  로그인
 
 #post 방식으로 개인정보 수신

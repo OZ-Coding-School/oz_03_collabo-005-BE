@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 from .models import CustomUser
 from .serializers import SignUpUserSerializer
 
-
+# 회원가입
 class CustomUserView(APIView):
     def post(self, request):
         data = request.data
@@ -35,3 +35,19 @@ class CustomUserView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+#  로그인
+
+#post 방식으로 개인정보 수신
+
+#DB에서 해당 정보가 일치하는지 확인
+
+#Access, Refresh Token 발행
+
+#
+
+
+
+
+
+

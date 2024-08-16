@@ -1,6 +1,7 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from .models import CustomUser
 from .serializers import SignUpUserSerializer
 
@@ -11,10 +12,16 @@ class CustomUserView(APIView):
 
         # 이메일 중복 체크
         if CustomUser.objects.filter(email=data.get("email")).exists():
-            return Response({"error": "이미 사용 중인 이메일입니다"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "이미 사용 중인 이메일입니다"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         # 닉네임 중복 체크
         if CustomUser.objects.filter(nickname=data.get("nickname")).exists():
-            return Response({"error": "이미 사용 중인 닉네임입니다"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "이미 사용 중인 닉네임입니다"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         serializer = SignUpUserSerializer(data=data)
         if serializer.is_valid():

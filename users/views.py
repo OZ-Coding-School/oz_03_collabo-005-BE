@@ -6,7 +6,7 @@ from .models import CustomUser
 from .serializers import SignUpUserSerializer
 
 
-class CustomUserView(APIView):
+class CustomUserSignUpView(APIView):
     def post(self, request):
         data = request.data
 

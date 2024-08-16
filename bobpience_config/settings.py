@@ -84,9 +84,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "bobpience_config.wsgi.application"
 
-# DRF 세팅
 REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema", # DRF 세팅
 }
 
 # Swagger 세팅

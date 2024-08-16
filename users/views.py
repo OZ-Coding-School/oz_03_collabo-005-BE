@@ -4,9 +4,24 @@ from rest_framework.views import APIView
 
 from .models import CustomUser
 from .serializers import SignUpUserSerializer
+from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiResponse
+
 
 # 회원가입
 class CustomUserSignUpView(APIView):
+    serializer_class = SignUpUserSerializer
+    @extend_schema(tags=["User"],
+        operation_id='CustomUserSignUp',
+        summary=" 회원가입",
+        examples=[
+            OpenApiExample(
+                name="Example",
+                value={'email': "abc@abc.com", "password":"pass123"},
+                request_only=True,
+            )
+        ],
+        description="JWT Login",
+    )
     def post(self, request):
         data = request.data
 
@@ -38,6 +53,31 @@ class CustomUserSignUpView(APIView):
 
 
 #  로그인
+class CustomUserLoginView(APIView):
+    serializer_class = SignUpUserSerializer
+    @extend_schema(tags=["User"],
+        operation_id='CustomUserLogin',
+        summary=" 로그인",
+        examples=[
+            OpenApiExample(
+                name="Example",
+                value={'email': "abc@abc.com", "password":"pass123"},
+                request_only=True,
+            )
+        ],
+        description="JWT Login",
+       responses={
+           200:OpenApiResponse(
+               description="로그인성공"
+           ),
+           400: OpenApiResponse(
+               description="로그인실패"
+           ),
+       }
+    )
+    def post(self, request):
+        pass
+
 
 #post 방식으로 개인정보 수신
 
@@ -45,7 +85,6 @@ class CustomUserSignUpView(APIView):
 
 #Access, Refresh Token 발행
 
-#
 
 
 

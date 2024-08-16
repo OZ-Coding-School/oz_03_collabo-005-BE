@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "bobpience"
+name = "bobpience_config"
 version = "0.1.0"
 description = ""
 authors = ["NohSungwoo <shtjddn0817@gmail.com>"]
@@ -15,6 +15,7 @@ psycopg2-binary = "^2.9.9"
 pillow = "^10.4.0"
 drf-spectacular = "^0.27.2"
 djangorestframework = "^3.15.2"
+djangorestframework-jwt = "^1.11.0"
 
 
 [build-system]

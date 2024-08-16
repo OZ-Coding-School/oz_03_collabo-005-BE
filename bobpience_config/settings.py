@@ -47,6 +47,7 @@ DJANGO_SYSTEM_APPS = [
 CUSTOM_USER_APPS = [
     "users.apps.UsersConfig",
     "drf_spectacular",  # Swagger용 라이브러리
+    "rest_framework",
 ]
 
 INSTALLED_APPS = DJANGO_SYSTEM_APPS + CUSTOM_USER_APPS
@@ -132,9 +133,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "ko-kr"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 

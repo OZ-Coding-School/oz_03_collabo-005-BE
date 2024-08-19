@@ -19,7 +19,7 @@ class CustomUserManager(BaseUserManager):
 
         # normalize_email 메서드는 사용자가 입력한 이메일 주소를 대소문자를 일치시켜 표준화된 형식으로 변환한다.
         email = self.normalize_email(email)
-        user = self.model(email=email, nickname=nickname**extra_fields)
+        user = self.model(email=email, nickname=nickname, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user

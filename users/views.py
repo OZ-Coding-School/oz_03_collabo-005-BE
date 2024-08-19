@@ -1,12 +1,30 @@
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import CustomUser
-from .serializers import SignUpUserSerializer
+from .serializers import SignUpUserSerializer, LoginUserSerializer
+from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiResponse
 
 
+# 회원가입
 class CustomUserSignUpView(APIView):
+    serializer_class = SignUpUserSerializer
+    # permission_classes = (AllowAny,)
+    @extend_schema(tags=["User"],
+        operation_id='CustomUserSignUp',
+        summary=" 회원가입",
+        examples=[
+            OpenApiExample(
+                name="Example",
+                value={'email': "abc@abc.com", "password":"pass123"},
+                request_only=True,
+            )
+        ],
+        description="JWT Login",
+    )
     def post(self, request):
         data = request.data
 
@@ -35,3 +53,59 @@ class CustomUserSignUpView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+# 투두 로그인 구현
+# 로그인
+class CustomUserLoginView(APIView):
+    serializer_class = SignUpUserSerializer
+    permission_classes = (AllowAny,)
+    @extend_schema(tags=["User"],
+        operation_id='CustomUserLogin',
+        summary=" 로그인",
+        examples=[
+            OpenApiExample(
+                name="Example",
+                value={'email': "abc@abc.com", "password":"pass123"},
+                request_only=True,
+            )
+        ],
+        description="JWT Login",
+       responses={
+           200:OpenApiResponse(
+               description="로그인성공"
+           ),
+           400: OpenApiResponse(
+               description="로그인실패"
+           ),
+       }
+    )
+    def post(self, request):
+        serializer = LoginUserSerializer(data=request.data)
+
+        #post 방식으로 개인정보 수신
+        #DB에서 해당 정보가 일치하는지 확인
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                #Access, Refresh Token 발행
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
+        return Response(serializer.errors, status=400)
+
+# 투두 다른 API의 정상 동작 확인 후 삭제 필요
+# 토큰 테스트
+class UserTestView(APIView):
+
+    def get(self, request):
+        return Response({'message':"성공"})
+
+
+
+
+
+
+
+

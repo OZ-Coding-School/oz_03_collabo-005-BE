@@ -46,11 +46,13 @@ CUSTOM_USER_APPS = [
     "drf_spectacular",  # Swagger용 라이브러리
     "rest_framework_simplejwt",  # JWT용 라이브러리
     "rest_framework",
+    'corsheaders',
 ]
 
 INSTALLED_APPS = DJANGO_SYSTEM_APPS + CUSTOM_USER_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -59,6 +61,8 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True  # 모든 출처 허용
 
 ROOT_URLCONF = "bobpience_config.urls"
 
@@ -83,9 +87,9 @@ WSGI_APPLICATION = "bobpience_config.wsgi.application"
 # DRF 세팅
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": ["rest_framework_simplejwt.authentication.JWTAuthentication",],
+    'DEFAULT_PERMISSION_CLASSES': ['rest_framework.permissions.IsAuthenticated',],
+
 }
 
 # Swagger 세팅

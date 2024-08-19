@@ -16,5 +16,3 @@ class FoodAdmin(admin.ModelAdmin):
         "image_url",
         "food_tag",
     )
-
-

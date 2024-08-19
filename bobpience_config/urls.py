@@ -26,4 +26,6 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     # USER
     path("api/users/", include("users.urls")),
+    # FTI
+    # path("api/ftitests/", include("fti_tests.urls")),
 ]

@@ -1,4 +1,5 @@
 import os
+from datetime import timedelta
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -43,6 +44,7 @@ CUSTOM_USER_APPS = [
     "test_results.apps.TestResultsConfig",
     "users.apps.UsersConfig",
     "drf_spectacular",  # Swagger용 라이브러리
+    "rest_framework_simplejwt",  # JWT용 라이브러리
     "rest_framework",
 ]
 
@@ -81,6 +83,9 @@ WSGI_APPLICATION = "bobpience_config.wsgi.application"
 # DRF 세팅
 REST_FRAMEWORK = {
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
 }
 
 # Swagger 세팅
@@ -89,6 +94,22 @@ SPECTACULAR_SETTINGS = {
     "DESCRIPTION": "Bobpience Swagger",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
+}
+
+# JWT Token설정
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(weeks=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": os.getenv("SECRET_KEY"),
+    "VERIFYING_KEY": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "USER_ID_FIELD": "email",
+    "USER_ID_CLAIM": "email",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
 }
 
 # Database

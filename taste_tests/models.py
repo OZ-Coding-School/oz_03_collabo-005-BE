@@ -1,3 +1,7 @@
 from django.db import models
 
-# Create your models here.
+from common.models import CommonModel
+
+
+class TasteTestQuestion(CommonModel):
+    fti_question = models.TextField()

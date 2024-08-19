@@ -34,8 +34,9 @@ DJANGO_SYSTEM_APPS = [
 
 CUSTOM_USER_APPS = [
     "users.apps.UsersConfig",
+    "taste_tests.apps.TasteTestsConfig",
     "fti_tests.apps.FtiTestsConfig",
-    "drf_spectacular",  # Swagger용 라이브러리
+    "reviews.apps.ReviewsConfig" "drf_spectacular",  # Swagger용 라이브러리
     "rest_framework",
 ]
 

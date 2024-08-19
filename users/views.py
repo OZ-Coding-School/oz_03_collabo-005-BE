@@ -1,5 +1,6 @@
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -11,6 +12,7 @@ from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiResponse
 # 회원가입
 class CustomUserSignUpView(APIView):
     serializer_class = SignUpUserSerializer
+    # permission_classes = (AllowAny,)
     @extend_schema(tags=["User"],
         operation_id='CustomUserSignUp',
         summary=" 회원가입",
@@ -54,9 +56,10 @@ class CustomUserSignUpView(APIView):
 
 
 # 투두 로그인 구현
-#  로그인
+# 로그인
 class CustomUserLoginView(APIView):
     serializer_class = SignUpUserSerializer
+    permission_classes = (AllowAny,)
     @extend_schema(tags=["User"],
         operation_id='CustomUserLogin',
         summary=" 로그인",
@@ -92,7 +95,12 @@ class CustomUserLoginView(APIView):
             })
         return Response(serializer.errors, status=400)
 
+# 투두 다른 API의 정상 동작 확인 후 삭제 필요
+# 토큰 테스트
+class UserTestView(APIView):
 
+    def get(self, request):
+        return Response({'message':"성공"})
 
 
 

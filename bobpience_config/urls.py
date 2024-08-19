@@ -25,6 +25,6 @@ urlpatterns = [
     # USER
     path("api/users/", include("users.urls")),
     # FTI
-    path("api/ftitests/", include("fti_tests.urls")),
+    # path("api/ftitests/", include("fti_tests.urls")),
 
 ]

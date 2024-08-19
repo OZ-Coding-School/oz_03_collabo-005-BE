@@ -12,7 +12,6 @@ from .serializers import LoginUserSerializer, SignUpUserSerializer
 # 회원가입
 class CustomUserSignUpView(APIView):
     serializer_class = SignUpUserSerializer
-
     permission_classes = (AllowAny,)
 
     @extend_schema(

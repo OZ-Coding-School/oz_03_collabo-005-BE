@@ -5,4 +5,16 @@ from .models import Food
 
 @admin.register(Food)
 class FoodAdmin(admin.ModelAdmin):
-    pass
+    field = (
+        "food_name",
+        "oil_preference",
+        "noodle_preference",
+        "rice_preference",
+        "spicy_preference",
+        "instant_preference",
+        "price_preference",
+        "image_url",
+        "food_tag",
+    )
+
+

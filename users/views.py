@@ -1,9 +1,10 @@
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import CustomUser
-from .serializers import SignUpUserSerializer
+from .serializers import SignUpUserSerializer, LoginUserSerializer
 from drf_spectacular.utils import extend_schema, OpenApiExample, OpenApiResponse
 
 
@@ -52,6 +53,7 @@ class CustomUserSignUpView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# 투두 로그인 구현
 #  로그인
 class CustomUserLoginView(APIView):
     serializer_class = SignUpUserSerializer
@@ -76,14 +78,22 @@ class CustomUserLoginView(APIView):
        }
     )
     def post(self, request):
-        pass
+        serializer = LoginUserSerializer(data=request.data)
+
+        #post 방식으로 개인정보 수신
+        #DB에서 해당 정보가 일치하는지 확인
+        if serializer.is_valid():
+            user = serializer.validated_data["user"]
+            refresh = RefreshToken.for_user(user)
+            return Response({
+                #Access, Refresh Token 발행
+                'refresh': str(refresh),
+                'access': str(refresh.access_token),
+            })
+        return Response(serializer.errors, status=400)
 
 
-#post 방식으로 개인정보 수신
 
-#DB에서 해당 정보가 일치하는지 확인
-
-#Access, Refresh Token 발행
 
 
 

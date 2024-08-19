@@ -1,5 +1,8 @@
-from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager,
-                                        PermissionsMixin)
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 from django.db import models
 
 from common.models import CommonModel
@@ -37,7 +40,12 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
     )
     introduction = models.TextField(null=True, blank=True)
     fti_type = models.CharField(max_length=50, null=True, blank=True)
-    taste_type = models.CharField(max_length=50, null=True, blank=True)
+    oil_preference = models.PositiveIntegerField(null=True)
+    noodle_preference = models.PositiveIntegerField(null=True)
+    rice_preference = models.PositiveIntegerField(null=True)
+    spicy_preference = models.PositiveIntegerField(null=True)
+    instant_preference = models.PositiveIntegerField(null=True)
+    price_preference = models.PositiveIntegerField(null=True)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)

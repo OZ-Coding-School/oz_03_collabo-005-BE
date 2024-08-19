@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import FtiTestQuestion
+
+
+@admin.register(FtiTestQuestion)
+class FTITestQuestionAdmin(admin.ModelAdmin):
+    pass

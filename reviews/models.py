@@ -10,3 +10,8 @@ class Review(CommonModel):
     )
     title = models.CharField(max_length=150)
     content = models.TextField()
+    hits = models.PositiveIntegerField()
+
+    @property
+    def likes_count(self):
+        return self.review_like.count()

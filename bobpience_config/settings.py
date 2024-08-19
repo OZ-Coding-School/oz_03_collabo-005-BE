@@ -33,10 +33,16 @@ DJANGO_SYSTEM_APPS = [
 ]
 
 CUSTOM_USER_APPS = [
+    "categories.apps.CategoriesConfig",
+    "comments.apps.CommentsConfig",
+    "foods.apps.FoodsConfig",
+    "likes.apps.LikesConfig",
+    "meetings.apps.MeetingsConfig",
+    "reviews.apps.ReviewsConfig",
+    "test_questions.apps.TestQuestionsConfig",
+    "test_results.apps.TestResultsConfig",
     "users.apps.UsersConfig",
-    "taste_tests.apps.TasteTestsConfig",
-    "fti_tests.apps.FtiTestsConfig",
-    "reviews.apps.ReviewsConfig" "drf_spectacular",  # Swagger용 라이브러리
+    "drf_spectacular",  # Swagger용 라이브러리
     "rest_framework",
 ]
 

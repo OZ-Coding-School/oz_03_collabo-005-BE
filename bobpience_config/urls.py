@@ -21,5 +21,4 @@ urlpatterns = [
         name="redoc",
     ),
     path("api/users/", include("users.urls")),
-    path("api/ftitests/", include("fti_tests.urls")),
 ]

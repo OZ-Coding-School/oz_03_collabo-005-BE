@@ -13,7 +13,8 @@ from .serializers import LoginUserSerializer, SignUpUserSerializer
 class CustomUserSignUpView(APIView):
     serializer_class = SignUpUserSerializer
 
-    # permission_classes = (AllowAny,)
+    permission_classes = (AllowAny,)
+
     @extend_schema(
         tags=["User"],
         operation_id="CustomUserSignUp",

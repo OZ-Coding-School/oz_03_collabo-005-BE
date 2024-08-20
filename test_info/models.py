@@ -4,7 +4,7 @@ from django.db import models
 # 입맛 검사 질문
 class TasteTestQuestion(models.Model):
     taste_question = models.TextField()
-    taste_question_category = models.CharField(50)
+    taste_question_category = models.CharField(max_length=50)
     taste_question_image = models.ImageField()
 
     def __str__(self):
@@ -16,7 +16,7 @@ class TasteTestAnswer(models.Model):
     taste_question = models.ForeignKey(
         "test_info.TasteTestQuestion", on_delete=models.CASCADE
     )
-    taste_answer_category = models.CharField(max_length=100)
+    taste_answer = models.CharField(max_length=100)
 
 
 # FTI 검사 질문

@@ -1,14 +1,14 @@
 from django.contrib import admin
 
-from .models import FtiTestAnswer, FtiTestQuestion, TasteTestAnswer, TasteTestQuestion
+from .models import FTITestAnswer, FTITestQuestion, TasteTestAnswer, TasteTestQuestion
 
 
-@admin.register(FtiTestQuestion)
+@admin.register(FTITestQuestion)
 class FTITestQuestionAdmin(admin.ModelAdmin):
     pass
 
 
-@admin.register(FtiTestAnswer)
+@admin.register(FTITestAnswer)
 class FTITestAnswerAdmin(admin.ModelAdmin):
     pass
 

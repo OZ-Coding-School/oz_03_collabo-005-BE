@@ -6,27 +6,28 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import FtiTestQuestion
-from .serializers import FtiTestQuestionSerializer, UserFTITestResultSerializer
+from .models import FTITestQuestion
+from .serializers import FTITestQuestionSerializer, UserFTITestResultSerializer
 
 
 # 로그인한 유저의 테스트 결과를 저장
 class UserFTITestResultCreateView(APIView):
     serializer_class = UserFTITestResultSerializer
+    permission_classes = (AllowAny,)
 
     @extend_schema(tags=["Fti_test"])
     def post(self, request):
-        user = request.user
-        selected_answer = request.data.get("fti_style")
+        serializer = self.serializer_class(data=request.data)
 
-        if not selected_answer:
-            return Response(
-                {"error": "No answers provided"}, status=status.HTTP_400_BAD_REQUEST
-            )
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = request.user
+        selected_answer = serializer.validated_data("fti_style")
 
         """
         Counter 객체에 리스트를 parameter로 담아주면
-        dict 형태로 변환해 준다.
+        dict 형태로 반환
         f : 3 (개)
         t : 1 (개)
         i : 2 (개)
@@ -69,11 +70,11 @@ class UserFTITestResultCreateView(APIView):
 
 # FTI질문 리스트 조회
 class FTITestQuestionListView(APIView):
-    serializer_class = FtiTestQuestionSerializer
+    serializer_class = FTITestQuestionSerializer
     permission_classes = (AllowAny,)
 
     @extend_schema(tags=["Fti_test"])
     def get(self, request):
-        questions = FtiTestQuestion.objects.all()
-        serializer = FtiTestQuestionSerializer(questions, many=True)
+        questions = FTITestQuestion.objects.all()
+        serializer = FTITestQuestionSerializer(questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

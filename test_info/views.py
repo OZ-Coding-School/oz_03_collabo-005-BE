@@ -1,3 +1,5 @@
+from collections import Counter
+
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
@@ -6,7 +8,6 @@ from rest_framework.views import APIView
 
 from .models import FtiTestQuestion
 from .serializers import FtiTestQuestionSerializer, UserFTITestResultSerializer
-from collections import Counter
 
 
 # 로그인한 유저의 테스트 결과를 저장
@@ -19,7 +20,9 @@ class UserFTITestResultCreateView(APIView):
         selected_answer = request.data.get("fti_style")
 
         if not selected_answer:
-            return Response({"error": "No answers provided"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "No answers provided"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         """
         Counter 객체에 리스트를 parameter로 담아주면

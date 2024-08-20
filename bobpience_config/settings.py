@@ -40,8 +40,7 @@ CUSTOM_USER_APPS = [
     "likes.apps.LikesConfig",
     "meetings.apps.MeetingsConfig",
     "reviews.apps.ReviewsConfig",
-    "test_questions.apps.TestQuestionsConfig",
-    "test_results.apps.TestResultsConfig",
+    "test_info.apps.TestInfoConfig",
     "users.apps.UsersConfig",
     "drf_spectacular",  # Swagger용 라이브러리
     "rest_framework_simplejwt",  # JWT용 라이브러리

@@ -1,5 +1,4 @@
 from django.db import models
-
 from rest_framework.serializers import ModelSerializer
 
 from common.models import CommonModel

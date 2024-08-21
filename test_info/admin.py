@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import FTITestAnswer, FTITestQuestion, TasteTestAnswer, TasteTestQuestion
+from .models import FTITestAnswer, FTITestQuestion, TasteTestAnswer, TasteTestQuestion, FTITestResult
 
 
 @admin.register(FTITestQuestion)
@@ -10,6 +10,11 @@ class FTITestQuestionAdmin(admin.ModelAdmin):
 
 @admin.register(FTITestAnswer)
 class FTITestAnswerAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(FTITestResult)
+class FTITestResultAdmin(admin.ModelAdmin):
     pass
 
 

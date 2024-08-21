@@ -3,6 +3,7 @@
 import django.db.models.deletion
 from django.conf import settings
 from django.db import migrations, models
+import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
@@ -58,7 +59,7 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("taste_question", models.TextField()),
-                ("taste_question_category", models.CharField(max_length=50)),
+                ("taste_question_category", models.CharField(verbose_name=50)),
                 ("taste_question_image", models.ImageField(upload_to="")),
             ],
         ),
@@ -115,7 +116,7 @@ class Migration(migrations.Migration):
                         verbose_name="ID",
                     ),
                 ),
-                ("taste_answer", models.CharField(max_length=100)),
+                ("taste_answer_category", models.CharField(max_length=100)),
                 (
                     "taste_question",
                     models.ForeignKey(

@@ -24,3 +24,8 @@ class MeetingGenderGroup(models.Model):
 class FTIType(models.Model):
     fti_type = models.CharField(max_length=10)
     description = models.TextField()
+
+
+class FoodFilter(models.Model):
+    filter_name = models.CharField(max_length=20)
+    filter_value = models.CharField(max_length=30)

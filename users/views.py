@@ -100,7 +100,7 @@ class CustomUserLoginView(APIView):
 
 # 투두 다른 API의 정상 동작 확인 후 삭제 필요
 # 토큰 테스트
-class UserTestView(APIView):
-
-    def get(self, request):
-        return Response({"message": "성공"})
+# class UserTestView(APIView):
+#
+#     def get(self, request):
+#         return Response({"message": "성공"})

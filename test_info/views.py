@@ -7,7 +7,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import FTITestQuestion
-from .serializers import FTITestQuestionSerializer, UserFTITestResultSerializer
+from .serializers import (
+    FTITestQuestionSerializer,
+    UserFTITestResultSerializer,
+    UserTasteTestQuestionSerializer,
+)
 
 
 # 로그인한 유저의 테스트 결과를 저장
@@ -58,3 +62,13 @@ class FTITestQuestionListView(APIView):
         questions = FTITestQuestion.objects.all()
         serializer = FTITestQuestionSerializer(questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# Taste
+class UserTasetTestQuestionListView(APIView):
+    serializer_class = UserTasteTestQuestionSerializer
+
+    @extend_schema(tags=["Taste Test"])
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        pass

@@ -3,17 +3,19 @@ from django.db import models
 from common.models import CommonModel
 
 
-class FoodTag(models.Model):
-    food_tag = models.CharField(max_length=50)
-
-
 class Food(CommonModel):
     food_name = models.CharField(max_length=50)
-    oil_preference = models.PositiveIntegerField(default=None, null=True)
-    noodle_preference = models.PositiveIntegerField(default=None, null=True)
-    rice_preference = models.PositiveIntegerField(default=None, null=True)
-    spicy_preference = models.PositiveIntegerField(default=None, null=True)
-    instant_preference = models.PositiveIntegerField(default=None, null=True)
-    price_preference = models.PositiveIntegerField(default=None, null=True)
+    spicy_preference = models.PositiveIntegerField()
+    intensity_preference = models.PositiveIntegerField()
+    oily_preference = models.PositiveIntegerField()
+    flour_rice_preference = models.PositiveIntegerField()
+    cost_preference = models.PositiveIntegerField()
+    spicy_weight = models.PositiveIntegerField()
+    cost_weight = models.PositiveIntegerField()
     image_url = models.ImageField()
-    food_tag = models.ManyToManyField(FoodTag, related_name="foods")
+    is_launch = models.BooleanField()
+    is_dinner = models.BooleanField()
+    is_snack = models.BooleanField()
+    is_date = models.BooleanField()
+    is_party = models.BooleanField()
+    is_diet = models.BooleanField()

@@ -3,6 +3,10 @@ from django.db import models
 from common.models import CommonModel
 
 
+class FoodTag(models.Model):
+    food_tag = models.CharField(max_length=50)
+
+
 class Food(CommonModel):
     food_name = models.CharField(max_length=50)
     spicy_preference = models.PositiveIntegerField()

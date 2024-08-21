@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import FTIType
 
-# Register your models here.
+
+@admin.register(FTIType)
+class FTITypeAdmin(admin.ModelAdmin):
+    pass

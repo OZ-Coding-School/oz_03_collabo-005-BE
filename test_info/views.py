@@ -6,13 +6,36 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from users.models import CustomUser
 from .models import FTITestQuestion, FTITestResult
-from .serializers import FTITestQuestionSerializer, UserFTITestResultSerializer
+from categories.models import FTIType
+from .serializers import (
+    FTITestQuestionSerializer,
+    UserFTITestResultSerializer,
+    FTITestResultSerializer,
+)
 import uuid
 
+
+class FTITestResultView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = FTITestResultSerializer
+
+    @extend_schema(tags=["Fti_test"])
+    def get(self, request, uuid):
+        try:
+            test_result = FTITestResult.objects.get(uuid=uuid)
+        except FTITestResult.DoesNotExist:
+            return Response({"error": "Test result not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = self.serializer_class(instance=test_result)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 # 비로그인 유저와 로그인 유저의 테스트 결과를 저장
-class UserFTITestResultCreateView(APIView):
+class FTITestResultCreateView(APIView):
     serializer_class = UserFTITestResultSerializer
+    permission_classes = (AllowAny,)
 
     @extend_schema(tags=["Fti_test"])
     def post(self, request):
@@ -40,24 +63,26 @@ class UserFTITestResultCreateView(APIView):
         accessibility = "D" if counter["D"] > counter["N"] else "N"
         # 테스트 결과 조합
         fti_type = f"{extroversion}{curiosity}{accessibility}"
-
+        fti_type_obj = FTIType.objects.get(fti_type=fti_type)
         test_uuid = uuid.uuid4()
-        FTITestResult.objects.create(
-            uuid=test_uuid,
-            fti_type_id=fti_type
-        )
+        FTITestResult.objects.create(uuid=test_uuid, fti_type=fti_type_obj)
 
         if request.user.is_authenticated:
-            user = request.user
-            user.fti_type = fti_type
+            user = CustomUser.objects.get(id=request.user.id)
+            user.fti_type = fti_type_obj
             user.save()
 
-        return Response({"fti_type": fti_type, "uuid": test_uuid}, status=status.HTTP_201_CREATED)
+        return Response(
+            {"fti_type": fti_type, "uuid": test_uuid}, status=status.HTTP_201_CREATED
+        )
 
 
 class FTITestQuestionListView(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = FTITestQuestionSerializer
+
     @extend_schema(tags=["Fti_test"])
     def get(self, request):
         questions = FTITestQuestion.objects.all()
-        serializer = FTITestQuestionSerializer(questions, many=True)
+        serializer = self.serializer_class(instance=questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

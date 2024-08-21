@@ -7,7 +7,11 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import FTITestQuestion
-from .serializers import FTITestQuestionSerializer, UserFTITestResultSerializer
+from .serializers import (
+    FTITestQuestionSerializer,
+    UserFTITestResultSerializer,
+    UserTasteTestQuestionSerializer,
+)
 
 
 # 로그인한 유저의 테스트 결과를 저장

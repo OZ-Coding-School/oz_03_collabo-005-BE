@@ -6,11 +6,11 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import FTITestQuestion
+from .models import FTITestQuestion, FTITestResult
 from .serializers import FTITestQuestionSerializer, UserFTITestResultSerializer
+import uuid
 
-
-# 로그인한 유저의 테스트 결과를 저장
+# 비로그인 유저와 로그인 유저의 테스트 결과를 저장
 class UserFTITestResultCreateView(APIView):
     serializer_class = UserFTITestResultSerializer
 
@@ -21,7 +21,6 @@ class UserFTITestResultCreateView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        user = request.user
         selected_answer = serializer.validated_data["fti_style"]
 
         """
@@ -39,20 +38,24 @@ class UserFTITestResultCreateView(APIView):
         curiosity = "A" if counter["A"] > counter["C"] else "C"
         # 접근성 테스트
         accessibility = "D" if counter["D"] > counter["N"] else "N"
+        # 테스트 결과 조합
         fti_type = f"{extroversion}{curiosity}{accessibility}"
 
-        # User 모델의 fti_type 필드에 저장
-        user.fti_type = fti_type
-        user.save()
+        test_uuid = uuid.uuid4()
+        FTITestResult.objects.create(
+            uuid=test_uuid,
+            fti_type_id=fti_type
+        )
 
-        return Response({"fti_type": fti_type}, status=status.HTTP_201_CREATED)
+        if request.user.is_authenticated:
+            user = request.user
+            user.fti_type = fti_type
+            user.save()
+
+        return Response({"fti_type": fti_type, "uuid": test_uuid}, status=status.HTTP_201_CREATED)
 
 
-# FTI질문 리스트 조회
 class FTITestQuestionListView(APIView):
-    serializer_class = FTITestQuestionSerializer
-    permission_classes = (AllowAny,)
-
     @extend_schema(tags=["Fti_test"])
     def get(self, request):
         questions = FTITestQuestion.objects.all()

@@ -58,3 +58,13 @@ class FTITestQuestionListView(APIView):
         questions = FTITestQuestion.objects.all()
         serializer = FTITestQuestionSerializer(questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# Taste
+class UserTasetTestQuestionListView(APIView):
+    serializer_class = UserTasteTestQuestionSerializer
+
+    @extend_schema(tags=["Taste Test"])
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        pass

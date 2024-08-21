@@ -1,6 +1,12 @@
 from django.contrib import admin
 
-from .models import FTITestAnswer, FTITestQuestion, TasteTestAnswer, TasteTestQuestion, FTITestResult
+from .models import (
+    FTITestAnswer,
+    FTITestQuestion,
+    FTITestResult,
+    TasteTestAnswer,
+    TasteTestQuestion,
+)
 
 
 @admin.register(FTITestQuestion)

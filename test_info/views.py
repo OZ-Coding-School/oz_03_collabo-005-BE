@@ -1,3 +1,4 @@
+import uuid
 from collections import Counter
 
 from drf_spectacular.utils import extend_schema
@@ -6,15 +7,15 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from users.models import CustomUser
-from .models import FTITestQuestion, FTITestResult
 from categories.models import FTIType
+from users.models import CustomUser
+
+from .models import FTITestQuestion, FTITestResult
 from .serializers import (
     FTITestQuestionSerializer,
-    UserFTITestResultSerializer,
     FTITestResultSerializer,
+    UserFTITestResultSerializer,
 )
-import uuid
 
 
 class FTITestResultView(APIView):
@@ -26,7 +27,9 @@ class FTITestResultView(APIView):
         try:
             test_result = FTITestResult.objects.get(uuid=uuid)
         except FTITestResult.DoesNotExist:
-            return Response({"error": "Test result not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"error": "Test result not found"}, status=status.HTTP_404_NOT_FOUND
+            )
 
         serializer = self.serializer_class(instance=test_result)
         return Response(serializer.data, status=status.HTTP_200_OK)

@@ -19,4 +19,7 @@ class UserFTITestResultSerializer(serializers.Serializer):
 class FTITestResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = FTITestResult
-        fields = ("uuid", "fti_type",)
+        fields = (
+            "uuid",
+            "fti_type",
+        )

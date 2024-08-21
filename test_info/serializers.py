@@ -1,7 +1,7 @@
 from django.db import models
 from rest_framework import serializers
 
-from .models import FTITestQuestion
+from .models import FTITestQuestion, FTITestResult
 
 
 class FTITestQuestionSerializer(serializers.ModelSerializer):
@@ -14,3 +14,12 @@ class UserFTITestResultSerializer(serializers.Serializer):
     fti_style = serializers.ListField(
         child=serializers.CharField(max_length=3),
     )
+
+
+class FTITestResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FTITestResult
+        fields = (
+            "uuid",
+            "fti_type",
+        )

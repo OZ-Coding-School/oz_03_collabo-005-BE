@@ -52,8 +52,7 @@ urlpatterns = [
     path(
         "api/ftitests/",
         include(
-            "test_info.urls",
+            "test_info.fti_urls",
         ),
     ),
-    # path("api/ftitests/", include("test_results.urls")),
 ]

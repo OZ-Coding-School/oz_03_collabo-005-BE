@@ -19,3 +19,8 @@ class MeetingAgeGroup(models.Model):
 
 class MeetingGenderGroup(models.Model):
     gender_group = models.CharField(max_length=100)
+
+
+class FTIType(models.Model):
+    fti_type = models.CharField(max_length=10)
+    description = models.TextField()

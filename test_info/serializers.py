@@ -1,30 +1,16 @@
 from django.db import models
-from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 
-from common.models import CommonModel
-
-from .models import FtiTestQuestion
+from .models import FTITestQuestion
 
 
-class FtiTestQuestionSerializer(ModelSerializer):
+class FTITestQuestionSerializer(serializers.ModelSerializer):
     class Meta:
-        model = FtiTestQuestion
+        model = FTITestQuestion
         fields = ("fti_question",)
 
 
-class FtiType(models.Model):
-    fti_type = models.CharField(max_length=30)
-
-
-class TestResult(CommonModel):
-    user = models.OneToOneField("users.CustomUser", on_delete=models.CASCADE)
-    fti_type = models.OneToOneField(
-        "test_info.FtiType", on_delete=models.SET_NULL, null=True
+class UserFTITestResultSerializer(serializers.Serializer):
+    fti_style = serializers.ListField(
+        child=serializers.CharField(max_length=3),
     )
-    description = models.CharField(max_length=255)
-
-
-class UserFTITestResultSerializer(ModelSerializer):
-    class Meta:
-        model = TestResult
-        field = ("user", "fti_type", "description")

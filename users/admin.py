@@ -15,7 +15,6 @@ class CustomUserAdmin(UserAdmin):
                     "profile_image",
                     "introduction",
                     "fti_type",
-                    "taste_type",
                 )
             },
         ),

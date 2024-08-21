@@ -15,7 +15,7 @@ from .models import TasteTestQuestion, TasteTestAnswer
 from .serializers import (
     FTITestQuestionSerializer,
     FTITestResultSerializer,
-    UserFTITestResultSerializer, UserTasteTestQuestionSerializer,
+    UserFTITestResultSerializer, UserTasteTestQuestionSerializer, UserTasteTestAnswerSerializer,
 )
 
 
@@ -93,6 +93,7 @@ class FTITestQuestionListView(APIView):
 
 
 # Taste
+# Taset Question
 class UserTasetTestQuestionListView(APIView):
     serializer_class = UserTasteTestQuestionSerializer
 
@@ -101,3 +102,44 @@ class UserTasetTestQuestionListView(APIView):
         questions = TasteTestQuestion.objects.all()
         serializer = self.serializer_class(instance=questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+# Taset Answer
+class UserTasetTestAnswerListView(APIView):
+    serializer_class = UserTasteTestAnswerSerializer
+
+    @extend_schema(tags=["Taste Test"])
+    def get(self, request):
+        answers = TasteTestAnswer.objects.all()
+        serializer = self.serializer_class(instance=answers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+# Taste Question & Answer
+class UserTasteTestListView(APIView):
+    question_serializer_class = UserTasteTestQuestionSerializer
+    answer_serializer_class = UserTasteTestAnswerSerializer
+
+    @extend_schema(tags=["Taste Test"])
+    def get(self, request):
+        # 질문과 보기 세트용
+        question_answers = []
+
+        # 질문 전부 로드
+        questions = TasteTestQuestion.objects.all()
+
+        # 한 질문씩 반복하며 해당 보기들 병합
+        for question in questions:
+            question_serializer = self.question_serializer_class(instance=question)
+
+            # 질문에 해당하는 보기들 모두 로드
+            answers = TasteTestAnswer.objects.filter(taste_question=question.id)
+            answer_serializer = self.answer_serializer_class(answers, many=True)
+
+            # 세트 구성
+            question_answers.append({
+                'question': question_serializer.data,
+                'answers' : answer_serializer.data
+            })
+
+
+        return Response(question_answers, status=status.HTTP_200_OK)
+

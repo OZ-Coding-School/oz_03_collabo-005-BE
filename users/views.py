@@ -70,7 +70,7 @@ class CustomUserLoginView(APIView):
         examples=[
             OpenApiExample(
                 name="Example",
-                value={"email": "abc@abc.com", "password": "pass123"},
+                value={"email": "admin1@admin.com", "password": "pass123!"},
                 request_only=True,
             )
         ],

@@ -11,6 +11,7 @@ from categories.models import FTIType
 from users.models import CustomUser
 
 from .models import FTITestQuestion, FTITestResult
+from .models import TasteTestQuestion, TasteTestAnswer
 from .serializers import (
     FTITestQuestionSerializer,
     FTITestResultSerializer,
@@ -96,6 +97,7 @@ class UserTasetTestQuestionListView(APIView):
     serializer_class = UserTasteTestQuestionSerializer
 
     @extend_schema(tags=["Taste Test"])
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-        pass
+    def get(self, request):
+        questions = TasteTestQuestion.objects.all()
+        serializer = self.serializer_class(instance=questions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

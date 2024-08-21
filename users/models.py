@@ -39,7 +39,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
         upload_to="profile_images/", null=True, blank=True
     )
     introduction = models.TextField(null=True, blank=True)
-    fti_type = models.ForeignKey("categories.FTIType", on_delete=models.CASCADE)
+    fti_type = models.ForeignKey("categories.FTIType", null=True, on_delete=models.CASCADE)
     spicy_preference = models.PositiveIntegerField(null=True, default=None)
     intensity_preference = models.PositiveIntegerField(null=True, default=None)
     oily_preference = models.PositiveIntegerField(null=True, default=None)

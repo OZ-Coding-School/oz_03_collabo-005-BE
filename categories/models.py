@@ -24,4 +24,3 @@ class MeetingGenderGroup(models.Model):
 class FTIType(models.Model):
     fti_type = models.CharField(max_length=10)
     description = models.TextField()
-

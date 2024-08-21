@@ -13,7 +13,6 @@ from .serializers import FTITestQuestionSerializer, UserFTITestResultSerializer
 # 로그인한 유저의 테스트 결과를 저장
 class UserFTITestResultCreateView(APIView):
     serializer_class = UserFTITestResultSerializer
-    permission_classes = (AllowAny,)
 
     @extend_schema(tags=["Fti_test"])
     def post(self, request):
@@ -23,7 +22,7 @@ class UserFTITestResultCreateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
-        selected_answer = serializer.validated_data("fti_style")
+        selected_answer = serializer.validated_data["fti_style"]
 
         """
         Counter 객체에 리스트를 parameter로 담아주면
@@ -35,37 +34,18 @@ class UserFTITestResultCreateView(APIView):
         counter = Counter(selected_answer)
 
         # 외향성 테스트
-        if counter["T"] > counter["I"]:
-            extroversion = "T"
-        else:
-            extroversion = "I"
-
+        extroversion = "T" if counter["T"] > counter["I"] else "I"
         # 탐구성 테스트
-        if counter["A"] > counter["C"]:
-            curiosity = "A"
-        else:
-            curiosity = "C"
-
+        curiosity = "A" if counter["A"] > counter["C"] else "C"
         # 접근성 테스트
-        if counter["D"] > counter["N"]:
-            accessibility = "D"
-        else:
-            accessibility = "N"
+        accessibility = "D" if counter["D"] > counter["N"] else "N"
+        fti_type = f"{extroversion}{curiosity}{accessibility}"
 
-        groups = {
-            "외향성": extroversion,
-            "탐구성": curiosity,
-            "접근성": accessibility,
-        }
-
-        # 결과 생성
-        result = "".join(groups.values())
-
-        # User 모델의 fti_type 필드를 업데이트
-        user.fit_type = result
+        # User 모델의 fti_type 필드에 저장
+        user.fti_type = fti_type
         user.save()
 
-        return Response({"result": result}, status=status.HTTP_201_CREATED)
+        return Response({"fti_type": fti_type}, status=status.HTTP_201_CREATED)
 
 
 # FTI질문 리스트 조회

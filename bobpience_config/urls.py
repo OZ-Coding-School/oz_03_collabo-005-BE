@@ -23,7 +23,5 @@ urlpatterns = [
     path("api/ftitests/", include("test_info.urls")),
     # Taste
     path("api/tasets/", include("test_info.tasteUrls")),
-    # Utils
-    path("api/utils/", include("common.urls")),
 ]
 # fmt: on

@@ -39,6 +39,7 @@ CUSTOM_USER_APPS = [
     "foods.apps.FoodsConfig",
     "likes.apps.LikesConfig",
     "meetings.apps.MeetingsConfig",
+    "profiles.apps.ProfilesConfig",
     "reviews.apps.ReviewsConfig",
     "test_info.apps.TestInfoConfig",
     "users.apps.UsersConfig",

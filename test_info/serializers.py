@@ -1,7 +1,6 @@
-from django.db import models
 from rest_framework import serializers
 
-from .models import FTITestQuestion, FTITestResult
+from .models import FTITestQuestion, FTITestResult, TasteTestAnswer, TasteTestQuestion
 
 
 class FTITestQuestionSerializer(serializers.ModelSerializer):
@@ -23,3 +22,17 @@ class FTITestResultSerializer(serializers.ModelSerializer):
             "uuid",
             "fti_type",
         )
+
+
+# TasetTestQuestion
+class UserTasteTestQuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TasteTestQuestion
+        fields = "__all__"
+
+
+# TasetTestQuestion
+class UserTasteTestAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TasteTestAnswer
+        fields = "__all__"

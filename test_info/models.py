@@ -21,6 +21,9 @@ class TasteTestAnswer(models.Model):
     taste_answer = models.CharField(max_length=100)
     taste_score = models.PositiveIntegerField()
 
+    def __str__(self):
+        return f"{self.taste_question}: {self.taste_score}"
+
 
 # FTI 검사 질문
 class FTITestQuestion(models.Model):

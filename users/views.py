@@ -70,7 +70,7 @@ class CustomUserLoginView(APIView):
         examples=[
             OpenApiExample(
                 name="Example",
-                value={"email": "abc@abc.com", "password": "pass123"},
+                value={"email": "admin1@admin.com", "password": "pass123!"},
                 request_only=True,
             )
         ],
@@ -96,11 +96,3 @@ class CustomUserLoginView(APIView):
                 }
             )
         return Response(serializer.errors, status=400)
-
-
-# 투두 다른 API의 정상 동작 확인 후 삭제 필요
-# 토큰 테스트
-class UserTestView(APIView):
-
-    def get(self, request):
-        return Response({"message": "성공"})

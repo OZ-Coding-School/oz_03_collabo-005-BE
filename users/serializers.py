@@ -18,7 +18,6 @@ class SignUpUserSerializer(serializers.ModelSerializer):
         }
 
 
-# 투두 로그인
 class LoginUserSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)

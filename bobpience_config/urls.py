@@ -27,6 +27,6 @@ urlpatterns = [
         ),
     ),
     # Taste
-    path("api/tasets/", include("test_info.tasteUrls")),
+    path("api/tasets/", include("test_info.taste_urls")),
 ]
 # fmt: on

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from .models import FTITestQuestion, FTITestResult, TasteTestAnswer, TasteTestQuestion
+from users.models import CustomUser
 
 
 class FTITestQuestionSerializer(serializers.ModelSerializer):
@@ -24,15 +25,31 @@ class FTITestResultSerializer(serializers.ModelSerializer):
         )
 
 
-# TasetTestQuestion
+# TasteTestQuestion
 class UserTasteTestQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = TasteTestQuestion
         fields = "__all__"
 
 
-# TasetTestQuestion
+# TasteTestAnswer
 class UserTasteTestAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = TasteTestAnswer
         fields = "__all__"
+
+
+# TasteTestResult
+class UserTasteTestResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = (
+            "id",
+            "spicy_preference",
+            "intensity_preference",
+            "oily_preference",
+            "flour_rice_preference",
+            "cost_preference",
+            "spicy_weight",
+            "cost_weight",
+        )

@@ -1,7 +1,7 @@
 import uuid
 from collections import Counter
 
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiExample
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -16,7 +16,7 @@ from .serializers import (
     FTITestResultSerializer,
     UserFTITestResultSerializer,
     UserTasteTestAnswerSerializer,
-    UserTasteTestQuestionSerializer,
+    UserTasteTestQuestionSerializer, UserTasteTestResultSerializer,
 )
 
 
@@ -98,7 +98,9 @@ class FTITestQuestionListView(APIView):
 class UserTasetTestQuestionListView(APIView):
     serializer_class = UserTasteTestQuestionSerializer
 
-    @extend_schema(tags=["Taste Test"])
+    @extend_schema(
+        tags=["Taste Test"], description="단순 질문 리스트만 반환, 사용하지 않음"
+    )
     def get(self, request):
         questions = TasteTestQuestion.objects.all()
         serializer = self.serializer_class(instance=questions, many=True)
@@ -109,7 +111,9 @@ class UserTasetTestQuestionListView(APIView):
 class UserTasetTestAnswerListView(APIView):
     serializer_class = UserTasteTestAnswerSerializer
 
-    @extend_schema(tags=["Taste Test"])
+    @extend_schema(
+        tags=["Taste Test"], description="단순 답변 리스트만 반환, 사용하지 않음"
+    )
     def get(self, request):
         answers = TasteTestAnswer.objects.all()
         serializer = self.serializer_class(instance=answers, many=True)
@@ -120,6 +124,10 @@ class UserTasetTestAnswerListView(APIView):
 class UserTasteTestListView(APIView):
     question_serializer_class = UserTasteTestQuestionSerializer
     answer_serializer_class = UserTasteTestAnswerSerializer
+
+    # 스웨거에게 기본 시리얼라이저클래스를 반환
+    def get_serializer_class(self):
+        return self.question_serializer_class
 
     @extend_schema(tags=["Taste Test"])
     def get(self, request):
@@ -146,3 +154,21 @@ class UserTasteTestListView(APIView):
             )
 
         return Response(question_answers, status=status.HTTP_200_OK)
+
+
+# Taste Type Save
+class UserTasteResultView(APIView):
+    pass
+    serializer_class = UserTasteTestResultSerializer
+    @extend_schema(tags=["Taste Test"])
+    def post(self, request):
+        # user 정보 객체
+        user = request.user
+        serializer = self.serializer_class(data=request.data)
+        print(dir(user))
+        print("**************************")
+        print(dir(serializer))
+
+
+
+        return Response("성공", status=status.HTTP_200_OK)

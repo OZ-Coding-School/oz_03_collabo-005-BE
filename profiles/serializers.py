@@ -12,5 +12,3 @@ class ProfileSerializer(serializers.ModelSerializer):
             "introduction",
             "fti_type",
         )
-
-

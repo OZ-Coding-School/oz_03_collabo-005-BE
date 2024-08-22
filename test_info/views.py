@@ -10,12 +10,13 @@ from rest_framework.views import APIView
 from categories.models import FTIType
 from users.models import CustomUser
 
-from .models import FTITestQuestion, FTITestResult
-from .models import TasteTestQuestion, TasteTestAnswer
+from .models import FTITestQuestion, FTITestResult, TasteTestAnswer, TasteTestQuestion
 from .serializers import (
     FTITestQuestionSerializer,
     FTITestResultSerializer,
-    UserFTITestResultSerializer, UserTasteTestQuestionSerializer, UserTasteTestAnswerSerializer,
+    UserFTITestResultSerializer,
+    UserTasteTestAnswerSerializer,
+    UserTasteTestQuestionSerializer,
 )
 
 
@@ -103,6 +104,7 @@ class UserTasetTestQuestionListView(APIView):
         serializer = self.serializer_class(instance=questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 # Taset Answer
 class UserTasetTestAnswerListView(APIView):
     serializer_class = UserTasteTestAnswerSerializer
@@ -112,6 +114,7 @@ class UserTasetTestAnswerListView(APIView):
         answers = TasteTestAnswer.objects.all()
         serializer = self.serializer_class(instance=answers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 # Taste Question & Answer
 class UserTasteTestListView(APIView):
@@ -135,11 +138,11 @@ class UserTasteTestListView(APIView):
             answer_serializer = self.answer_serializer_class(answers, many=True)
 
             # 세트 구성
-            question_answers.append({
-                'question': question_serializer.data,
-                'answers' : answer_serializer.data
-            })
-
+            question_answers.append(
+                {
+                    "question": question_serializer.data,
+                    "answers": answer_serializer.data,
+                }
+            )
 
         return Response(question_answers, status=status.HTTP_200_OK)
-

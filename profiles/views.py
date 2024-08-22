@@ -17,7 +17,9 @@ class ProfileView(APIView):
         try:
             profile = CustomUser.objects.get(id=request.user.id)
         except CustomUser.DoesNotExist:
-            return Response({"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
+            )
         serializer = self.serializer_class(instance=profile)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -33,14 +35,16 @@ class ProfileView(APIView):
         updated_introduction = serializer.validated_data.get("introduction")
 
         # 닉네임 중복 확인
-        if CustomUser.objects.filter(nickname=updated_nickname).exclude(id=user.id).exists():
-            return Response({"detail": "Nickname already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        if (
+            CustomUser.objects.filter(nickname=updated_nickname)
+            .exclude(id=user.id)
+            .exists()
+        ):
+            return Response(
+                {"detail": "Nickname already exists"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         serializer.save()
 
         return Response(serializer.data, status.HTTP_200_OK)
-
-
-# 참여 내역 조회
-class 
-

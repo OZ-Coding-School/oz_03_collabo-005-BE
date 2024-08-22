@@ -8,7 +8,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = (
             "nickname",
-            "profile_image",
+            "profile_image_url",
             "introduction",
             "fti_type",
         )

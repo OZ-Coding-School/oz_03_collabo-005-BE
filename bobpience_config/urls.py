@@ -20,13 +20,10 @@ urlpatterns = [
     # USER
     path("api/users/", include("users.urls")),
     # FTI
-    path(
-        "api/ftitests/",
-        include(
-            "test_info.fti_urls",
-        ),
-    ),
+    path("api/ftitests/", include("test_info.fti_urls",)),
     # Taste
     path("api/tasets/", include("test_info.tasteUrls")),
+    # Profile
+    path("api/profile/", include("profiles.urls")),
 ]
 # fmt: on

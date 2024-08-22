@@ -35,9 +35,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=255)
     nickname = models.CharField(max_length=50, unique=True)
-    profile_image = models.ImageField(
-        upload_to="profile_images/", null=True, blank=True
-    )
+    profile_image_url = models.URLField(max_length=200, null=True, blank=True)
     introduction = models.TextField(null=True, blank=True)
     fti_type = models.ForeignKey(
         "categories.FTIType", null=True, on_delete=models.CASCADE

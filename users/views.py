@@ -57,7 +57,6 @@ class CustomUserSignUpView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-# 투두 로그인 구현
 # 로그인
 class CustomUserLoginView(APIView):
     serializer_class = SignUpUserSerializer

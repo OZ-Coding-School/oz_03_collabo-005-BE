@@ -49,6 +49,7 @@ class ProfileView(APIView):
 
         return Response(serializer.data, status.HTTP_200_OK)
 
+
 #
 # class MeetingHistory(APIView):
 #     serializer_class = MeetingHistorySerializer

@@ -1,7 +1,7 @@
 import uuid
 from collections import Counter
 
-from drf_spectacular.utils import extend_schema, OpenApiExample
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -16,7 +16,8 @@ from .serializers import (
     FTITestResultSerializer,
     UserFTITestResultSerializer,
     UserTasteTestAnswerSerializer,
-    UserTasteTestQuestionSerializer, UserTasteTestResultSerializer,
+    UserTasteTestQuestionSerializer,
+    UserTasteTestResultSerializer,
 )
 
 
@@ -160,22 +161,24 @@ class UserTasteTestListView(APIView):
 class UserTasteResultView(APIView):
     pass
     serializer_class = UserTasteTestResultSerializer
-    @extend_schema(tags=["Taste Test"],
-            examples=[
-                   OpenApiExample(
-                       'Example',
-                        value={
-                           "spicy_preference": 1,
-                           "intensity_preference": 1,
-                           "oily_preference": 3,
-                           "flour_rice_preference": 2,
-                           "cost_preference": 3,
-                           "spicy_weight": 2,
-                           "cost_weight": 1
-                        }
-                   )
-            ]
-   )
+
+    @extend_schema(
+        tags=["Taste Test"],
+        examples=[
+            OpenApiExample(
+                "Example",
+                value={
+                    "spicy_preference": 1,
+                    "intensity_preference": 1,
+                    "oily_preference": 3,
+                    "flour_rice_preference": 2,
+                    "cost_preference": 3,
+                    "spicy_weight": 2,
+                    "cost_weight": 1,
+                },
+            )
+        ],
+    )
     def post(self, request):
         # user 정보 객체
         user = request.user
@@ -187,7 +190,7 @@ class UserTasteResultView(APIView):
             return Response("Error", status=status.HTTP_400_BAD_REQUEST)
 
         # 검증데이터 선언
-        taste=serializer.validated_data
+        taste = serializer.validated_data
 
         # user데이터에 입맛 정보 할당
         user.spicy_preference = taste["spicy_preference"]

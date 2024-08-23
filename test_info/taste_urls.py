@@ -3,7 +3,8 @@ from django.urls import path
 from .views import (
     UserTasetTestAnswerListView,
     UserTasetTestQuestionListView,
-    UserTasteTestListView, UserTasteResultView,
+    UserTasteResultView,
+    UserTasteTestListView,
 )
 
 urlpatterns = [

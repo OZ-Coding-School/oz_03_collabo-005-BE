@@ -1,7 +1,8 @@
 from rest_framework import serializers
 
-from .models import FTITestQuestion, FTITestResult, TasteTestAnswer, TasteTestQuestion
 from users.models import CustomUser
+
+from .models import FTITestQuestion, FTITestResult, TasteTestAnswer, TasteTestQuestion
 
 
 class FTITestQuestionSerializer(serializers.ModelSerializer):
@@ -50,5 +51,5 @@ class UserTasteTestResultSerializer(serializers.ModelSerializer):
             "flour_rice_preference",
             "cost_preference",
             "spicy_weight",
-            "cost_weight"
+            "cost_weight",
         )

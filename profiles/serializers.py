@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from users.models import CustomUser
 from meetings.models import Meeting
+from users.models import CustomUser
 
 
 class ProfileSerializer(serializers.ModelSerializer):

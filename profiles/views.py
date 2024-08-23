@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from users.models import CustomUser
 
-from .serializers import ProfileSerializer, MeetingHistorySerializer
+from .serializers import MeetingHistorySerializer, ProfileSerializer
 
 
 # 유저의 프로필 조회
@@ -49,7 +49,7 @@ class ProfileView(APIView):
 
         return Response(serializer.data, status.HTTP_200_OK)
 
-
+#
 # class MeetingHistory(APIView):
 #     serializer_class = MeetingHistorySerializer
 #
@@ -59,5 +59,3 @@ class ProfileView(APIView):
 #
 #
 #         serializer = self.serializer_class(instance=)
-
-

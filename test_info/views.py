@@ -160,15 +160,45 @@ class UserTasteTestListView(APIView):
 class UserTasteResultView(APIView):
     pass
     serializer_class = UserTasteTestResultSerializer
-    @extend_schema(tags=["Taste Test"])
+    @extend_schema(tags=["Taste Test"],
+            examples=[
+                   OpenApiExample(
+                       'Example',
+                        value={
+                           "spicy_preference": 1,
+                           "intensity_preference": 1,
+                           "oily_preference": 3,
+                           "flour_rice_preference": 2,
+                           "cost_preference": 3,
+                           "spicy_weight": 2,
+                           "cost_weight": 1
+                        }
+                   )
+            ]
+   )
     def post(self, request):
         # user 정보 객체
         user = request.user
+        # 입맛 정보 객체
         serializer = self.serializer_class(data=request.data)
-        print(dir(user))
-        print("**************************")
-        print(dir(serializer))
 
+        # 입맛 정보 검증
+        if not serializer.is_valid():
+            return Response("Error", status=status.HTTP_400_BAD_REQUEST)
 
+        # 검증데이터 선언
+        taste=serializer.validated_data
 
-        return Response("성공", status=status.HTTP_200_OK)
+        # user데이터에 입맛 정보 할당
+        user.spicy_preference = taste["spicy_preference"]
+        user.intensity_preference = taste["intensity_preference"]
+        user.oily_preference = taste["oily_preference"]
+        user.flour_rice_preference = taste["flour_rice_preference"]
+        user.cost_preference = taste["cost_preference"]
+        user.spicy_weight = taste["spicy_weight"]
+        user.cost_weight = taste["cost_weight"]
+
+        # user 데이터 저장
+        user.save()
+
+        return Response("Success", status=status.HTTP_200_OK)

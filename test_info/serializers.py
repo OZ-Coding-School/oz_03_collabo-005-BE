@@ -44,12 +44,11 @@ class UserTasteTestResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         fields = (
-            "id",
             "spicy_preference",
             "intensity_preference",
             "oily_preference",
             "flour_rice_preference",
             "cost_preference",
             "spicy_weight",
-            "cost_weight",
+            "cost_weight"
         )

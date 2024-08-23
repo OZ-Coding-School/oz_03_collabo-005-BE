@@ -4,6 +4,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from users.models import CustomUser
+from meetings.models import Meeting
+from rest_framework.exceptions import NotFound
 
 from .serializers import MeetingHistorySerializer, ProfileSerializer
 
@@ -49,13 +51,21 @@ class ProfileView(APIView):
 
         return Response(serializer.data, status.HTTP_200_OK)
 
-#
-# class MeetingHistory(APIView):
-#     serializer_class = MeetingHistorySerializer
-#
-#     @extend_schema(tags=["profile"])
-#     def get(self, request):
-#         user = request.user
-#
-#
-#         serializer = self.serializer_class(instance=)
+
+# 미팅 내역 조회
+class MyMeetingHistoryView(APIView):
+    serializer_class = MeetingHistorySerializer
+
+    @extend_schema(tags=["profile"])
+    def get(self, request):
+        user = request.user
+        meetings = (
+            Meeting.objects.filter(meeting__user=user)
+            .prefetch_related("meeting_id")
+        )
+
+        if not meetings.exists():
+            raise NotFound("There are no meeting groups for this user.")
+
+        serializer = self.serializer_class(instance=meetings, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

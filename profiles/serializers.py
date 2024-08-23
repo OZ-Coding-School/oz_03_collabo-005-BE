@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from meetings.models import Meeting
+from meetings.models import Meeting, MeetingMember
 from users.models import CustomUser
 
 
@@ -24,3 +24,13 @@ class MeetingHistorySerializer(serializers.ModelSerializer):
             "meeting_time",
             "description",
         )
+
+
+class MeetingMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = MeetingMember
+    fields = (
+        "meeting",
+        "user",
+        "is_host",
+    )

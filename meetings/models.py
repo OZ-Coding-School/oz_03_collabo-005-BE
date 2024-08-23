@@ -30,7 +30,7 @@ class Meeting(CommonModel):
 
 class MeetingMember(CommonModel):
     meeting = models.ForeignKey(
-        "meetings.Meeting", on_delete=models.CASCADE, related_name="meeting_id"
+        "meetings.Meeting", on_delete=models.CASCADE, related_name="meeting"
     )
     user = models.ForeignKey("users.CustomUser", on_delete=models.SET_NULL, null=True)
     is_host = models.BooleanField(default=False)

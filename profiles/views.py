@@ -5,7 +5,7 @@ from rest_framework.views import APIView
 
 from users.models import CustomUser
 
-from .serializers import ProfileSerializer
+from .serializers import MeetingHistorySerializer, ProfileSerializer
 
 
 # 유저의 프로필 조회
@@ -48,3 +48,14 @@ class ProfileView(APIView):
         serializer.save()
 
         return Response(serializer.data, status.HTTP_200_OK)
+
+#
+# class MeetingHistory(APIView):
+#     serializer_class = MeetingHistorySerializer
+#
+#     @extend_schema(tags=["profile"])
+#     def get(self, request):
+#         user = request.user
+#
+#
+#         serializer = self.serializer_class(instance=)

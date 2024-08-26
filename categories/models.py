@@ -15,6 +15,10 @@ class Location(models.Model):
         return self.location_name
 
 
+class TimeCategory(models.Model):
+    name = models.CharField(max_length=20)
+
+
 class MeetingPaymentMethod(models.Model):
     payment_method = models.CharField(max_length=100)
 

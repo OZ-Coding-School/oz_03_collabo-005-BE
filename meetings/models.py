@@ -1,9 +1,13 @@
+import uuid
+
 from django.db import models
 
 from common.models import CommonModel
+from likes.models import MeetingLike
 
 
 class Meeting(CommonModel):
+    uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey("users.CustomUser", on_delete=models.SET_NULL, null=True)
     title = models.CharField(max_length=150)
     location = models.ForeignKey(
@@ -20,12 +24,15 @@ class Meeting(CommonModel):
     )
     meeting_time = models.DateTimeField()
     description = models.TextField()
-    image_url = models.ImageField()
+    meeting_image_url = models.URLField(null=True)
     hits = models.PositiveIntegerField(default=0)
 
     @property
     def likes_count(self):
-        return self.meeting_like.count()
+        return MeetingLike.objects.filter(meeting_id=Meeting.pk).count()
+
+    def __str__(self):
+        return self.title
 
 
 class MeetingMember(CommonModel):
@@ -37,3 +44,6 @@ class MeetingMember(CommonModel):
 
     class Meta:
         unique_together = ("meeting", "user")
+
+    def __str__(self):
+        return f"{self.meeting},{self.user}"

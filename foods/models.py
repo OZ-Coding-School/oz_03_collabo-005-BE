@@ -3,10 +3,6 @@ from django.db import models
 from common.models import CommonModel
 
 
-class FoodTag(models.Model):
-    food_tag = models.CharField(max_length=50)
-
-
 class Food(CommonModel):
     food_name = models.CharField(max_length=50)
     spicy_preference = models.PositiveIntegerField()
@@ -23,3 +19,7 @@ class Food(CommonModel):
     is_date = models.BooleanField()
     is_party = models.BooleanField()
     is_diet = models.BooleanField()
+    food_filter = models.ManyToManyField("categories.FoodFilter")
+
+    def __str__(self):
+        return self.food_name

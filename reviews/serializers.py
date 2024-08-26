@@ -32,7 +32,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
     comments = ReviewCommentSerializer(
-        many=True, read_only=True, source="reviewcomment_set"
+        many=True, read_only=True, source="review_comments"
     )
 
     class Meta:

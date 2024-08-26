@@ -4,7 +4,7 @@ from common.models import CommonModel
 
 
 class ReviewComment(CommonModel):
-    review = models.ForeignKey("reviews.Review", on_delete=models.CASCADE)
+    review = models.ForeignKey("reviews.Review", on_delete=models.CASCADE, related_name="review_comments")
     user = models.ForeignKey("users.CustomUser", on_delete=models.SET_NULL, null=True)
     content = models.TextField()
 

@@ -1,6 +1,8 @@
 from rest_framework import serializers
 
-from meetings.models import Meeting
+from comments.models import ReviewComment
+from meetings.models import Meeting, MeetingMember
+from reviews.models import Review
 from users.models import CustomUser
 
 
@@ -15,12 +17,36 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
 
-class MeetingHistorySerializer(serializers.ModelSerializer):
+class UserMeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting
         fields = (
+            "uuid",
             "title",
             "payment_method",
+            "age_group",
+            "gender_group",
             "meeting_time",
+            "meeting_image_url",
             "description",
         )
+
+
+class UserReviewSerializer(serializers.ModelSerializer):
+    comment_count = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Review
+        fields = (
+            "uuid",
+            "title",
+            "category",
+            "content",
+            "review_image_url",
+            "hits",
+            "comment_count",
+            "created_at",
+        )
+
+    def get_comment_count(self, obj):
+        return ReviewComment.objects.filter(review=obj).count()

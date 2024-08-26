@@ -1,13 +1,13 @@
 from django.contrib import admin
 
 from .models import (
+    FoodFilter,
     FTIType,
     Location,
-    ReviewCategory,
     MeetingAgeGroup,
-    MeetingPaymentMethod,
     MeetingGenderGroup,
-    FoodFilter,
+    MeetingPaymentMethod,
+    ReviewCategory,
 )
 
 

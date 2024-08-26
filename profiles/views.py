@@ -7,10 +7,10 @@ from rest_framework.views import APIView
 from comments.models import ReviewComment
 from likes.models import ReviewLike
 from meetings.models import Meeting, MeetingLike, MeetingMember
+from meetings.serializers import MeetingDetailSerializer
 from reviews.models import Review
 from reviews.serializers import ReviewDetailSerializer
 from users.models import CustomUser
-from meetings.serializers import MeetingDetailSerializer
 
 from .serializers import ProfileSerializer, UserMeetingSerializer, UserReviewSerializer
 

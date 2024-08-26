@@ -1,9 +1,9 @@
 from rest_framework import serializers
 
+from comments.models import ReviewComment
 from meetings.models import Meeting, MeetingMember
 from reviews.models import Review
 from users.models import CustomUser
-from comments.models import ReviewComment
 
 
 class ProfileSerializer(serializers.ModelSerializer):

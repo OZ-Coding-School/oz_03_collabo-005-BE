@@ -25,5 +25,5 @@ urlpatterns = [
         "commented/reviews/", UserCommentedReviewView.as_view(), name="commented_review"
     ),
     path("liked/reviews/", UserLikedReviewView.as_view(), name="liked_review"),
-    path("review/detail/<uuid:uuid>", ReviewDetailView.as_view(), name="review_detail")
+    path("review/detail/<uuid:uuid>", ReviewDetailView.as_view(), name="review_detail"),
 ]

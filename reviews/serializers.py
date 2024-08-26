@@ -1,5 +1,6 @@
-from rest_framework import serializers
 from drf_spectacular.utils import extend_schema_field
+from rest_framework import serializers
+
 from comments.models import ReviewComment
 from likes.models import ReviewLike
 from reviews.models import Review

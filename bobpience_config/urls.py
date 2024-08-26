@@ -22,7 +22,7 @@ urlpatterns = [
     # FTI
     path("api/ftitests/", include("test_info.fti_urls",)),
     # Taste
-    path("api/tasets/", include("test_info.tasteUrls")),
+    path("api/tasets/", include("test_info.taste_urls")),
     # Profile
     path("api/profile/", include("profiles.urls")),
 ]

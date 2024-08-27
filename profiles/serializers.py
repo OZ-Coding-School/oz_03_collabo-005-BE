@@ -1,7 +1,8 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from comments.models import ReviewComment
-from meetings.models import Meeting, MeetingMember
+from meetings.models import Meeting
 from reviews.models import Review
 from users.models import CustomUser
 
@@ -48,5 +49,6 @@ class UserReviewSerializer(serializers.ModelSerializer):
             "created_at",
         )
 
+    @extend_schema_field(serializers.IntegerField)
     def get_comment_count(self, obj):
         return ReviewComment.objects.filter(review=obj).count()

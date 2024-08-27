@@ -15,8 +15,11 @@ class Location(models.Model):
         return self.location_name
 
 
-class TimeCategory(models.Model):
-    name = models.CharField(max_length=20)
+class TimeSortCategory(models.Model):
+    sort_name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.sort_name
 
 
 class MeetingPaymentMethod(models.Model):

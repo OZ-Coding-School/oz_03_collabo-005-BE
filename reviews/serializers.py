@@ -8,13 +8,13 @@ from reviews.models import Review
 
 class ReviewCommentSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
-    profile_img_url = serializers.SerializerMethodField()
+    profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = ReviewComment
         fields = (
             "nickname",
-            "profile_img_url",
+            "profile_image_url",
             "created_at",
             "content",
         )

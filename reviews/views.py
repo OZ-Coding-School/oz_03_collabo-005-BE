@@ -1,9 +1,10 @@
+from rest_framework.exceptions import NotFound
 from rest_framework.views import APIView
 from drf_spectacular.utils import extend_schema, OpenApiResponse, inline_serializer
 from rest_framework.permissions import AllowAny
 from .models import Review
 from categories.models import ReviewCategory
-from .serializers import ReviewListSerializer
+from .serializers import ReviewListSerializer, ReviewDetailSerializer
 from categories.serializers import ReviewCategorySerializer
 from rest_framework.response import Response
 from rest_framework import status
@@ -40,5 +41,24 @@ class ReviewListView(APIView):
         }
 
         return Response(review_list, status=status.HTTP_200_OK)
+
+
+class ReviewDetailView(APIView):
+    serializer_class = ReviewDetailSerializer
+
+    @extend_schema(tags=["review"])
+    def get(self, request, uuid):
+        try:
+            selected_review = Review.objects.get(uuid=uuid)
+
+        except Review.DoesNotExist:
+            raise NotFound("The review does not exist")
+        serializer = self.serializer_class(instance=selected_review)
+
+        # 게시물 조회 시 조회수 상승
+        selected_review.hits += 1
+        selected_review.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 

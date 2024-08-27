@@ -22,5 +22,9 @@ class Review(CommonModel):
     def likes_count(self):
         return ReviewLike.objects.filter(review_id=self.pk).count()
 
+    @property
+    def comment_count(self):
+        return
+
     def __str__(self):
         return self.title

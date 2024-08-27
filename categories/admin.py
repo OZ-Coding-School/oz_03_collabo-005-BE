@@ -8,6 +8,7 @@ from .models import (
     MeetingGenderGroup,
     MeetingPaymentMethod,
     ReviewCategory,
+    TimeSortCategory,
 )
 
 
@@ -43,4 +44,9 @@ class MeetingGenderGroupAdmin(admin.ModelAdmin):
 
 @admin.register(FoodFilter)
 class FoodFilterAdmin(admin.ModelAdmin):
+    pass
+
+
+@admin.register(TimeSortCategory)
+class TimeSortCategoryAdmin(admin.ModelAdmin):
     pass

@@ -84,6 +84,7 @@ class FilterMeetingListView(APIView):
         )
 
         serializer = self.serializer_class(instance=meetings, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -113,6 +114,7 @@ class MeetingDetailView(APIView):
                 meeting_id=selected_meeting.id
             ).values_list("user_id", flat=True)
             meeting_member = CustomUser.objects.filter(id__in=meeting_member_ids)
+
         except Meeting.DoesNotExist:
             raise NotFound("The meeting does not exist")
 

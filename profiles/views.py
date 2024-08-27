@@ -22,11 +22,14 @@ class ProfileView(APIView):
     def get(self, request):
         try:
             profile = CustomUser.objects.get(id=request.user.id)
+
         except CustomUser.DoesNotExist:
             return Response(
                 {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
             )
+
         serializer = self.serializer_class(instance=profile)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @extend_schema(tags=["profile"])
@@ -68,6 +71,7 @@ class UserHostedMeetingView(APIView):
         hosted_meeting = Meeting.objects.filter(id__in=hosted_meeting_ids)
 
         serializer = self.serializer_class(instance=hosted_meeting, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -75,11 +79,7 @@ class UserHostedMeetingView(APIView):
 class UserJoinedMeetingView(APIView):
     serializer_class = UserMeetingSerializer
 
-    @extend_schema(
-        tags=[
-            "profile",
-        ]
-    )
+    @extend_schema(tags=["profile"])
     def get(self, request):
         user = request.user
         joined_meeting_ids = MeetingMember.objects.filter(
@@ -88,6 +88,7 @@ class UserJoinedMeetingView(APIView):
         joined_meeting = Meeting.objects.filter(id__in=joined_meeting_ids)
 
         serializer = self.serializer_class(instance=joined_meeting, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -95,11 +96,7 @@ class UserJoinedMeetingView(APIView):
 class UserLikedMeetingView(APIView):
     serializer_class = UserMeetingSerializer
 
-    @extend_schema(
-        tags=[
-            "profile",
-        ]
-    )
+    @extend_schema(tags=["profile"])
     def get(self, request):
         user = request.user
         liked_meeting_ids = MeetingLike.objects.filter(user=user).values_list(
@@ -108,6 +105,7 @@ class UserLikedMeetingView(APIView):
         like_meeting = Meeting.objects.filter(id__in=liked_meeting_ids)
 
         serializer = self.serializer_class(instance=like_meeting, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -115,11 +113,7 @@ class UserLikedMeetingView(APIView):
 class UserHostedReviewView(APIView):
     serializer_class = UserReviewSerializer
 
-    @extend_schema(
-        tags=[
-            "profile",
-        ]
-    )
+    @extend_schema(tags=["profile"])
     def get(self, request):
         user = request.user
         hosted_review_ids = Review.objects.filter(user=user, is_host=True).values_list(
@@ -128,6 +122,7 @@ class UserHostedReviewView(APIView):
         hosted_review = Review.objects.filter(id__in=hosted_review_ids)
 
         serializer = self.serializer_class(instance=hosted_review, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -135,9 +130,7 @@ class UserHostedReviewView(APIView):
 class UserCommentedReviewView(APIView):
     serializer_class = UserReviewSerializer
 
-    @extend_schema(
-        tags=["profile"],
-    )
+    @extend_schema(tags=["profile"])
     def get(self, request):
         user = request.user
         commented_review_ids = ReviewComment.objects.filter(user=user).values_list(
@@ -146,6 +139,7 @@ class UserCommentedReviewView(APIView):
         commented_review = Review.objects.filter(id__in=commented_review_ids)
 
         serializer = self.serializer_class(instance=commented_review, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -153,11 +147,7 @@ class UserCommentedReviewView(APIView):
 class UserLikedReviewView(APIView):
     serializer_class = UserReviewSerializer
 
-    @extend_schema(
-        tags=[
-            "profile",
-        ]
-    )
+    @extend_schema(tags=["profile"])
     def get(self, request):
         user = request.user
         liked_review_ids = ReviewLike.objects.filter(user=user).values_list(
@@ -166,22 +156,24 @@ class UserLikedReviewView(APIView):
         liked_review = Review.objects.filter(id__in=liked_review_ids)
 
         serializer = self.serializer_class(instance=liked_review, many=True)
+
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class ReviewDetailView(APIView):
     serializer_class = ReviewDetailSerializer
 
-    @extend_schema(
-        tags=["review"],
-    )
+    @extend_schema(tags=["review"])
     def get(self, request, uuid):
         try:
             selected_review = Review.objects.get(uuid=uuid)
+
         except Review.DoesNotExist:
             raise NotFound("The review does not exist")
         serializer = self.serializer_class(instance=selected_review)
+
         # 게시물 조회 시 조회수 상승
         selected_review.hits += 1
         selected_review.save()
+
         return Response(serializer.data, status=status.HTTP_200_OK)

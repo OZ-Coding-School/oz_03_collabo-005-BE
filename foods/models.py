@@ -13,13 +13,12 @@ class Food(CommonModel):
     spicy_weight = models.PositiveIntegerField()
     cost_weight = models.PositiveIntegerField()
     image_url = models.ImageField()
-    is_launch = models.BooleanField()
+    is_lunch = models.BooleanField()
     is_dinner = models.BooleanField()
     is_snack = models.BooleanField()
     is_date = models.BooleanField()
     is_party = models.BooleanField()
     is_diet = models.BooleanField()
-    food_filter = models.ManyToManyField("categories.FoodFilter")
 
     def __str__(self):
         return self.food_name

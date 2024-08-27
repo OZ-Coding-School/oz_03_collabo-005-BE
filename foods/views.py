@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.views import APIView
+from .utils import calculate_weights
 
-# Create your views here.
+
+class FoodsRecommend(APIView):
+    def post(self, request):
+        user = request.user
+
+        weights = calculate_weights(user)

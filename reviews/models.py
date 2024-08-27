@@ -5,6 +5,8 @@ from django.db import models
 from common.models import CommonModel
 from likes.models import ReviewLike
 from comments.models import ReviewComment
+from drf_spectacular.utils import extend_schema_field
+from rest_framework import serializers
 
 
 class Review(CommonModel):
@@ -15,15 +17,16 @@ class Review(CommonModel):
     )
     title = models.CharField(max_length=150)
     content = models.TextField()
-    hits = models.PositiveIntegerField()
+    hits = models.PositiveIntegerField(default=0)
     review_image_url = models.URLField(null=True, blank=True)
-    is_host = models.BooleanField(null=True)
+    is_host = models.BooleanField(default=True)
 
     @property
     def likes_count(self):
         return ReviewLike.objects.filter(review_id=self.pk).count()
 
     @property
+    @extend_schema_field(serializers.IntegerField)
     def comment_count(self):
         return ReviewComment.objects.filter(review_id=self.pk).count()
 

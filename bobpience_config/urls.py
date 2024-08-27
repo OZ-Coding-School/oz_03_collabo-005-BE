@@ -26,5 +26,6 @@ urlpatterns = [
     # Profile
     path("api/profile/", include("profiles.urls")),
     path("api/meetings/", include("meetings.urls")),
+    path("api/reviews/", include("reviews.urls")),
 ]
 # fmt: on

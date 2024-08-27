@@ -19,6 +19,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
             "review_image_url",
             "is_host",
             "created_at",
+            "comment_count",
         )
 
 

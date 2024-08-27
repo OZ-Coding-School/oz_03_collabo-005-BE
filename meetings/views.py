@@ -1,6 +1,6 @@
 from django.utils import timezone
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
-from rest_framework import serializers, status
+from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -37,7 +37,7 @@ class MeetingListView(APIView):
                 response=inline_serializer(
                     name="MeetingListResponse",
                     fields={
-                        "meetings": MeetingListSerializer(),
+                        "meetings": MeetingListSerializer(many=True),
                         "time_categories": TimeCategorySerializer(many=True),
                         "location_categories": LocationSerializer(many=True),
                     },

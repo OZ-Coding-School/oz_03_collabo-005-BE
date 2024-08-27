@@ -4,6 +4,7 @@ from django.db import models
 
 from common.models import CommonModel
 from likes.models import ReviewLike
+from comments.models import ReviewComment
 
 
 class Review(CommonModel):
@@ -24,7 +25,7 @@ class Review(CommonModel):
 
     @property
     def comment_count(self):
-        return
+        return ReviewComment.objects.filter(review_id=self.pk).count()
 
     def __str__(self):
         return self.title

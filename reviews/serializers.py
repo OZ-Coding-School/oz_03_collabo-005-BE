@@ -6,15 +6,31 @@ from likes.models import ReviewLike
 from reviews.models import Review
 
 
+class ReviewListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = (
+            "uuid",
+            "user",
+            "category",
+            "title",
+            "content",
+            "hits",
+            "review_image_url",
+            "is_host",
+            "created_at",
+        )
+
+
 class ReviewCommentSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
-    profile_img_url = serializers.SerializerMethodField()
+    profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = ReviewComment
         fields = (
             "nickname",
-            "profile_img_url",
+            "profile_image_url",
             "created_at",
             "content",
         )

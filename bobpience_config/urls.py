@@ -27,5 +27,7 @@ urlpatterns = [
     path("api/profile/", include("profiles.urls")),
     # Category
     path("api/categories/", include("categories.urls")),
+    # Meeting
+    path("api/meetings/", include("meetings.urls")),
 ]
 # fmt: on

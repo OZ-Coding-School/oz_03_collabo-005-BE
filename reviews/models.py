@@ -1,12 +1,12 @@
 import uuid
 
 from django.db import models
-
-from common.models import CommonModel
-from likes.models import ReviewLike
-from comments.models import ReviewComment
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
+
+from comments.models import ReviewComment
+from common.models import CommonModel
+from likes.models import ReviewLike
 
 
 class Review(CommonModel):

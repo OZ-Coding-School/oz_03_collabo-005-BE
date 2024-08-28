@@ -32,7 +32,7 @@ urlpatterns = [
     # Review
     path("api/reviews/", include("reviews.urls")),
     # Comment
-    path("api/comments/", include("comments.urls"))
+    path("api/comments/", include("comments.urls")),
     # FoodRecommend
     path("api/foods/", include("foods.urls")),
 ]

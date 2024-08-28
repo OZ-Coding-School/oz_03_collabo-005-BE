@@ -33,5 +33,7 @@ urlpatterns = [
     path("api/reviews/", include("reviews.urls")),
     # Comment
     path("api/comments/", include("comments.urls"))
+    # FoodRecommend
+    path("api/foods/", include("foods.urls")),
 ]
 # fmt: on

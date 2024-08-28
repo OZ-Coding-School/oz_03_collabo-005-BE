@@ -1,6 +1,15 @@
 from rest_framework import serializers
 
-from .models import Location, TimeSortCategory, ReviewCategory
+from categories.models import FoodFilter
+
+from .models import Location, ReviewCategory, TimeSortCategory
+
+
+# 푸드 필터
+class CategoryFoodFilterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FoodFilter
+        fields = "__all__"
 
 
 class LocationSerializer(serializers.ModelSerializer):

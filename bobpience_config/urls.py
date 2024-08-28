@@ -25,7 +25,13 @@ urlpatterns = [
     path("api/tasets/", include("test_info.taste_urls")),
     # Profile
     path("api/profile/", include("profiles.urls")),
+    # Category
+    path("api/categories/", include("categories.urls")),
+    # Meeting
     path("api/meetings/", include("meetings.urls")),
+    # Review
     path("api/reviews/", include("reviews.urls")),
+    # Comment
+    path("api/comments/", include("comments.urls"))
 ]
 # fmt: on

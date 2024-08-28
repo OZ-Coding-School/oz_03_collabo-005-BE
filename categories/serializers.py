@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from categories.models import FoodFilter
 
-from .models import Location, TimeSortCategory
+from .models import Location, ReviewCategory, TimeSortCategory
 
 
 # 푸드 필터
@@ -27,4 +27,13 @@ class TimeCategorySerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "sort_name",
+        )
+
+
+class ReviewCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewCategory
+        fields = (
+            "id",
+            "category",
         )

@@ -29,6 +29,10 @@ urlpatterns = [
     path("api/categories/", include("categories.urls")),
     # Meeting
     path("api/meetings/", include("meetings.urls")),
+    # Review
+    path("api/reviews/", include("reviews.urls")),
+    # Comment
+    path("api/comments/", include("comments.urls")),
     # FoodRecommend
     path("api/foods/", include("foods.urls")),
 ]

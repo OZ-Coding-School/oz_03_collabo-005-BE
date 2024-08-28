@@ -8,7 +8,6 @@ from comments.models import ReviewComment
 from likes.models import ReviewLike
 from meetings.models import Meeting, MeetingLike, MeetingMember
 from reviews.models import Review
-from reviews.serializers import ReviewDetailSerializer
 from users.models import CustomUser
 
 from .serializers import ProfileSerializer, UserMeetingSerializer, UserReviewSerializer
@@ -156,24 +155,5 @@ class UserLikedReviewView(APIView):
         liked_review = Review.objects.filter(id__in=liked_review_ids)
 
         serializer = self.serializer_class(instance=liked_review, many=True)
-
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-
-class ReviewDetailView(APIView):
-    serializer_class = ReviewDetailSerializer
-
-    @extend_schema(tags=["review"])
-    def get(self, request, uuid):
-        try:
-            selected_review = Review.objects.get(uuid=uuid)
-
-        except Review.DoesNotExist:
-            raise NotFound("The review does not exist")
-        serializer = self.serializer_class(instance=selected_review)
-
-        # 게시물 조회 시 조회수 상승
-        selected_review.hits += 1
-        selected_review.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)

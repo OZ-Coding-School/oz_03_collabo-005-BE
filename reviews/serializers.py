@@ -19,6 +19,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
             "review_image_url",
             "is_host",
             "created_at",
+            "comment_count",
         )
 
 
@@ -37,11 +38,13 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(serializers.CharField)
     def get_nickname(self, obj):
-        return obj.user.nickname
+        reviewer = obj.user
+        return reviewer.nickname
 
     @extend_schema_field(serializers.URLField)
     def get_profile_image_url(self, obj):
-        return obj.user.profile_image_url
+        reviewer = obj.user
+        return reviewer.profile_image_url
 
 
 class ReviewDetailSerializer(serializers.ModelSerializer):
@@ -79,3 +82,14 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.CharField)
     def get_nickname(self, obj):
         return obj.user.nickname
+
+
+class CreateReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = (
+            "title",
+            "category",
+            "content",
+            "review_image_url",
+        )

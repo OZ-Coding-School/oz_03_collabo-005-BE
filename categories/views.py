@@ -1,9 +1,11 @@
 from drf_spectacular.utils import extend_schema
-from rest_framework.views import APIView
-from .serializers import CategoryFoodFilterSerializer
-from .models import FoodFilter
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .models import FoodFilter
+from .serializers import CategoryFoodFilterSerializer
+
 
 class FoodFilterList(APIView):
     serializer_class = CategoryFoodFilterSerializer

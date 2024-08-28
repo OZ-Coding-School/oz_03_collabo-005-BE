@@ -29,5 +29,7 @@ urlpatterns = [
     path("api/categories/", include("categories.urls")),
     # Meeting
     path("api/meetings/", include("meetings.urls")),
+    # FoodRecommend
+    path("api/foods/", include("foods.urls")),
 ]
 # fmt: on

@@ -9,6 +9,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 # fmt: off
 urlpatterns = [
+    # 기본 경로
+    path("", SpectacularSwaggerView.as_view(url_name="schema"), name="swagger"),
+    # Admin
     path("admin/",admin.site.urls),
     # Swagger-UI
     path("api/schema/", SpectacularAPIView.as_view(), name="schema"),

@@ -1,3 +1,4 @@
+from django.db.models import Case, IntegerField, Value, When
 from django.utils import timezone
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import status
@@ -51,8 +52,21 @@ class MeetingListView(APIView):
         meetings = Meeting.objects.filter(meeting_time__gte=timezone.now()).order_by(
             "meeting_time"
         )
-        time_categories = TimeSortCategory.objects.all()
-        location_categories = Location.objects.all()
+
+        time_categories = TimeSortCategory.objects.order_by(
+            Case(
+                When(sort_name="가장 가까운순", then=Value(0)),
+                defalut=Value(1),
+                output_field=IntegerField(),
+            )
+        )
+        location_categories = Location.objects.order_by(
+            Case(
+                When(location_name="전체", then=Value(0)),
+                defalut=Value(1),
+                output_field=IntegerField(),
+            )
+        )
 
         # 시리얼라이저로 데이터를 시리얼라이즈
         meeting_data = MeetingListSerializer(meetings, many=True).data

@@ -21,7 +21,11 @@ class CustomUserSignUpView(APIView):
         examples=[
             OpenApiExample(
                 name="Example",
-                value={"email": "abcabc@abcabc.com", "password": "pass123!", "nickname": "중복불가1"},
+                value={
+                    "email": "abcabc@abcabc.com",
+                    "password": "pass123!",
+                    "nickname": "중복불가1",
+                },
                 request_only=True,
             )
         ],

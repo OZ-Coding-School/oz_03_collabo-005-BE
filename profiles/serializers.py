@@ -15,6 +15,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "profile_image_url",
             "introduction",
             "fti_type",
+            "spicy_preference",
         )
 
 

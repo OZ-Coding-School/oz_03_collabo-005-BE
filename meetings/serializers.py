@@ -6,19 +6,38 @@ from users.models import CustomUser
 
 
 class MeetingListSerializer(serializers.ModelSerializer):
+    payment_method_name = serializers.SerializerMethodField()
+    age_group_name = serializers.SerializerMethodField()
+    gender_group_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Meeting
         fields = (
             "uuid",
             "title",
             "payment_method",
+            "payment_method_name",
             "age_group",
+            "age_group_name",
             "gender_group",
+            "gender_group_name",
             "meeting_time",
             "meeting_image_url",
             "description",
             "created_at",
         )
+
+    @extend_schema_field(serializers.CharField)
+    def get_payment_method_name(self, obj):
+        return obj.payment_method.payment_method
+
+    @extend_schema_field(serializers.CharField)
+    def get_age_group_name(self, obj):
+        return obj.age_group.age_group
+
+    @extend_schema_field(serializers.CharField)
+    def get_gender_group_name(self, obj):
+        return obj.gender_group.gender_group
 
 
 class MeetingDetailSerializer(serializers.ModelSerializer):

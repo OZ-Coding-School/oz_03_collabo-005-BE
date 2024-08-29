@@ -6,7 +6,7 @@ STATIC_ROOT = BASE_DIR.joinpath("static")
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS_PROD")
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS_PROD").split(",")
 
 DATABASES = {
     "default": {

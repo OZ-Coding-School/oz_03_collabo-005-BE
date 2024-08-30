@@ -95,7 +95,7 @@ def recommend_foods(user_preferences, weights, filters, recommends_cnt):
                 int(food.is_date),
                 int(food.is_party),
                 int(food.is_diet),
-                food.id
+                food.id,
             ]
         )
 

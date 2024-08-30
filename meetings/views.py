@@ -89,9 +89,7 @@ class FilterMeetingListView(APIView):
     serializer_class = MeetingListSerializer
 
     @extend_schema(tags=["meeting"])
-    def get(self, request):
-        time_category_id = request.GET.get("time_category_id")
-        location_category_id = request.GET.get("location_category_id")
+    def get(self, request, time_category_id, location_category_id):
 
         meetings = Meeting.objects.filter(
             time_sort=time_category_id, location=location_category_id
@@ -229,7 +227,10 @@ class JoinMeetingView(APIView):
         is_host = False
 
         if MeetingMember.objects.filter(user=user, meeting_id=meeting_id).exists():
-            return Response({"detail": "meeting member is already exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "meeting member is already exist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         MeetingMember.objects.create(user=user, meeting_id=meeting_id, is_host=is_host)
 

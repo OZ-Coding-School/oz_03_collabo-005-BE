@@ -13,7 +13,7 @@ class FTITestQuestionSerializer(serializers.ModelSerializer):
 
 class UserFTITestResultSerializer(serializers.Serializer):
     fti_style = serializers.ListField(
-        child=serializers.CharField(max_length=3),
+        child=serializers.CharField(max_length=1),
     )
 
 

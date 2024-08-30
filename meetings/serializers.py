@@ -42,6 +42,9 @@ class MeetingListSerializer(serializers.ModelSerializer):
 
 class MeetingDetailSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
+    payment_method_name = serializers.SerializerMethodField()
+    age_group_name = serializers.SerializerMethodField()
+    gender_group_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Meeting
@@ -51,8 +54,11 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
             "nickname",
             "location",
             "payment_method",
+            "payment_method_name",
             "age_group",
+            "age_group_name",
             "gender_group",
+            "gender_group_name",
             "meeting_time",
             "description",
             "meeting_image_url",
@@ -66,6 +72,18 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.CharField)
     def get_nickname(self, obj):
         return obj.user.nickname
+
+    @extend_schema_field(serializers.CharField)
+    def get_payment_method_name(self, obj):
+        return obj.payment_method.payment_method
+
+    @extend_schema_field(serializers.CharField)
+    def get_age_group_name(self, obj):
+        return obj.age_group.age_group
+
+    @extend_schema_field(serializers.CharField)
+    def get_gender_group_name(self, obj):
+        return obj.gender_group.gender_group
 
 
 class MeetingMemberSerializer(serializers.ModelSerializer):
@@ -81,13 +99,17 @@ class MeetingMemberSerializer(serializers.ModelSerializer):
 
 class JoinMeetingSerializer(serializers.ModelSerializer):
 
+    uuid = serializers.SerializerMethodField()
+
     class Meta:
         model = MeetingMember
         fields = (
-            "meeting",
-            "user",
-            "is_host",
+            "uuid",
         )
+
+    @extend_schema_field(serializers.CharField)
+    def get_uuid(self, obj):
+        return obj.meeting.uuid
 
 
 class MeetingCreateSerializer(serializers.ModelSerializer):

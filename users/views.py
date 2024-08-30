@@ -1,4 +1,5 @@
-from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema
+from drf_spectacular.types import OpenApiTypes
+from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema, OpenApiParameter
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -99,3 +100,70 @@ class CustomUserLoginView(APIView):
                 }
             )
         return Response(serializer.errors, status=400)
+
+# 중복확인 이메일
+class CustomUserCheckEmailView(APIView):
+    permission_classes = (AllowAny,)
+    @extend_schema(
+        tags=["User"],
+        parameters=[
+            OpenApiParameter(
+                name='email',
+                description='확인할 이메일을 입력해주세요.',
+                required=True,
+                type=OpenApiTypes.STR,
+                examples=[
+                    OpenApiExample(
+                        name='Example 1',
+                        value='bobpience@babpiens.com',
+                        description='An example string value for param1'
+                    )
+                ]
+            )
+        ],
+        responses={200: OpenApiResponse(description="Success")},
+    )
+    def get(self, request):
+        email = request.query_params.get("email")
+
+        # 이메일 중복 체크
+        if CustomUser.objects.filter(email=email).exists():
+            return Response(
+                {"error": "이미 사용 중인 이메일입니다"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(status=200)
+
+# 중복확인 닉네임
+class CustomUserCheckNickView(APIView):
+    permission_classes = (AllowAny,)
+
+    @extend_schema(
+        tags=["User"],
+        parameters=[
+            OpenApiParameter(
+                name='nickname',
+                description='확인할 닉네임을 입력해주세요.',
+                required=True,
+                type=OpenApiTypes.STR,
+                examples=[
+                    OpenApiExample(
+                        name='Example 1',
+                        value='bobdori',
+                        description='An example string value for param1'
+                    )
+                ]
+            )
+        ],
+        responses={200: OpenApiResponse(description="Success")},
+    )
+    def get(self, request):
+        nickname = request.query_params.get("nickname")
+
+        # 이메일 중복 체크
+        if CustomUser.objects.filter(nickname=nickname).exists():
+            return Response(
+                {"error": "이미 사용 중인 닉네임입니다"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(status=200)

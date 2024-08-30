@@ -1,7 +1,16 @@
 # 프로젝트 밥피엔스
 # GIT_COMMIT_CONVENTION
 
-상태: 완료
+## 설정
+```
+cd bobpience_config
+ln -sf local.py settings.py
+```
+or
+```
+cd bobpience_config
+mklink settings.py local.py
+```
 
 <aside>
 💡 ***확정된 내용 아니고 수정해도되니 언제든 태클 요망***

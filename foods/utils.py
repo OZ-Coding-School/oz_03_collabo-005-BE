@@ -6,7 +6,7 @@ from .models import Food
 
 def calculate_weights(user_preferences, spicy_weight, cost_weight):
     # 본 특성 7개 + 필터 옵션 6개의 모든 가중치를 기본값 1로 처리
-    weights = np.ones(11)
+    weights = np.ones(12)
 
     # 매운맛 선호도 가중치
     if spicy_weight in [1, 5]:
@@ -50,7 +50,7 @@ def calculate_weights(user_preferences, spicy_weight, cost_weight):
 
 
 def calculate_filters(user_preferences, filters):
-    filtered_prefs = np.zeros(11)
+    filtered_prefs = np.zeros(12)
     filtered_prefs[:5] = user_preferences
 
     # 필터 중 하나라도 True이면 적용
@@ -95,6 +95,7 @@ def recommend_foods(user_preferences, weights, filters, recommends_cnt):
                 int(food.is_date),
                 int(food.is_party),
                 int(food.is_diet),
+                food.id,
             ]
         )
 

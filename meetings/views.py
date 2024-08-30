@@ -91,13 +91,18 @@ class FilterMeetingListView(APIView):
     @extend_schema(tags=["meeting"])
     def get(self, request, time_category, location_category):
 
-        time_sort_id = TimeSortCategory.objects.get(sort_name=time_category).id
         location_category_id = Location.objects.get(location_name=location_category).id
 
         if location_category == "전체":
-            meetings = Meeting.objects.all().order_by(time_sort_id=time_sort_id)
+            meetings = Meeting.objects.all()
         else:
-            meetings = Meeting.objects.filter(location_category_id=location_category_id).order_by(time_sort_id=time_sort_id)
+            meetings = Meeting.objects.filter(location_category_id=location_category_id)
+
+        if time_category == "최신순":
+            meetings = meetings.order_by("-created_at")
+        else:
+            meetings = meetings.filter(created_at__gt=timezone.now()
+                                       ).order_by("-created_at")
 
         serializer = self.serializer_class(instance=meetings, many=True)
 

@@ -12,7 +12,7 @@ from .views import (
 urlpatterns = [
     path("", MeetingListView.as_view(), name="meetings"),
     path(
-        "filter/<int:location_category>/<int:time_category>",
+        "filter/<str:location_category>/<str:time_category>",
         FilterMeetingListView.as_view(),
         name="filter_meetings",
     ),

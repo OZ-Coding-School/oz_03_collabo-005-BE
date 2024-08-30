@@ -1,5 +1,10 @@
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema, OpenApiParameter
+from drf_spectacular.utils import (
+    OpenApiExample,
+    OpenApiParameter,
+    OpenApiResponse,
+    extend_schema,
+)
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -101,24 +106,26 @@ class CustomUserLoginView(APIView):
             )
         return Response(serializer.errors, status=400)
 
+
 # 중복확인 이메일
 class CustomUserCheckEmailView(APIView):
     permission_classes = (AllowAny,)
+
     @extend_schema(
         tags=["User"],
         parameters=[
             OpenApiParameter(
-                name='email',
-                description='확인할 이메일을 입력해주세요.',
+                name="email",
+                description="확인할 이메일을 입력해주세요.",
                 required=True,
                 type=OpenApiTypes.STR,
                 examples=[
                     OpenApiExample(
-                        name='Example 1',
-                        value='bobpience@babpiens.com',
-                        description='An example string value for param1'
+                        name="Example 1",
+                        value="bobpience@babpiens.com",
+                        description="An example string value for param1",
                     )
-                ]
+                ],
             )
         ],
         responses={200: OpenApiResponse(description="Success")},
@@ -134,6 +141,7 @@ class CustomUserCheckEmailView(APIView):
             )
         return Response(status=200)
 
+
 # 중복확인 닉네임
 class CustomUserCheckNickView(APIView):
     permission_classes = (AllowAny,)
@@ -142,17 +150,17 @@ class CustomUserCheckNickView(APIView):
         tags=["User"],
         parameters=[
             OpenApiParameter(
-                name='nickname',
-                description='확인할 닉네임을 입력해주세요.',
+                name="nickname",
+                description="확인할 닉네임을 입력해주세요.",
                 required=True,
                 type=OpenApiTypes.STR,
                 examples=[
                     OpenApiExample(
-                        name='Example 1',
-                        value='bobdori',
-                        description='An example string value for param1'
+                        name="Example 1",
+                        value="bobdori",
+                        description="An example string value for param1",
                     )
-                ]
+                ],
             )
         ],
         responses={200: OpenApiResponse(description="Success")},

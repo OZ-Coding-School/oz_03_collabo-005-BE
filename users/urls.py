@@ -1,6 +1,11 @@
 from django.urls import path
 
-from .views import CustomUserLoginView, CustomUserSignUpView, CustomUserCheckEmailView, CustomUserCheckNickView
+from .views import (
+    CustomUserCheckEmailView,
+    CustomUserCheckNickView,
+    CustomUserLoginView,
+    CustomUserSignUpView,
+)
 
 urlpatterns = [
     path("signup/", CustomUserSignUpView.as_view(), name="signup"),

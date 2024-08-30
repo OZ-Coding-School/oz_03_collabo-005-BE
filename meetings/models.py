@@ -22,9 +22,6 @@ class Meeting(CommonModel):
     gender_group = models.ForeignKey(
         "categories.MeetingGenderGroup", on_delete=models.SET_NULL, null=True
     )
-    time_sort = models.ForeignKey(
-        "categories.TimeSortCategory", on_delete=models.SET_NULL, null=True
-    )
     meeting_time = models.DateTimeField()
     description = models.TextField()
     meeting_image_url = models.URLField(null=True)

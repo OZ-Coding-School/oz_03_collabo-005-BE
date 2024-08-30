@@ -113,7 +113,7 @@ class MeetingDetailView(APIView):
                 response=inline_serializer(
                     name="MeetingDetailResponse",
                     fields={
-                        "meeting": MeetingListSerializer(),
+                        "meeting": MeetingDetailSerializer(),
                         "meeting_member": MeetingMemberSerializer(many=True),
                     },
                 )
@@ -128,7 +128,6 @@ class MeetingDetailView(APIView):
                 meeting_id=selected_meeting.id
             ).values_list("user_id", flat=True)
             meeting_member = CustomUser.objects.filter(id__in=meeting_member_ids)
-
         except Meeting.DoesNotExist:
             raise NotFound("The meeting does not exist")
 
@@ -225,12 +224,13 @@ class JoinMeetingView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # 참여하는 유저는 host일 수 없다
-        if request.data["is_host"]:
-            return Response(
-                {"detail": "The joining user cannot be a host"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-        serializer.save()
+        user = request.user
+        meeting_id = Meeting.objects.get(uuid=request.data["uuid"]).id
+        is_host = False
+
+        if MeetingMember.objects.filter(user=user, meeting_id=meeting_id).exists():
+            return Response({"detail": "meeting member is already exist"}, status=status.HTTP_400_BAD_REQUEST)
+
+        MeetingMember.objects.create(user=user, meeting_id=meeting_id, is_host=is_host)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)

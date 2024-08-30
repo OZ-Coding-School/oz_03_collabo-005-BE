@@ -1,6 +1,7 @@
 from django.urls import path
 
 from .views import (
+    AnotherProfileView,
     ProfileView,
     UserCommentedReviewView,
     UserHostedMeetingView,
@@ -8,7 +9,6 @@ from .views import (
     UserJoinedMeetingView,
     UserLikedMeetingView,
     UserLikedReviewView,
-    AnotherProfileView,
 )
 
 urlpatterns = [

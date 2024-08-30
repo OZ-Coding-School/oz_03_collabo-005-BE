@@ -1,9 +1,9 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
 
 from comments.models import ReviewComment
 from likes.models import ReviewLike
@@ -11,7 +11,12 @@ from meetings.models import Meeting, MeetingLike, MeetingMember
 from reviews.models import Review
 from users.models import CustomUser
 
-from .serializers import ProfileSerializer, UserMeetingSerializer, UserReviewSerializer, AnotherProfileSerializer
+from .serializers import (
+    AnotherProfileSerializer,
+    ProfileSerializer,
+    UserMeetingSerializer,
+    UserReviewSerializer,
+)
 
 
 # 유저의 프로필 조회
@@ -171,7 +176,9 @@ class AnotherProfileView(APIView):
         try:
             selected_user = CustomUser.objects.get(nickname=nickname)
         except CustomUser.DoesNotExist:
-            return Response({"detail": "user is not exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "user is not exist"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         serializer = self.serializer_class(instance=selected_user)
 

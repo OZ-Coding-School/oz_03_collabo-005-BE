@@ -1,3 +1,4 @@
+from django.db.models import Case, IntegerField, Value, When
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import status
 from rest_framework.exceptions import NotFound
@@ -8,7 +9,7 @@ from rest_framework.views import APIView
 from categories.models import ReviewCategory
 from categories.serializers import ReviewCategorySerializer
 from comments.models import ReviewComment
-from django.db.models import Case, IntegerField, Value, When
+
 from .models import Review
 from .serializers import (
     CreateReviewSerializer,

@@ -76,6 +76,7 @@ class FoodsRecommend(APIView):
                 {
                     "rank": i,
                     "food_name": food.food_name,
+                    "food_id": food.id,
                     "spicy_preference": food.spicy_preference,
                     "intensity_preference": food.intensity_preference,
                     "oily_preference": food.oily_preference,

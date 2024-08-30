@@ -62,9 +62,9 @@ class FTITestResultCreateView(APIView):
         counter = Counter(selected_answer)
 
         # 외향성 테스트
-        extroversion = "T" if counter["T"] > counter["I"] else "I"
+        extroversion = "T" if counter["T"] > counter["A"] else "A"
         # 탐구성 테스트
-        curiosity = "A" if counter["A"] > counter["C"] else "C"
+        curiosity = "I" if counter["I"] > counter["C"] else "C"
         # 접근성 테스트
         accessibility = "D" if counter["D"] > counter["N"] else "N"
         # 테스트 결과 조합

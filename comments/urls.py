@@ -7,14 +7,14 @@ from .views import (
 )
 
 urlpatterns = [
-    path("comment/", CreateReviewCommentView.as_view(), name="review_comment"),
+    path("review/", CreateReviewCommentView.as_view(), name="review_comment"),
     path(
-        "comment/update/",
+        "review/update/",
         ReviewCommentUpdateView.as_view(),
         name="review_comment_update",
     ),
     path(
-        "comment/delete/",
+        "review/delete/",
         ReviewCommentDeleteView.as_view(),
         name="review_comment_delete",
     ),

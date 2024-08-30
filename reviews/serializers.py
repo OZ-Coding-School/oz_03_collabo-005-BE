@@ -7,12 +7,15 @@ from reviews.models import Review
 
 
 class ReviewListSerializer(serializers.ModelSerializer):
+    category_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Review
         fields = (
             "uuid",
             "user",
             "category",
+            "category_name",
             "title",
             "content",
             "hits",
@@ -21,6 +24,10 @@ class ReviewListSerializer(serializers.ModelSerializer):
             "created_at",
             "comment_count",
         )
+
+    @extend_schema_field(serializers.CharField)
+    def get_category_name(self, obj):
+        return obj.category.category
 
 
 class ReviewCommentSerializer(serializers.ModelSerializer):

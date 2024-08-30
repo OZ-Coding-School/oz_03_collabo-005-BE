@@ -19,6 +19,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         )
 
 
+class AnotherProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = (
+            "nickname",
+            "profile_image_url",
+            "introduction",
+            "fti_type",
+        )
+
+
 class UserMeetingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Meeting

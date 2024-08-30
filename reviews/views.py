@@ -1,3 +1,4 @@
+from django.db.models import Case, IntegerField, Value, When
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import status
 from rest_framework.exceptions import NotFound
@@ -39,7 +40,13 @@ class ReviewListView(APIView):
     )
     def get(self, request):
         reviews = Review.objects.all().order_by("-created_at")
-        review_categories = ReviewCategory.objects.all()
+        review_categories = ReviewCategory.objects.order_by(
+            Case(
+                When(category="전체", then=Value(0)),
+                default=Value(1),
+                output_field=IntegerField(),
+            )
+        )
 
         reviews_data = ReviewListSerializer(reviews, many=True).data
         review_categories_data = ReviewCategorySerializer(
@@ -60,8 +67,7 @@ class FilterReviewListView(APIView):
     serializer_class = ReviewListSerializer
 
     @extend_schema(tags=["review"])
-    def get(self, request):
-        review_category_id = request.GET.get("review_category_id")
+    def get(self, request, review_category_id):
         reviews = Review.objects.filter(id=review_category_id)
 
         serializer = self.serializer_class(instance=reviews, many=True)

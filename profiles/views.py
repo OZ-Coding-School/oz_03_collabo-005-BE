@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema, OpenApiResponse, inline_serializer
+from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
@@ -13,8 +13,8 @@ from users.models import CustomUser
 
 from .serializers import (
     AnotherProfileSerializer,
-    ProfileSerializer,
     CreateProfileSerializer,
+    ProfileSerializer,
     UserMeetingSerializer,
     UserReviewSerializer,
 )
@@ -28,10 +28,7 @@ class ProfileView(APIView):
         responses={
             200: OpenApiResponse(
                 response=inline_serializer(
-                    name="ProfileResponse",
-                    fields={
-                        "profile": ProfileSerializer()
-                    }
+                    name="ProfileResponse", fields={"profile": ProfileSerializer()}
                 )
             )
         },
@@ -55,9 +52,7 @@ class ProfileView(APIView):
             200: OpenApiResponse(
                 response=inline_serializer(
                     name="CreateProfileResponse",
-                    fields={
-                        "profile": CreateProfileSerializer()
-                    }
+                    fields={"profile": CreateProfileSerializer()},
                 )
             )
         },
@@ -97,7 +92,9 @@ class UserHostedMeetingView(APIView):
         hosted_meeting_ids = MeetingMember.objects.filter(
             user=user, is_host=True
         ).values_list("meeting_id", flat=True)
-        hosted_meeting = Meeting.objects.filter(id__in=hosted_meeting_ids).order_by("-created_at")
+        hosted_meeting = Meeting.objects.filter(id__in=hosted_meeting_ids).order_by(
+            "-created_at"
+        )
 
         serializer = self.serializer_class(instance=hosted_meeting, many=True)
 

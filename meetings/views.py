@@ -99,9 +99,13 @@ class FilterMeetingListView(APIView):
             meetings = Meeting.objects.filter(location_category_id=location_category_id)
 
         if time_category == "최신순":
-            meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by("-created_at")
+            meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by(
+                "-created_at"
+            )
         else:
-            meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by("meeting_time")
+            meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by(
+                "meeting_time"
+            )
 
         serializer = self.serializer_class(instance=meetings, many=True)
 

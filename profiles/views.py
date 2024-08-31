@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiResponse, inline_serializer
 from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
@@ -14,6 +14,7 @@ from users.models import CustomUser
 from .serializers import (
     AnotherProfileSerializer,
     ProfileSerializer,
+    CreateProfileSerializer,
     UserMeetingSerializer,
     UserReviewSerializer,
 )
@@ -21,9 +22,20 @@ from .serializers import (
 
 # 유저의 프로필 조회
 class ProfileView(APIView):
-    serializer_class = ProfileSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(
+        tags=["profile"],
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="ProfileResponse",
+                    fields={
+                        "profile": ProfileSerializer()
+                    }
+                )
+            )
+        },
+    )
     def get(self, request):
         try:
             profile = CustomUser.objects.get(id=request.user.id)
@@ -33,14 +45,26 @@ class ProfileView(APIView):
                 {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = self.serializer_class(instance=profile)
+        serializer = ProfileSerializer(instance=profile)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(
+        tags=["profile"],
+        responses={
+            200: OpenApiResponse(
+                response=inline_serializer(
+                    name="CreateProfileResponse",
+                    fields={
+                        "profile": CreateProfileSerializer()
+                    }
+                )
+            )
+        },
+    )
     def post(self, request):
         user = request.user
-        serializer = self.serializer_class(instance=user, data=request.data)
+        serializer = CreateProfileSerializer(instance=user, data=request.data)
 
         # 데이터 유효성
         if not serializer.is_valid():
@@ -73,7 +97,7 @@ class UserHostedMeetingView(APIView):
         hosted_meeting_ids = MeetingMember.objects.filter(
             user=user, is_host=True
         ).values_list("meeting_id", flat=True)
-        hosted_meeting = Meeting.objects.filter(id__in=hosted_meeting_ids)
+        hosted_meeting = Meeting.objects.filter(id__in=hosted_meeting_ids).order_by("-created_at")
 
         serializer = self.serializer_class(instance=hosted_meeting, many=True)
 

@@ -191,6 +191,7 @@ class AnotherProfileView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = AnotherProfileSerializer
 
+    @extend_schema(tags=["profile"])
     def get(self, request, nickname):
         nickname = nickname
 

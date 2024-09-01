@@ -67,8 +67,9 @@ class FilterReviewListView(APIView):
     serializer_class = ReviewListSerializer
 
     @extend_schema(tags=["review"])
-    def get(self, request, review_category_id):
-        reviews = Review.objects.filter(id=review_category_id)
+    def get(self, request, category_name):
+        category_id = ReviewCategory.objects.get(category=category_name).id
+        reviews = Review.objects.filter(category=category_id)
 
         serializer = self.serializer_class(instance=reviews, many=True)
 
@@ -128,7 +129,7 @@ class ReviewDetailCreateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
-        category = request.data["category"]
+        category = ReviewCategory.objects.get(category=request.data["category_name"]).id
         title = request.data["title"]
         content = request.data["content"]
         review_image_url = request.data["review_image_url"]

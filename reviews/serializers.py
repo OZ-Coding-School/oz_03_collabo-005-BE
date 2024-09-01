@@ -58,6 +58,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     comment_count = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
+    category_name = serializers.SerializerMethodField()
     comments = ReviewCommentSerializer(
         many=True, read_only=True, source="review_comments"
     )
@@ -68,6 +69,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
             "uuid",
             "title",
             "category",
+            "category_name",
             "nickname",
             "content",
             "review_image_url",
@@ -90,13 +92,19 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     def get_nickname(self, obj):
         return obj.user.nickname
 
+    @extend_schema_field(serializers.CharField)
+    def get_category_name(self, obj):
+        return obj.category.category
+
 
 class CreateReviewSerializer(serializers.ModelSerializer):
+    category_name = serializers.CharField()
+
     class Meta:
         model = Review
         fields = (
             "title",
-            "category",
+            "category_name",
             "content",
             "review_image_url",
         )

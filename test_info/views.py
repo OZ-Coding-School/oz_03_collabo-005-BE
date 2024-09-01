@@ -39,6 +39,7 @@ class FTITestResultView(APIView):
 
 
 # 비로그인 유저와 로그인 유저의 테스트 결과를 저장
+# permission_classes가 권한 분배가 안되어서 FTITestResult와 API를 합치지 못하고 있음
 class FTITestResultCreateView(APIView):
     serializer_class = UserFTITestResultSerializer
     permission_classes = (AllowAny,)

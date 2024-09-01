@@ -6,6 +6,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import serializers
 
 from categories.models import (
     Location,
@@ -49,8 +50,8 @@ class MeetingListView(APIView):
     )
     def get(self, request):
         # meeting_time이 현 시간보다 크거나 같아야 한다.
-        meetings = Meeting.objects.filter(meeting_time__gte=timezone.now()).order_by(
-            "meeting_time"
+        meetings = Meeting.objects.all().order_by(
+            "-created_at"
         )
 
         time_categories = TimeSortCategory.objects.order_by(
@@ -96,7 +97,7 @@ class FilterMeetingListView(APIView):
         if location_category == "전체":
             meetings = Meeting.objects.all()
         else:
-            meetings = Meeting.objects.filter(location_category_id=location_category_id)
+            meetings = Meeting.objects.filter(location_id=location_category_id)
 
         if time_category == "최신순":
             meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by(
@@ -166,15 +167,27 @@ class MeetingCreateView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        location_id = request.data["location"]
-        payment_method_id = request.data["payment_method"]
-        age_group_id = request.data["age_group"]
-        gender_group_id = request.data["gender_group"]
+        location_name = serializer.data["location_name"]
+        payment_method_name = serializer.data["payment_method_name"]
+        age_group_name = serializer.data["age_group_name"]
+        gender_group_name = serializer.data["gender_group_name"]
 
-        location = Location.objects.get(id=location_id)
-        payment_method = MeetingPaymentMethod.objects.get(id=payment_method_id)
-        age_group = MeetingAgeGroup.objects.get(id=age_group_id)
-        gender_group = MeetingGenderGroup.objects.get(id=gender_group_id)
+        try:
+            location = Location.objects.get(location_name=location_name)
+            payment_method = MeetingPaymentMethod.objects.get(
+                payment_method=payment_method_name
+            )
+            age_group = MeetingAgeGroup.objects.get(age_group=age_group_name)
+            gender_group = MeetingGenderGroup.objects.get(
+                gender_group=gender_group_name
+            )
+        except (
+            Location.DoesNotExist,
+            MeetingPaymentMethod.DoesNotExist,
+            MeetingAgeGroup.DoesNotExist,
+            MeetingGenderGroup.DoesNotExist,
+        ):
+            return Response(NotFound, status=status.HTTP_400_BAD_REQUEST)
 
         # 번개 모임 생성
         created_meeting = Meeting.objects.create(
@@ -212,7 +225,7 @@ class DeleteMeetingMemberView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
-        meeting = Meeting.objects.get(id=request.data["meeting"])
+        meeting = Meeting.objects.get(uuid=request.data["uuid"])
 
         # 미팅 멤버에서 삭제
         MeetingMember.objects.get(user=user, meeting=meeting).delete()

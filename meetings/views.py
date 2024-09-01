@@ -229,7 +229,10 @@ class JoinMeetingView(APIView):
         is_host = False
 
         if MeetingMember.objects.filter(user=user, meeting_id=meeting_id).exists():
-            return Response({"detail": "meeting member is already exist"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "meeting member is already exist"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
         MeetingMember.objects.create(user=user, meeting_id=meeting_id, is_host=is_host)
 

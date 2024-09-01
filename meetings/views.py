@@ -89,11 +89,23 @@ class FilterMeetingListView(APIView):
     serializer_class = MeetingListSerializer
 
     @extend_schema(tags=["meeting"])
-    def get(self, request, time_category_id, location_category_id):
+    def get(self, request, time_category, location_category):
 
-        meetings = Meeting.objects.filter(
-            time_sort=time_category_id, location=location_category_id
-        )
+        location_category_id = Location.objects.get(location_name=location_category).id
+
+        if location_category == "전체":
+            meetings = Meeting.objects.all()
+        else:
+            meetings = Meeting.objects.filter(location_category_id=location_category_id)
+
+        if time_category == "최신순":
+            meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by(
+                "-created_at"
+            )
+        else:
+            meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by(
+                "meeting_time"
+            )
 
         serializer = self.serializer_class(instance=meetings, many=True)
 

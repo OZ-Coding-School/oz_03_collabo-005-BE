@@ -10,6 +10,7 @@ from likes.models import ReviewLike
 from meetings.models import Meeting, MeetingLike, MeetingMember
 from reviews.models import Review
 from users.models import CustomUser
+from rest_framework import serializers
 
 from .serializers import (
     AnotherProfileSerializer,
@@ -22,16 +23,11 @@ from .serializers import (
 
 # 유저의 프로필 조회
 class ProfileView(APIView):
+    serializer_class = ProfileSerializer
 
     @extend_schema(
         tags=["profile"],
-        responses={
-            200: OpenApiResponse(
-                response=inline_serializer(
-                    name="ProfileResponse", fields={"profile": ProfileSerializer()}
-                )
-            )
-        },
+        operation_id="user_profile",
     )
     def get(self, request):
         try:
@@ -42,28 +38,22 @@ class ProfileView(APIView):
                 {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = ProfileSerializer(instance=profile)
+        serializer = self.serializer_class(instance=profile)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @extend_schema(
-        tags=["profile"],
-        responses={
-            200: OpenApiResponse(
-                response=inline_serializer(
-                    name="CreateProfileResponse",
-                    fields={"profile": CreateProfileSerializer()},
-                )
-            )
-        },
-    )
+
+class ProfileCreateView(APIView):
+    serializer_class = CreateProfileSerializer
+
+    @extend_schema(tags=["profile"])
     def post(self, request):
         user = request.user
-        serializer = CreateProfileSerializer(instance=user, data=request.data)
+        serializer = self.serializer_class(data=request.data)
 
         # 데이터 유효성
         if not serializer.is_valid():
-            raise ValidationError("Invalid data")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         # 닉네임 중복 확인
         updated_nickname = serializer.validated_data.get("nickname")
@@ -79,7 +69,7 @@ class ProfileView(APIView):
 
         serializer.save()
 
-        return Response(serializer.data, status.HTTP_200_OK)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # 내가 호스트인 번개 내역 조회

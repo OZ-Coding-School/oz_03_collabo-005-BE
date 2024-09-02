@@ -9,10 +9,12 @@ from .views import (
     UserJoinedMeetingView,
     UserLikedMeetingView,
     UserLikedReviewView,
+    ProfileCreateView,
 )
 
 urlpatterns = [
     path("", ProfileView.as_view(), name="profile"),
+    path("create/", ProfileCreateView.as_view(), name="profile_create"),
     path("hosted/meetings/", UserHostedMeetingView.as_view(), name="hosted_meeting"),
     path("joined/meetings/", UserJoinedMeetingView.as_view(), name="joined_meeting"),
     path("liked/meeting/", UserLikedMeetingView.as_view(), name="liked_meeting"),

@@ -49,7 +49,7 @@ class MeetingListView(APIView):
     )
     def get(self, request):
         # meeting_time이 현 시간보다 크거나 같아야 한다.
-        meetings = Meeting.objects.all().order_by("-created_at")
+        meetings = Meeting.objects.filter(meeting_time__gt=timezone.localtime()).order_by("-created_at")
 
         time_categories = TimeSortCategory.objects.order_by(
             Case(
@@ -102,7 +102,7 @@ class FilterMeetingListView(APIView):
             )
         else:
             meetings = meetings.filter(meeting_time__gt=timezone.localtime()).order_by(
-                "meeting_time"
+                 "meeting_time"
             )
 
         serializer = self.serializer_class(instance=meetings, many=True)

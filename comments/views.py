@@ -4,9 +4,14 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import ReviewComment
 from reviews.models import Review
-from .serializers import CreateReviewCommentSerializer, UpdateReviewCommentSerializer, DeleteReviewCommentSerializer
+
+from .models import ReviewComment
+from .serializers import (
+    CreateReviewCommentSerializer,
+    DeleteReviewCommentSerializer,
+    UpdateReviewCommentSerializer,
+)
 
 
 class CreateReviewCommentView(APIView):

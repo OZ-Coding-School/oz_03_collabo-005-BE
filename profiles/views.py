@@ -53,12 +53,8 @@ class ProfileUpdateView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        # 닉네임 중복 확인
-        updated_nickname = serializer.validated_data.get("nickname")
         if (
-            CustomUser.objects.filter(nickname=updated_nickname)
-            .exclude(id=user.id)
-            .exists()
+            CustomUser.objects.filter(nickname=request.data["nickname"]).exclude(pk=user.id).exists()
         ):
             return Response(
                 {"detail": "Nickname already exists"},

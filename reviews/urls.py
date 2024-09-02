@@ -10,7 +10,7 @@ from .views import (
 urlpatterns = [
     path("", ReviewListView.as_view(), name="review_list"),
     path(
-        "filter/<int:review_category_id>",
+        "filter/<str:category_name>",
         FilterReviewListView.as_view(),
         name="filter_reviews",
     ),

@@ -27,6 +27,8 @@ class ProfileSerializer(serializers.ModelSerializer):
 
 
 class CreateProfileSerializer(serializers.ModelSerializer):
+    nickname = serializers.CharField()
+
     class Meta:
         model = CustomUser
         fields = (

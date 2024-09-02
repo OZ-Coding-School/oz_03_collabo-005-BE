@@ -110,6 +110,7 @@ class CustomUserLoginView(APIView):
 # 중복확인 이메일
 class CustomUserCheckEmailView(APIView):
     permission_classes = (AllowAny,)
+
     @extend_schema(
         tags=["User"],
         request=OpenApiTypes.OBJECT,

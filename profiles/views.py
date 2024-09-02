@@ -1,5 +1,5 @@
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -22,16 +22,11 @@ from .serializers import (
 
 # 유저의 프로필 조회
 class ProfileView(APIView):
+    serializer_class = ProfileSerializer
 
     @extend_schema(
         tags=["profile"],
-        responses={
-            200: OpenApiResponse(
-                response=inline_serializer(
-                    name="ProfileResponse", fields={"profile": ProfileSerializer()}
-                )
-            )
-        },
+        operation_id="user_profile",
     )
     def get(self, request):
         try:
@@ -42,28 +37,21 @@ class ProfileView(APIView):
                 {"detail": "User not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = ProfileSerializer(instance=profile)
+        serializer = self.serializer_class(instance=profile)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    @extend_schema(
-        tags=["profile"],
-        responses={
-            200: OpenApiResponse(
-                response=inline_serializer(
-                    name="CreateProfileResponse",
-                    fields={"profile": CreateProfileSerializer()},
-                )
-            )
-        },
-    )
-    def post(self, request):
-        user = request.user
-        serializer = CreateProfileSerializer(instance=user, data=request.data)
 
-        # 데이터 유효성
+class ProfileUpdateView(APIView):
+    serializer_class = CreateProfileSerializer
+
+    @extend_schema(tags=["profile"])
+    def post(self, request):
+        user = CustomUser.objects.get(pk=request.user.id)
+        serializer = self.serializer_class(data=request.data)
+
         if not serializer.is_valid():
-            raise ValidationError("Invalid data")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         # 닉네임 중복 확인
         updated_nickname = serializer.validated_data.get("nickname")
@@ -77,9 +65,13 @@ class ProfileView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        serializer.save()
+        user.nickname = request.data["nickname"]
+        user.profile_image_url = request.data["profile_image_url"]
+        user.introduction = request.data["introduction"]
 
-        return Response(serializer.data, status.HTTP_200_OK)
+        user.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 # 내가 호스트인 번개 내역 조회

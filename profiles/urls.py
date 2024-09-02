@@ -2,6 +2,7 @@ from django.urls import path
 
 from .views import (
     AnotherProfileView,
+    ProfileUpdateView,
     ProfileView,
     UserCommentedReviewView,
     UserHostedMeetingView,
@@ -13,6 +14,7 @@ from .views import (
 
 urlpatterns = [
     path("", ProfileView.as_view(), name="profile"),
+    path("update/", ProfileUpdateView.as_view(), name="profile_update"),
     path("hosted/meetings/", UserHostedMeetingView.as_view(), name="hosted_meeting"),
     path("joined/meetings/", UserJoinedMeetingView.as_view(), name="joined_meeting"),
     path("liked/meeting/", UserLikedMeetingView.as_view(), name="liked_meeting"),

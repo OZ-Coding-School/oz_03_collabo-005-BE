@@ -1,5 +1,5 @@
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.exceptions import ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -10,7 +10,6 @@ from likes.models import ReviewLike
 from meetings.models import Meeting, MeetingLike, MeetingMember
 from reviews.models import Review
 from users.models import CustomUser
-from rest_framework import serializers
 
 from .serializers import (
     AnotherProfileSerializer,

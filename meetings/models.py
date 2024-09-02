@@ -1,13 +1,11 @@
 import uuid
 
 from django.db import models
+from drf_spectacular.utils import extend_schema_field
+from rest_framework import serializers
 
 from common.models import CommonModel
 from likes.models import MeetingLike
-
-from drf_spectacular.utils import extend_schema_field
-
-from rest_framework import serializers
 
 
 class Meeting(CommonModel):

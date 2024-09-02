@@ -27,7 +27,9 @@ class MeetingLike(CommonModel):
 
     class Meta:
         constraints = [
-            UniqueConstraint(fields=["meeting", "user"], name="unique_meeting_user_like")
+            UniqueConstraint(
+                fields=["meeting", "user"], name="unique_meeting_user_like"
+            )
         ]
 
     def __str__(self):

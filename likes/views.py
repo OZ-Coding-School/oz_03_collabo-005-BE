@@ -1,3 +1,4 @@
+from django.db import IntegrityError
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
@@ -9,7 +10,6 @@ from reviews.models import Review
 
 from .models import MeetingLike, ReviewLike
 from .serializers import LikeSerializer
-from django.db import IntegrityError
 
 
 # 좋아요 기능

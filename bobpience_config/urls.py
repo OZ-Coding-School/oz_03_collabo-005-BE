@@ -38,5 +38,8 @@ urlpatterns = [
     path("api/comments/", include("comments.urls")),
     # FoodRecommend
     path("api/foods/", include("foods.urls")),
+    # Common Images
+    path("api/common/", include("common.urls")),
+
 ]
 # fmt: on

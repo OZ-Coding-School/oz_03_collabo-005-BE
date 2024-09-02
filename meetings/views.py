@@ -1,12 +1,11 @@
 from django.db.models import Case, IntegerField, Value, When
 from django.utils import timezone
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
-from rest_framework import status
+from rest_framework import serializers, status
 from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import serializers
 
 from categories.models import (
     Location,
@@ -50,9 +49,7 @@ class MeetingListView(APIView):
     )
     def get(self, request):
         # meeting_time이 현 시간보다 크거나 같아야 한다.
-        meetings = Meeting.objects.all().order_by(
-            "-created_at"
-        )
+        meetings = Meeting.objects.all().order_by("-created_at")
 
         time_categories = TimeSortCategory.objects.order_by(
             Case(

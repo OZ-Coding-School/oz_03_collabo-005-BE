@@ -21,6 +21,7 @@ class FoodsRecommend(APIView):
                     "is_diet": {"type": "boolean"},
                 },
                 "required": [
+
                     "is_lunch",
                     "is_dinner",
                     "is_snack",

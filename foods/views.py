@@ -19,6 +19,7 @@ class FoodsRecommend(APIView):
                     "is_date": {"type": "boolean"},
                     "is_party": {"type": "boolean"},
                     "is_diet": {"type": "boolean"},
+
                 },
                 "required": [
                     "is_lunch",

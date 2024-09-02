@@ -110,28 +110,20 @@ class CustomUserLoginView(APIView):
 # 중복확인 이메일
 class CustomUserCheckEmailView(APIView):
     permission_classes = (AllowAny,)
-
     @extend_schema(
         tags=["User"],
-        parameters=[
-            OpenApiParameter(
-                name="email",
-                description="확인할 이메일을 입력해주세요.",
-                required=True,
-                type=OpenApiTypes.STR,
-                examples=[
-                    OpenApiExample(
-                        name="Example 1",
-                        value="bobpience@babpiens.com",
-                        description="An example string value for param1",
-                    )
-                ],
+        request=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                name="Email Check",
+                value={"email": "bobpience@babpiens.com"},
+                description="이메일 중복체크",
             )
         ],
         responses={200: OpenApiResponse(description="Success")},
     )
-    def get(self, request):
-        email = request.query_params.get("email")
+    def post(self, request):
+        email = request.data.get("email")
 
         # 이메일 중복 체크
         if CustomUser.objects.filter(email=email).exists():
@@ -148,25 +140,18 @@ class CustomUserCheckNickView(APIView):
 
     @extend_schema(
         tags=["User"],
-        parameters=[
-            OpenApiParameter(
-                name="nickname",
-                description="확인할 닉네임을 입력해주세요.",
-                required=True,
-                type=OpenApiTypes.STR,
-                examples=[
-                    OpenApiExample(
-                        name="Example 1",
-                        value="bobdori",
-                        description="An example string value for param1",
-                    )
-                ],
+        request=OpenApiTypes.OBJECT,
+        examples=[
+            OpenApiExample(
+                name="Nickname Check",
+                value={"nickname": "중복불가1"},
+                description="닉네임 중복 체크",
             )
         ],
         responses={200: OpenApiResponse(description="Success")},
     )
-    def get(self, request):
-        nickname = request.query_params.get("nickname")
+    def post(self, request):
+        nickname = request.data.get("nickname")
 
         # 이메일 중복 체크
         if CustomUser.objects.filter(nickname=nickname).exists():

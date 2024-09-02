@@ -46,6 +46,7 @@ class MeetingGenderGroup(models.Model):
 class FTIType(models.Model):
     fti_type = models.CharField(max_length=10)
     description = models.TextField()
+    fti_image_url = models.URLField()
 
     def __str__(self):
         return self.fti_type

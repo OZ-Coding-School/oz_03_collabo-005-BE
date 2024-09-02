@@ -22,6 +22,7 @@ class FoodsRecommend(APIView):
 
                 },
                 "required": [
+
                     "is_lunch",
                     "is_dinner",
                     "is_snack",

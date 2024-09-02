@@ -1,6 +1,8 @@
 import uuid
 
 from django.db import models
+from drf_spectacular.utils import extend_schema_field
+from rest_framework import serializers
 
 from common.models import CommonModel
 from likes.models import MeetingLike
@@ -29,6 +31,7 @@ class Meeting(CommonModel):
     maximum = models.PositiveIntegerField()
 
     @property
+    @extend_schema_field(serializers.IntegerField)
     def likes_count(self):
         return MeetingLike.objects.filter(meeting_id=self.pk).count()
 

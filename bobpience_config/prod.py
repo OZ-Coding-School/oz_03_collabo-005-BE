@@ -8,6 +8,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS_PROD").split(",")
 
+CORS_ALLOW_METHODS = ["GET", "POST"]
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",

@@ -99,15 +99,11 @@ class MeetingMemberSerializer(serializers.ModelSerializer):
 
 class JoinMeetingSerializer(serializers.ModelSerializer):
 
-    uuid = serializers.SerializerMethodField()
+    meeting_uuid = serializers.CharField()
 
     class Meta:
         model = MeetingMember
-        fields = ("uuid",)
-
-    @extend_schema_field(serializers.CharField)
-    def get_uuid(self, obj):
-        return obj.meeting.uuid
+        fields = ("meeting_uuid",)
 
 
 class MeetingCreateSerializer(serializers.ModelSerializer):

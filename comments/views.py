@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import ReviewComment
-from .serializers import CreateReviewCommentSerializer, UpdateReviewCommentSerializer
+from reviews.models import Review
+from .serializers import CreateReviewCommentSerializer, UpdateReviewCommentSerializer, DeleteReviewCommentSerializer
 
 
 class CreateReviewCommentView(APIView):
@@ -18,12 +19,12 @@ class CreateReviewCommentView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
-        review = serializer.data["review"]
+        review = Review.objects.get(uuid=request.data["uuid"])
         content = serializer.data["content"]
 
         ReviewComment.objects.create(
             user=user,
-            review_id=review,
+            review=review,
             content=content,
         )
 
@@ -53,7 +54,7 @@ class ReviewCommentUpdateView(APIView):
 
 
 class ReviewCommentDeleteView(APIView):
-    serializer_class = None
+    serializer_class = DeleteReviewCommentSerializer
 
     @extend_schema(tags=["comment"])
     def post(self, request):

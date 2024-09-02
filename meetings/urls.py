@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (
     DeleteMeetingMemberView,
     FilterMeetingListView,
-    JoinMeetingView,
+    JoinMeetingMemberView,
     MeetingCreateView,
     MeetingDetailView,
     MeetingListView,
@@ -17,7 +17,7 @@ urlpatterns = [
         name="filter_meetings",
     ),
     path("<uuid:uuid>/", MeetingDetailView.as_view(), name="meeting_detail"),
-    path("join/", JoinMeetingView.as_view(), name="join_meeting"),
+    path("member/", JoinMeetingMemberView.as_view(), name="join_meeting"),
     path("create/", MeetingCreateView.as_view(), name="create_meeting"),
     path(
         "delete/member/",

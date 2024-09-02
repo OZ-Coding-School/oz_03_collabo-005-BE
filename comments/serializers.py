@@ -4,10 +4,12 @@ from reviews.models import ReviewComment
 
 
 class CreateReviewCommentSerializer(serializers.ModelSerializer):
+    uuid = serializers.UUIDField()
+
     class Meta:
         model = ReviewComment
         fields = (
-            "review",
+            "uuid",
             "content",
         )
 
@@ -17,8 +19,6 @@ class UpdateReviewCommentSerializer(serializers.ModelSerializer):
         model = ReviewComment
         fields = (
             "id",
-            "user",
-            "review",
             "content",
         )
 

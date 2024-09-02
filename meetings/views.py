@@ -236,7 +236,7 @@ class DeleteMeetingMemberView(APIView):
 
 
 # 번개에 참여하기
-class JoinMeetingView(APIView):
+class JoinMeetingMemberView(APIView):
     serializer_class = JoinMeetingSerializer
 
     @extend_schema(tags=["meeting"])
@@ -247,8 +247,7 @@ class JoinMeetingView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         user = request.user
-        meeting_id = Meeting.objects.get(uuid=request.data["uuid"]).id
-        is_host = False
+        meeting_id = Meeting.objects.get(uuid=request.data["meeting_uuid"]).id
 
         if MeetingMember.objects.filter(user=user, meeting_id=meeting_id).exists():
             return Response(
@@ -256,6 +255,6 @@ class JoinMeetingView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        MeetingMember.objects.create(user=user, meeting_id=meeting_id, is_host=is_host)
+        MeetingMember.objects.create(user=user, meeting_id=meeting_id, is_host=False)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)

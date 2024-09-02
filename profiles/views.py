@@ -43,15 +43,14 @@ class ProfileView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class ProfileCreateView(APIView):
+class ProfileUpdateView(APIView):
     serializer_class = CreateProfileSerializer
 
     @extend_schema(tags=["profile"])
     def post(self, request):
-        user = request.user
+        user = CustomUser.objects.get(pk=request.user.id)
         serializer = self.serializer_class(data=request.data)
 
-        # 데이터 유효성
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -67,7 +66,11 @@ class ProfileCreateView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        serializer.save()
+        user.nickname = request.data["nickname"]
+        user.profile_image_url = request.data["profile_image_url"]
+        user.introduction = request.data["introduction"]
+
+        user.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

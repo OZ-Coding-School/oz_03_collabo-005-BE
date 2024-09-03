@@ -40,6 +40,7 @@ urlpatterns = [
     path("api/foods/", include("foods.urls")),
     # Common Images
     path("api/common/", include("common.urls")),
-
+    # Likes
+    path("api/likes/", include("likes.urls")),
 ]
 # fmt: on

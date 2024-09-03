@@ -54,7 +54,9 @@ class ProfileUpdateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         if (
-            CustomUser.objects.filter(nickname=request.data["nickname"]).exclude(pk=user.id).exists()
+            CustomUser.objects.filter(nickname=request.data["nickname"])
+            .exclude(pk=user.id)
+            .exists()
         ):
             return Response(
                 {"detail": "Nickname already exists"},

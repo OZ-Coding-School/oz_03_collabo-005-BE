@@ -29,6 +29,7 @@ class FTITestResultView(APIView):
     def get(self, request, uuid):
         try:
             test_result = FTITestResult.objects.get(uuid=uuid)
+
         except FTITestResult.DoesNotExist:
             return Response(
                 {"error": "Test result not found"}, status=status.HTTP_404_NOT_FOUND

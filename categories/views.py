@@ -1,5 +1,6 @@
 from drf_spectacular.utils import extend_schema
 from rest_framework import status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -8,6 +9,7 @@ from .serializers import *
 
 
 class FoodFilterList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = CategoryFoodFilterSerializer
 
     @extend_schema(tags=["Category"])
@@ -20,6 +22,7 @@ class FoodFilterList(APIView):
 
 
 class FTITypeList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = FTITypeSerializer
 
     @extend_schema(tags=["Category"])
@@ -32,6 +35,7 @@ class FTITypeList(APIView):
 
 
 class LocationList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = LocationSerializer
 
     @extend_schema(tags=["Category"])
@@ -44,6 +48,7 @@ class LocationList(APIView):
 
 
 class MeetingAgeGroupList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = MeetingAgeGroupSerializer
 
     @extend_schema(tags=["Category"])
@@ -56,6 +61,7 @@ class MeetingAgeGroupList(APIView):
 
 
 class MeetingGenderGroupList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = MeetingGenderGroupSerializer
 
     @extend_schema(tags=["Category"])
@@ -68,6 +74,7 @@ class MeetingGenderGroupList(APIView):
 
 
 class MeetingPaymentMethodList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = MeetingPaymentMethodSerializer
 
     @extend_schema(tags=["Category"])
@@ -80,6 +87,7 @@ class MeetingPaymentMethodList(APIView):
 
 
 class ReviewFilterList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = ReviewCategorySerializer
 
     @extend_schema(tags=["Category"])
@@ -92,6 +100,7 @@ class ReviewFilterList(APIView):
 
 
 class TimeSortFilterList(APIView):
+    permission_classes = (AllowAny,)
     serializer_class = TimeCategorySerializer
 
     @extend_schema(tags=["Category"])

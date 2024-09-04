@@ -3,11 +3,11 @@ from django.urls import path
 from .members_views import (
     CreateMeetingMemberView,
     DeleteMeetingMemberView,
-    MeetingMemeberCheckView,
-    MeetingCommentsView,
-    MeetingCommentsCreateView,
     MeetingCommentDeleteView,
+    MeetingCommentsCreateView,
+    MeetingCommentsView,
     MeetingCommentUpdateView,
+    MeetingMemeberCheckView,
 )
 from .views import (
     FilterMeetingListView,

@@ -8,14 +8,16 @@ from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Meeting, MeetingMember
 from comments.models import MeetingComment
+
+from .models import Meeting, MeetingMember
 from .serializers import (
     JoinMeetingMemberSerializer,
-    MeetingMemberSerializer,
-    MeetingCommentSerializer,
     MeetingCommentCreateSerializer,
-    MeetingCommentDeleteSerializer, MeetingCommentUpdateSerializer,
+    MeetingCommentDeleteSerializer,
+    MeetingCommentSerializer,
+    MeetingCommentUpdateSerializer,
+    MeetingMemberSerializer,
 )
 
 

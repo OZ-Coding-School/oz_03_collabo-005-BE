@@ -211,3 +211,6 @@ class MeetingCreateView(APIView):
             {"created_meeting": serializer.data, "meeting_uuid": created_meeting.uuid},
             status=status.HTTP_201_CREATED,
         )
+
+
+

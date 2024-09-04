@@ -1,3 +1,4 @@
+from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from users.models import CustomUser
@@ -18,12 +19,26 @@ class UserFTITestResultSerializer(serializers.Serializer):
 
 
 class FTITestResultSerializer(serializers.ModelSerializer):
+    description = serializers.SerializerMethodField()
+    fti_image_url = serializers.SerializerMethodField()
+
     class Meta:
+
         model = FTITestResult
         fields = (
             "uuid",
             "fti_type",
+            "description",
+            "fti_image_url",
         )
+
+    @extend_schema_field(serializers.CharField)
+    def get_description(self, obj):
+        return obj.fti_type.description
+
+    @extend_schema_field(serializers.URLField)
+    def get_fti_image_url(self, obj):
+        return obj.fti_type.fti_image_url
 
 
 # TasteTestQuestion

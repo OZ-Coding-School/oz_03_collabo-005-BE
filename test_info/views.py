@@ -29,6 +29,7 @@ class FTITestResultView(APIView):
     def get(self, request, uuid):
         try:
             test_result = FTITestResult.objects.get(uuid=uuid)
+
         except FTITestResult.DoesNotExist:
             return Response(
                 {"error": "Test result not found"}, status=status.HTTP_404_NOT_FOUND
@@ -71,6 +72,7 @@ class FTITestResultCreateView(APIView):
         # 테스트 결과 조합
         fti_type = f"{extroversion}{curiosity}{accessibility}"
         fti_type_obj = FTIType.objects.get(fti_type=fti_type)
+
         test_uuid = uuid.uuid4()
         FTITestResult.objects.create(uuid=test_uuid, fti_type=fti_type_obj)
 
@@ -80,7 +82,13 @@ class FTITestResultCreateView(APIView):
             user.save()
 
         return Response(
-            {"fti_type": fti_type, "uuid": test_uuid}, status=status.HTTP_201_CREATED
+            {
+                "fti_type": fti_type,
+                "uuid": test_uuid,
+                "fti_image": fti_type_obj.fti_image_url,
+                "description": fti_type_obj.description,
+            },
+            status=status.HTTP_201_CREATED,
         )
 
 

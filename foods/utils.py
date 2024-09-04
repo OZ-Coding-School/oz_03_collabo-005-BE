@@ -23,7 +23,6 @@ def calculate_weights(user_preferences, spicy_weight, cost_weight):
         weights[2] = 1.5
     else:
         weights[2] = 1.2
-
     # 탄수화물 선호도 가중치
     if user_preferences[3] in [1, 5]:
         weights[3] = 1.3

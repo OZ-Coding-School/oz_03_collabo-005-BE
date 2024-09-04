@@ -1,7 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
-from meetings.models import Meeting, MeetingMember
+from meetings.models import Meeting
 from users.models import CustomUser
 
 
@@ -63,6 +63,7 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
             "description",
             "meeting_image_url",
             "hits",
+            "maximum",
             "likes_count",
             "created_at",
         )
@@ -97,15 +98,6 @@ class MeetingMemberSerializer(serializers.ModelSerializer):
         )
 
 
-class JoinMeetingSerializer(serializers.ModelSerializer):
-
-    meeting_uuid = serializers.CharField()
-
-    class Meta:
-        model = MeetingMember
-        fields = ("meeting_uuid",)
-
-
 class MeetingCreateSerializer(serializers.ModelSerializer):
     payment_method_name = serializers.CharField()
     age_group_name = serializers.CharField()
@@ -127,9 +119,5 @@ class MeetingCreateSerializer(serializers.ModelSerializer):
         )
 
 
-class DeleteMeetingMemberSerializer(serializers.ModelSerializer):
-    uuid = serializers.CharField()
-
-    class Meta:
-        model = MeetingMember
-        fields = ("uuid",)
+class JoinMeetingMemberSerializer(serializers.Serializer):
+    meeting_uuid = serializers.CharField()

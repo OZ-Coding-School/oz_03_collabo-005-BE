@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from .models import *
 from .serializers import *
 
+
 class FoodFilterList(APIView):
     serializer_class = CategoryFoodFilterSerializer
 
@@ -16,6 +17,7 @@ class FoodFilterList(APIView):
 
         serializer = self.serializer_class(instance=categoryFilter, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class FTITypeList(APIView):
     serializer_class = FTITypeSerializer
@@ -28,6 +30,7 @@ class FTITypeList(APIView):
         serializer = self.serializer_class(instance=categoryFilter, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class LocationList(APIView):
     serializer_class = LocationSerializer
 
@@ -38,6 +41,7 @@ class LocationList(APIView):
 
         serializer = self.serializer_class(instance=categoryFilter, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class MeetingAgeGroupList(APIView):
     serializer_class = MeetingAgeGroupSerializer
@@ -62,6 +66,7 @@ class MeetingGenderGroupList(APIView):
         serializer = self.serializer_class(instance=categoryFilter, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class MeetingPaymentMethodList(APIView):
     serializer_class = MeetingPaymentMethodSerializer
 
@@ -72,6 +77,7 @@ class MeetingPaymentMethodList(APIView):
 
         serializer = self.serializer_class(instance=categoryFilter, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 class ReviewFilterList(APIView):
     serializer_class = ReviewCategorySerializer
@@ -84,6 +90,7 @@ class ReviewFilterList(APIView):
         serializer = self.serializer_class(instance=categoryFilter, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class TimeSortFilterList(APIView):
     serializer_class = TimeCategorySerializer
 
@@ -94,4 +101,3 @@ class TimeSortFilterList(APIView):
 
         serializer = self.serializer_class(instance=categoryFilter, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-

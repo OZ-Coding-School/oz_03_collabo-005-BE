@@ -19,8 +19,6 @@ from users.models import CustomUser
 
 from .models import Meeting, MeetingMember
 from .serializers import (
-    DeleteMeetingMemberSerializer,
-    JoinMeetingSerializer,
     MeetingCreateSerializer,
     MeetingDetailSerializer,
     MeetingListSerializer,
@@ -208,53 +206,5 @@ class MeetingCreateView(APIView):
             meeting=created_meeting,  # 생성된 미팅 객체 조회
             is_host=True,
         )
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-# 모임 참여 취소
-class DeleteMeetingMemberView(APIView):
-    serializer_class = DeleteMeetingMemberSerializer
-
-    @extend_schema(tags=["meeting"])
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        user = request.user
-        meeting = Meeting.objects.get(uuid=request.data["uuid"])
-
-        # 미팅 멤버에서 삭제
-        MeetingMember.objects.get(user=user, meeting=meeting).delete()
-
-        return Response(
-            {"detail": "Successful cancellation of meeting attendance"},
-            status=status.HTTP_200_OK,
-        )
-
-
-# 번개에 참여하기
-class JoinMeetingMemberView(APIView):
-    serializer_class = JoinMeetingSerializer
-
-    @extend_schema(tags=["meeting"])
-    def post(self, request):
-        serializer = self.serializer_class(data=request.data)
-
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        user = request.user
-        meeting_id = Meeting.objects.get(uuid=request.data["meeting_uuid"]).id
-
-        if MeetingMember.objects.filter(user=user, meeting_id=meeting_id).exists():
-            return Response(
-                {"detail": "meeting member is already exist"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
-
-        MeetingMember.objects.create(user=user, meeting_id=meeting_id, is_host=False)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)

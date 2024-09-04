@@ -135,7 +135,7 @@ class ReviewDetailCreateView(APIView):
         review_image_url = request.data["review_image_url"]
         is_host = True
 
-        Review.objects.create(
+        created_review = Review.objects.create(
             user=user,
             category_id=category,
             title=title,
@@ -144,4 +144,7 @@ class ReviewDetailCreateView(APIView):
             is_host=is_host,
         )
 
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            {"created_review": serializer.data, "review_uuid": created_review.uuid},
+            status=status.HTTP_200_OK,
+        )

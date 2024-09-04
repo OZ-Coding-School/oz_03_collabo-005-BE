@@ -3,13 +3,21 @@
 
 ## 설정
 ```
+로컬에 설정
 cd bobpience_config
 ln -sf local.py settings.py
+Product 설정
+cd bobpience_config
+ln -sf prod.py settings.py
 ```
 or
 ```
+로컬에 설정
 cd bobpience_config
 mklink settings.py local.py
+Product 설정
+cd bobpience_config
+mklink settings.py prod.py
 ```
 
 <aside>

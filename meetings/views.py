@@ -207,4 +207,7 @@ class MeetingCreateView(APIView):
             is_host=True,
         )
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {"created_meeting": serializer.data, "meeting_uuid": created_meeting.uuid},
+            status=status.HTTP_201_CREATED,
+        )

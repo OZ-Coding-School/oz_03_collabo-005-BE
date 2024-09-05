@@ -1,6 +1,7 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from comments.models import MeetingComment
 from meetings.models import Meeting
 from users.models import CustomUser
 
@@ -121,3 +122,47 @@ class MeetingCreateSerializer(serializers.ModelSerializer):
 
 class JoinMeetingMemberSerializer(serializers.Serializer):
     meeting_uuid = serializers.CharField()
+
+
+class MeetingCommentSerializer(serializers.ModelSerializer):
+
+    nickname = serializers.SerializerMethodField()
+    profile_image_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = MeetingComment
+        fields = (
+            "id",
+            "nickname",
+            "profile_image_url",
+            "content",
+            "created_at",
+        )
+
+    @extend_schema_field(serializers.CharField)
+    def get_nickname(self, obj):
+        return obj.user.nickname
+
+    @extend_schema_field(serializers.URLField)
+    def get_profile_image_url(self, obj):
+        return obj.user.profile_image_url
+
+
+class MeetingCommentCreateSerializer(serializers.ModelSerializer):
+    meeting_uuid = serializers.UUIDField()
+
+    class Meta:
+        model = MeetingComment
+        fields = (
+            "content",
+            "meeting_uuid",
+        )
+
+
+class MeetingCommentUpdateSerializer(serializers.Serializer):
+    comment_id = serializers.IntegerField()
+    content = serializers.CharField()
+
+
+class MeetingCommentDeleteSerializer(serializers.Serializer):
+    comment_id = serializers.IntegerField()

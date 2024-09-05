@@ -43,11 +43,16 @@ class ReviewCommentUpdateView(APIView):
     @extend_schema(tags=["comment"])
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
+        # 요청한 사용자 id
+        user_id = request.user.id
 
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
+        # 선택된 댓글의 작성자와 수정요청자 동일여부 확인
             selected_comment = ReviewComment.objects.get(id=request.data["id"])
+            if user_id != selected_comment.user.id:
+                return Response({"It's not your Comment"}, status.HTTP_400_BAD_REQUEST)
 
         except ReviewComment.DoesNotExist:
             return Response({"Comment don't exist"}, status.HTTP_400_BAD_REQUEST)
@@ -63,8 +68,17 @@ class ReviewCommentDeleteView(APIView):
 
     @extend_schema(tags=["comment"])
     def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        # 요청한 사용자 id
+        user_id = request.user.id
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
+            # 선택된 댓글의 작성자와 수정요청자 동일여부 확인
             selected_comment = ReviewComment.objects.get(id=request.data["id"])
+            if user_id != selected_comment.user_id:
+                return Response({"It's not your Comment"}, status.HTTP_400_BAD_REQUEST)
             selected_comment.delete()
 
             return Response({"detail": "Delete successful"}, status=status.HTTP_200_OK)

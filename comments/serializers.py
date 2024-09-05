@@ -20,10 +20,14 @@ class UpdateReviewCommentSerializer(serializers.ModelSerializer):
         fields = (
             "id",
             "content",
+            "user_id"
         )
 
 
 class DeleteReviewCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = ReviewComment
-        fields = ("id",)
+        fields = (
+            "id",
+            "user_id"
+        )

@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, OpenApiExample
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
@@ -40,7 +40,17 @@ class ReviewCommentUpdateView(APIView):
 
     serializer_class = UpdateReviewCommentSerializer
 
-    @extend_schema(tags=["comment"])
+    @extend_schema(tags=["comment"],
+        examples=[
+            OpenApiExample(
+                "Example",
+                value={
+                    "id": 1,
+                    "content": "string"
+                },
+            )
+        ],
+    )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         # 요청한 사용자 id
@@ -66,7 +76,16 @@ class ReviewCommentUpdateView(APIView):
 class ReviewCommentDeleteView(APIView):
     serializer_class = DeleteReviewCommentSerializer
 
-    @extend_schema(tags=["comment"])
+    @extend_schema(tags=["comment"],
+        examples=[
+            OpenApiExample(
+                "Example",
+                value={
+                    "id": 1,
+                },
+            )
+        ],
+    )
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         # 요청한 사용자 id

@@ -125,10 +125,6 @@ class ReviewDetailView(APIView):
         comments = ReviewComment.objects.filter(review_id=selected_review.id)
         comments_data = ReviewCommentSerializer(instance=comments, many=True).data
 
-        if is_liked:
-            comments_data.is_liked = True
-        else:
-            comments_data.is_liked = False
         review_detail = {
             "review": review_data,
             "comments": comments_data,

@@ -138,6 +138,7 @@ class MeetingDetailView(APIView):
         user = request.user
 
         is_liked = False
+        is_host = False
 
         try:
             selected_meeting = Meeting.objects.get(uuid=uuid)
@@ -158,6 +159,10 @@ class MeetingDetailView(APIView):
                         if uuid == str(selected_meeting.uuid):
                             is_liked = True
                             break
+                # 요청자가 게시글 작성자인가?
+                if user.id == selected_meeting.user_id:
+                    is_host = True
+
 
         except Meeting.DoesNotExist:
             raise NotFound("The meeting does not exist")
@@ -167,7 +172,8 @@ class MeetingDetailView(APIView):
             "meeting_member": MeetingMemberSerializer(
                 instance=meeting_member, many=True
             ).data,
-            "is_liked": is_liked
+            "is_liked": is_liked,
+            "is_host": is_host
         }
 
         # 게시물 조회 시 조회수 상승

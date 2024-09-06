@@ -134,9 +134,11 @@ class MeetingDetailView(APIView):
         # 리퀘스트에서 유저 정보를 확인하고
         # 유저정보가 있다면 해당 유저의 프로필에서 좋아요 정보를 확인하고
         # 요청 받은 리뷰와 동일한 uuid가 있다면 is_like = Ture반환
-        user_liked_Meeting_view = UserLikedMeetingView()
-        user_liked_Meeting_response = user_liked_Meeting_view.get(request)
+        # user 정보 객체
+        user = request.user
+
         is_liked = False
+
         try:
             selected_meeting = Meeting.objects.get(uuid=uuid)
             meeting_member_ids = MeetingMember.objects.filter(
@@ -144,14 +146,18 @@ class MeetingDetailView(APIView):
             ).values_list("user_id", flat=True)
             meeting_member = CustomUser.objects.filter(id__in=meeting_member_ids)
 
-            # 요청자의 좋아요 리스트에 해당 글이 있는가?
-            if user_liked_Meeting_response.status_code == 200:
-                liked_review_data = user_liked_Meeting_response.data
-                for meeting in liked_review_data:
-                    uuid = str(meeting.get("uuid"))
-                    if uuid == str(selected_meeting.uuid):
-                        is_liked = True
-                        break
+            if not user.is_anonymous:
+                user_liked_Meeting_view = UserLikedMeetingView()
+                user_liked_Meeting_response = user_liked_Meeting_view.get(request)
+
+                # 요청자의 좋아요 리스트에 해당 글이 있는가?
+                if user_liked_Meeting_response.status_code == 200:
+                    liked_review_data = user_liked_Meeting_response.data
+                    for meeting in liked_review_data:
+                        uuid = str(meeting.get("uuid"))
+                        if uuid == str(selected_meeting.uuid):
+                            is_liked = True
+                            break
 
         except Meeting.DoesNotExist:
             raise NotFound("The meeting does not exist")

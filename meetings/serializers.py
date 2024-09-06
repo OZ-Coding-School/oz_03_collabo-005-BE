@@ -94,6 +94,7 @@ class MeetingMemberSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = (
             "id",
+            "nickname",
             "profile_image_url",
             "introduction",
         )

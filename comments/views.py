@@ -1,4 +1,4 @@
-from drf_spectacular.utils import extend_schema, OpenApiExample
+from drf_spectacular.utils import OpenApiExample, extend_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
@@ -40,14 +40,12 @@ class ReviewCommentUpdateView(APIView):
 
     serializer_class = UpdateReviewCommentSerializer
 
-    @extend_schema(tags=["comment"],
+    @extend_schema(
+        tags=["comment"],
         examples=[
             OpenApiExample(
                 "Example",
-                value={
-                    "id": 1,
-                    "content": "string"
-                },
+                value={"id": 1, "content": "string"},
             )
         ],
     )
@@ -59,7 +57,7 @@ class ReviewCommentUpdateView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
-        # 선택된 댓글의 작성자와 수정요청자 동일여부 확인
+            # 선택된 댓글의 작성자와 수정요청자 동일여부 확인
             selected_comment = ReviewComment.objects.get(id=request.data["id"])
             if user_id != selected_comment.user.id:
                 return Response({"It's not your Comment"}, status.HTTP_400_BAD_REQUEST)
@@ -76,7 +74,8 @@ class ReviewCommentUpdateView(APIView):
 class ReviewCommentDeleteView(APIView):
     serializer_class = DeleteReviewCommentSerializer
 
-    @extend_schema(tags=["comment"],
+    @extend_schema(
+        tags=["comment"],
         examples=[
             OpenApiExample(
                 "Example",

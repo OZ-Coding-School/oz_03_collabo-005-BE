@@ -9,6 +9,7 @@ from rest_framework.views import APIView
 from categories.models import ReviewCategory
 from categories.serializers import ReviewCategorySerializer
 from comments.models import ReviewComment
+from profiles.views import UserLikedReviewView
 
 from .models import Review
 from .serializers import (
@@ -96,9 +97,23 @@ class ReviewDetailView(APIView):
         operation_id="review_detail",
     )
     def get(self, request, uuid):
+        # 리퀘스트에서 유저 정보를 확인하고
+        # 유저정보가 있다면 해당 유저의 프로필에서 좋아요 정보를 확인하고
+        # 요청 받은 리뷰와 동일한 uuid가 있다면 is_like = Ture반환
+        user_liked_review_view = UserLikedReviewView()
+        user_liked_review_response = user_liked_review_view.get(request)
+        is_liked = False
         try:
             selected_review = Review.objects.get(uuid=uuid)
             review_data = ReviewDetailSerializer(instance=selected_review).data
+            # 요청자의 좋아요 리스트에 해당 글이 있는가?
+            if user_liked_review_response.status_code == 200:
+                liked_review_data = user_liked_review_response.data
+                for meeting in liked_review_data:
+                    uuid = str(meeting.get("uuid"))
+                    if uuid == str(selected_review.uuid):
+                        is_liked = True
+                        break
 
         except Review.DoesNotExist:
             raise NotFound("The review does not exist")
@@ -113,6 +128,7 @@ class ReviewDetailView(APIView):
         review_detail = {
             "review": review_data,
             "comments": comments_data,
+            "is_liked": is_liked,
         }
 
         return Response(review_detail, status=status.HTTP_200_OK)

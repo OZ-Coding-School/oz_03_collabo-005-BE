@@ -127,8 +127,7 @@ class ReviewDetailView(APIView):
 
         if is_liked:
             comments_data.is_liked = True
-        else:
-            comments_data.is_liked = False
+
         review_detail = {
             "review": review_data,
             "comments": comments_data,

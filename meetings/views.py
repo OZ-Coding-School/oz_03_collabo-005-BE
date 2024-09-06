@@ -156,9 +156,6 @@ class MeetingDetailView(APIView):
         except Meeting.DoesNotExist:
             raise NotFound("The meeting does not exist")
 
-        if is_liked:
-            comments_data.is_liked = True
-
         meeting_detail = {
             "meeting": MeetingDetailSerializer(instance=selected_meeting).data,
             "meeting_member": MeetingMemberSerializer(

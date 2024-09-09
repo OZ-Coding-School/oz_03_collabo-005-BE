@@ -50,9 +50,9 @@ class MeetingListView(APIView):
     )
     def get(self, request):
         # meeting_time이 현 시간보다 크거나 같아야 한다.
-        meetings = Meeting.objects.filter(
-            meeting_time__gt=timezone.now()
-        ).order_by("-created_at")
+        meetings = Meeting.objects.filter(meeting_time__gt=timezone.now()).order_by(
+            "-created_at"
+        )
 
         time_categories = TimeSortCategory.objects.order_by(
             Case(
@@ -215,7 +215,9 @@ class MeetingCreateView(APIView):
             MeetingAgeGroup.DoesNotExist,
             MeetingGenderGroup.DoesNotExist,
         ):
-            return Response({"detail": "Data Not Found"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"detail": "Data Not Found"}, status=status.HTTP_400_BAD_REQUEST
+            )
 
         # 번개 모임 생성
         created_meeting = Meeting.objects.create(

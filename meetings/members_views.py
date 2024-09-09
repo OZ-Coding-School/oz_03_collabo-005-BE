@@ -181,6 +181,7 @@ class MeetingCommentsCreateView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+# 소통방 댓글 수정
 class MeetingCommentUpdateView(APIView):
 
     serializer_class = MeetingCommentUpdateSerializer
@@ -195,6 +196,9 @@ class MeetingCommentUpdateView(APIView):
 
         try:
             comment = MeetingComment.objects.get(id=request.data["comment_id"])
+            user = request.user
+            if user.id != comment.user.id:
+                return Response({"It's not your Comment"}, status.HTTP_400_BAD_REQUEST)
 
             comment.content = request.data["content"]
 
@@ -208,6 +212,7 @@ class MeetingCommentUpdateView(APIView):
         return Response({"detail": "update success"}, status=status.HTTP_200_OK)
 
 
+# 소통방 댓글 삭제
 class MeetingCommentDeleteView(APIView):
 
     serializer_class = MeetingCommentDeleteSerializer
@@ -222,6 +227,10 @@ class MeetingCommentDeleteView(APIView):
 
         try:
             meeting_comment = MeetingComment.objects.get(id=request.data["comment_id"])
+            user = request.user
+
+            if user.id != meeting_comment.id:
+                return Response({"It's not your Comment"}, status.HTTP_400_BAD_REQUEST)
 
         except MeetingComment.DoesNotExist:
             return Response(

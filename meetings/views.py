@@ -6,7 +6,6 @@ from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from profiles.views import UserLikedMeetingView
 
 from categories.models import (
     Location,
@@ -16,14 +15,17 @@ from categories.models import (
     TimeSortCategory,
 )
 from categories.serializers import LocationSerializer, TimeCategorySerializer
+from profiles.views import UserLikedMeetingView
 from users.models import CustomUser
 
 from .models import Meeting, MeetingMember
 from .serializers import (
+    JoinMeetingMemberSerializer,
     MeetingCreateSerializer,
     MeetingDetailSerializer,
     MeetingListSerializer,
     MeetingMemberSerializer,
+    MeetingUpdateSerializer,
 )
 
 
@@ -163,7 +165,6 @@ class MeetingDetailView(APIView):
                 if user.id == selected_meeting.user_id:
                     is_host = True
 
-
         except Meeting.DoesNotExist:
             raise NotFound("The meeting does not exist")
 
@@ -173,7 +174,7 @@ class MeetingDetailView(APIView):
                 instance=meeting_member, many=True
             ).data,
             "is_liked": is_liked,
-            "is_host": is_host
+            "is_host": is_host,
         }
 
         # 게시물 조회 시 조회수 상승
@@ -241,3 +242,85 @@ class MeetingCreateView(APIView):
             {"created_meeting": serializer.data, "meeting_uuid": created_meeting.uuid},
             status=status.HTTP_201_CREATED,
         )
+
+
+# 번개 모임 수정
+class MeetingUpdateView(APIView):
+
+    serializer_class = MeetingUpdateSerializer
+
+    @extend_schema(tags=["meeting"])
+    def post(self, request):
+
+        serializer = self.serializer_class(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            selected_meeting = Meeting.objects.get(uuid=request.data["meeting_uuid"])
+            title = request.data["title"]
+            location = Location.objects.get(location_name=request.data["location_name"])
+            payment_method = MeetingPaymentMethod.objects.get(
+                payment_method=request.data["payment_method_name"]
+            )
+            age_group = MeetingAgeGroup.objects.get(
+                age_group=request.data["age_group_name"]
+            )
+            gender_group = MeetingGenderGroup.objects.get(
+                gender_group=request.data["gender_group_name"]
+            )
+            meeting_time = request.data["meeting_time"]
+            description = request.data["description"]
+            meeting_image_url = request.data["meeting_image_url"]
+            maximum = request.data["maximum"]
+
+        except (
+            Meeting.DoesNotExist,
+            Location.DoesNotExist,
+            MeetingPaymentMethod.DoesNotExist,
+            MeetingAgeGroup.DoesNotExist,
+            MeetingGenderGroup.DoesNotExist,
+        ):
+            return Response(
+                {"detail": "data not found"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        selected_meeting.title = title
+        selected_meeting.location_id = location.pk
+        selected_meeting.payment_method_id = payment_method.pk
+        selected_meeting.age_group_id = age_group.pk
+        selected_meeting.gender_group_id = gender_group.pk
+        selected_meeting.meeting_time = meeting_time
+        selected_meeting.description = description
+        selected_meeting.meeting_image_url = meeting_image_url
+        selected_meeting.maximum = maximum
+
+        selected_meeting.save()
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+# 번개 모임 삭제
+class MeetingDeleteView(APIView):
+
+    serializer_class = JoinMeetingMemberSerializer
+
+    @extend_schema(tags=["meeting"])
+    def post(self, request):
+
+        serializer = self.serializer_class(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            selected_meeting = Meeting.objects.get(uuid=request.data["meeting_uuid"])
+
+        except Meeting.DoesNotExist:
+            return Response(
+                {"detail": "meeting does not exist"}, status=status.HTTP_404_NOT_FOUND
+            )
+
+        selected_meeting.delete()
+
+        return Response({"detail": "delete success"}, status=status.HTTP_200_OK)

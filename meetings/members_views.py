@@ -229,7 +229,7 @@ class MeetingCommentDeleteView(APIView):
             meeting_comment = MeetingComment.objects.get(id=request.data["comment_id"])
             user = request.user
 
-            if user.id != meeting_comment.user.id:
+            if user != meeting_comment.user:
                 return Response({"It's not your Comment"}, status.HTTP_400_BAD_REQUEST)
 
         except MeetingComment.DoesNotExist:

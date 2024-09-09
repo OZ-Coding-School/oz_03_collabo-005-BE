@@ -120,6 +120,30 @@ class MeetingCreateSerializer(serializers.ModelSerializer):
         )
 
 
+
+class MeetingUpdateSerializer(serializers.ModelSerializer):
+    meeting_uuid = serializers.UUIDField()
+    payment_method_name = serializers.CharField()
+    age_group_name = serializers.CharField()
+    gender_group_name = serializers.CharField()
+    location_name = serializers.CharField()
+
+    class Meta:
+        model = Meeting
+        fields = (
+            "meeting_uuid",
+            "title",
+            "location_name",
+            "payment_method_name",
+            "age_group_name",
+            "gender_group_name",
+            "meeting_time",
+            "description",
+            "meeting_image_url",
+            "maximum",
+        )
+
+
 class JoinMeetingMemberSerializer(serializers.Serializer):
     meeting_uuid = serializers.CharField()
 

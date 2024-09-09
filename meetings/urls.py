@@ -14,6 +14,8 @@ from .views import (
     MeetingCreateView,
     MeetingDetailView,
     MeetingListView,
+    MeetingUpdateView,
+    MeetingDeleteView,
 )
 
 urlpatterns = [
@@ -25,6 +27,8 @@ urlpatterns = [
     ),
     path("<uuid:uuid>/", MeetingDetailView.as_view(), name="meeting_detail"),
     path("create/", MeetingCreateView.as_view(), name="create_meeting"),
+    path("update/", MeetingUpdateView.as_view(), name="update_meeting"),
+    path("delete/", MeetingDeleteView.as_view(), name="delete_meeting"),
     path("member/", CreateMeetingMemberView.as_view(), name="join_meeting_member"),
     path(
         "member/delete/",

@@ -121,7 +121,6 @@ class MeetingCreateSerializer(serializers.ModelSerializer):
         )
 
 
-
 class MeetingUpdateSerializer(serializers.ModelSerializer):
     meeting_uuid = serializers.UUIDField()
     payment_method_name = serializers.CharField()

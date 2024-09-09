@@ -6,7 +6,6 @@ from rest_framework.exceptions import NotFound
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from profiles.views import UserLikedMeetingView
 
 from categories.models import (
     Location,
@@ -16,16 +15,17 @@ from categories.models import (
     TimeSortCategory,
 )
 from categories.serializers import LocationSerializer, TimeCategorySerializer
+from profiles.views import UserLikedMeetingView
 from users.models import CustomUser
 
 from .models import Meeting, MeetingMember
 from .serializers import (
+    JoinMeetingMemberSerializer,
     MeetingCreateSerializer,
     MeetingDetailSerializer,
     MeetingListSerializer,
     MeetingMemberSerializer,
     MeetingUpdateSerializer,
-    JoinMeetingMemberSerializer,
 )
 
 
@@ -165,7 +165,6 @@ class MeetingDetailView(APIView):
                 if user.id == selected_meeting.user_id:
                     is_host = True
 
-
         except Meeting.DoesNotExist:
             raise NotFound("The meeting does not exist")
 
@@ -175,7 +174,7 @@ class MeetingDetailView(APIView):
                 instance=meeting_member, many=True
             ).data,
             "is_liked": is_liked,
-            "is_host": is_host
+            "is_host": is_host,
         }
 
         # 게시물 조회 시 조회수 상승
@@ -259,7 +258,7 @@ class MeetingUpdateView(APIView):
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         try:
             selected_meeting = Meeting.objects.get(uuid=request.data["meeting_uuid"])
-            title = (request.data["title"])
+            title = request.data["title"]
             location = Location.objects.get(location_name=request.data["location_name"])
             payment_method = MeetingPaymentMethod.objects.get(
                 payment_method=request.data["payment_method_name"]

@@ -12,10 +12,10 @@ from .members_views import (
 from .views import (
     FilterMeetingListView,
     MeetingCreateView,
+    MeetingDeleteView,
     MeetingDetailView,
     MeetingListView,
     MeetingUpdateView,
-    MeetingDeleteView,
 )
 
 urlpatterns = [

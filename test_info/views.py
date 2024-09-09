@@ -98,7 +98,7 @@ class FTITestQuestionListView(APIView):
 
     @extend_schema(tags=["Fti_test"])
     def get(self, request):
-        questions = FTITestQuestion.objects.all()
+        questions = FTITestQuestion.objects.all().order_by("id")
         serializer = self.serializer_class(instance=questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

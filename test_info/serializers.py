@@ -9,7 +9,10 @@ from .models import FTITestQuestion, FTITestResult, TasteTestAnswer, TasteTestQu
 class FTITestQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = FTITestQuestion
-        fields = ("fti_question",)
+        fields = (
+            "fti_question",
+            "fti_question_image",
+        )
 
 
 class UserFTITestResultSerializer(serializers.Serializer):

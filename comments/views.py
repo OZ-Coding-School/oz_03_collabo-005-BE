@@ -102,4 +102,4 @@ class ReviewCommentDeleteView(APIView):
             return Response({"detail": "Delete successful"}, status=status.HTTP_200_OK)
 
         except ReviewComment.DoesNotExist:
-            raise NotFound()
+            raise NotFound

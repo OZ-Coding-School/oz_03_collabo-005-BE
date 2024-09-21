@@ -22,6 +22,7 @@ from .serializers import (
 
 # 리뷰 목록 조회
 class ReviewListView(APIView):
+
     permission_classes = (AllowAny,)
 
     @extend_schema(
@@ -99,12 +100,14 @@ class ReviewDetailView(APIView):
     def get(self, request, uuid):
         # 리퀘스트에서 유저 정보를 확인하고
         # 유저정보가 있다면 해당 유저의 프로필에서 좋아요 정보를 확인하고
-        # 요청 받은 리뷰와 동일한 uuid가 있다면 is_like = Ture반환
+        # 요청 받은 리뷰와 동일한 uuid가 있다면 is_like = True반환
         user = request.user
         is_liked = False
         try:
             selected_review = Review.objects.get(uuid=uuid)
-            review_data = ReviewDetailSerializer(instance=selected_review).data
+            review_data = ReviewDetailSerializer(
+                instance=selected_review, context={"request": request}
+            ).data
 
             if not user.is_anonymous:
                 user_liked_review_view = UserLikedReviewView()
@@ -126,7 +129,9 @@ class ReviewDetailView(APIView):
         selected_review.save()
 
         comments = ReviewComment.objects.filter(review_id=selected_review.id)
-        comments_data = ReviewCommentSerializer(instance=comments, many=True).data
+        comments_data = ReviewCommentSerializer(
+            instance=comments, context={"request": request}, many=True
+        ).data
 
         review_detail = {
             "review": review_data,

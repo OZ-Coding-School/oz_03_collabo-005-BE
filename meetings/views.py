@@ -166,7 +166,7 @@ class MeetingDetailView(APIView):
                     is_host = True
 
         except Meeting.DoesNotExist:
-            raise NotFound("The meeting does not exist")
+            raise NotFound
 
         meeting_detail = {
             "meeting": MeetingDetailSerializer(instance=selected_meeting).data,

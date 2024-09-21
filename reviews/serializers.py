@@ -1,3 +1,5 @@
+from lib2to3.fixes.fix_input import context
+
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
@@ -20,7 +22,6 @@ class ReviewListSerializer(serializers.ModelSerializer):
             "content",
             "hits",
             "review_image_url",
-            "is_host",
             "created_at",
             "comment_count",
         )
@@ -33,6 +34,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
 class ReviewCommentSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
     profile_image_url = serializers.SerializerMethodField()
+    is_host = serializers.SerializerMethodField()
 
     class Meta:
         model = ReviewComment
@@ -42,6 +44,7 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
             "profile_image_url",
             "created_at",
             "content",
+            "is_host",
         )
 
     @extend_schema_field(serializers.CharField)
@@ -53,6 +56,11 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
     def get_profile_image_url(self, obj):
         reviewer = obj.user
         return reviewer.profile_image_url
+
+    @extend_schema_field(serializers.BooleanField)
+    def get_is_host(self, obj):
+        request = self.context["request"]
+        return request.user == obj.user
 
 
 class ReviewDetailSerializer(serializers.ModelSerializer):

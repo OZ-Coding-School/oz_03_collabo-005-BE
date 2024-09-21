@@ -147,7 +147,9 @@ class MeetingCommentsView(APIView):
                 {"detail": "Meeting not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = self.serializer_class(instance=meeting_comments, context={"request": request}, many=True)
+        serializer = self.serializer_class(
+            instance=meeting_comments, context={"request": request}, many=True
+        )
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

@@ -178,6 +178,7 @@ class MeetingCommentSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         return request.user == obj.user
 
+
 class MeetingCommentCreateSerializer(serializers.ModelSerializer):
     meeting_uuid = serializers.UUIDField()
 
@@ -196,4 +197,3 @@ class MeetingCommentUpdateSerializer(serializers.Serializer):
 
 class MeetingCommentDeleteSerializer(serializers.Serializer):
     comment_id = serializers.IntegerField()
-

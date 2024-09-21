@@ -152,6 +152,7 @@ class MeetingCommentSerializer(serializers.ModelSerializer):
 
     nickname = serializers.SerializerMethodField()
     profile_image_url = serializers.SerializerMethodField()
+    is_owner = serializers.SerializerMethodField()
 
     class Meta:
         model = MeetingComment
@@ -161,6 +162,7 @@ class MeetingCommentSerializer(serializers.ModelSerializer):
             "profile_image_url",
             "content",
             "created_at",
+            "is_owner",
         )
 
     @extend_schema_field(serializers.CharField)
@@ -171,6 +173,10 @@ class MeetingCommentSerializer(serializers.ModelSerializer):
     def get_profile_image_url(self, obj):
         return obj.user.profile_image_url
 
+    @extend_schema_field(serializers.BooleanField)
+    def get_is_owner(self, obj):
+        request = self.context["request"]
+        return request.user == obj.user
 
 class MeetingCommentCreateSerializer(serializers.ModelSerializer):
     meeting_uuid = serializers.UUIDField()
@@ -190,3 +196,4 @@ class MeetingCommentUpdateSerializer(serializers.Serializer):
 
 class MeetingCommentDeleteSerializer(serializers.Serializer):
     comment_id = serializers.IntegerField()
+

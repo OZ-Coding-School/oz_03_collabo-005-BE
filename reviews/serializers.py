@@ -68,9 +68,6 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
     category_name = serializers.SerializerMethodField()
-    comments = ReviewCommentSerializer(
-        many=True, read_only=True, source="review_comments"
-    )
 
     class Meta:
         model = Review
@@ -86,7 +83,6 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
             "comment_count",
             "likes_count",
             "created_at",
-            "comments",
         )
 
     @extend_schema_field(serializers.IntegerField)

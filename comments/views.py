@@ -17,7 +17,7 @@ from .serializers import (
 class CreateReviewCommentView(APIView):
     serializer_class = CreateReviewCommentSerializer
 
-    @extend_schema(tags=["comment"])
+    @extend_schema(tags=["Comment"])
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
         if not serializer.is_valid():
@@ -41,7 +41,7 @@ class ReviewCommentUpdateView(APIView):
     serializer_class = UpdateReviewCommentSerializer
 
     @extend_schema(
-        tags=["comment"],
+        tags=["Comment"],
         examples=[
             OpenApiExample(
                 "Example",
@@ -75,7 +75,7 @@ class ReviewCommentDeleteView(APIView):
     serializer_class = DeleteReviewCommentSerializer
 
     @extend_schema(
-        tags=["comment"],
+        tags=["Comment"],
         examples=[
             OpenApiExample(
                 "Example",

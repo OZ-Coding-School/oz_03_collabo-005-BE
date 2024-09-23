@@ -89,6 +89,7 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
 
 
 class MeetingMemberSerializer(serializers.ModelSerializer):
+    is_owner = serializers.SerializerMethodField()
 
     class Meta:
         model = CustomUser
@@ -97,7 +98,12 @@ class MeetingMemberSerializer(serializers.ModelSerializer):
             "nickname",
             "profile_image_url",
             "introduction",
+            "is_owner",
         )
+
+    def get_is_owner(self, obj):
+        request = self.context["request"]
+        return obj.pk == request.user.pk
 
 
 class MeetingCreateSerializer(serializers.ModelSerializer):

@@ -118,7 +118,7 @@ class MeetingDetailView(APIView):
     permission_classes = (AllowAny,)
 
     @extend_schema(
-        tags=["meeting"],
+        tags=["Meeting"],
         responses={
             200: OpenApiResponse(
                 response=inline_serializer(
@@ -170,11 +170,11 @@ class MeetingDetailView(APIView):
 
         meeting_detail = {
             "meeting": MeetingDetailSerializer(instance=selected_meeting).data,
-            "meeting_member": MeetingMemberSerializer(
-                instance=meeting_member, many=True
-            ).data,
             "is_liked": is_liked,
             "is_host": is_host,
+            "meeting_member": MeetingMemberSerializer(
+                instance=meeting_member, many=True, context={"request": request}
+            ).data,
         }
 
         # 게시물 조회 시 조회수 상승
@@ -188,7 +188,7 @@ class MeetingDetailView(APIView):
 class MeetingCreateView(APIView):
     serializer_class = MeetingCreateSerializer
 
-    @extend_schema(tags=["meeting"])
+    @extend_schema(tags=["Meeting"])
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
 
@@ -251,7 +251,7 @@ class MeetingUpdateView(APIView):
 
     serializer_class = MeetingUpdateSerializer
 
-    @extend_schema(tags=["meeting"])
+    @extend_schema(tags=["Meeting"])
     def post(self, request):
 
         serializer = self.serializer_class(data=request.data)
@@ -307,7 +307,7 @@ class MeetingDeleteView(APIView):
 
     serializer_class = JoinMeetingMemberSerializer
 
-    @extend_schema(tags=["meeting"])
+    @extend_schema(tags=["Meeting"])
     def post(self, request):
 
         serializer = self.serializer_class(data=request.data)

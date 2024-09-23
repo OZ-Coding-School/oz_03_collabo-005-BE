@@ -26,7 +26,7 @@ class ReviewListView(APIView):
     permission_classes = (AllowAny,)
 
     @extend_schema(
-        tags=["review"],
+        tags=["Review"],
         responses={
             200: OpenApiResponse(
                 response=inline_serializer(
@@ -68,7 +68,7 @@ class FilterReviewListView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = ReviewListSerializer
 
-    @extend_schema(tags=["review"])
+    @extend_schema(tags=["Review"])
     def get(self, request, category_name):
         category_id = ReviewCategory.objects.get(category=category_name).id
         reviews = Review.objects.filter(category=category_id)
@@ -83,7 +83,7 @@ class ReviewDetailView(APIView):
     permission_classes = (AllowAny,)
 
     @extend_schema(
-        tags=["review"],
+        tags=["Review"],
         responses={
             200: OpenApiResponse(
                 response=inline_serializer(
@@ -145,7 +145,7 @@ class ReviewDetailView(APIView):
 class ReviewDetailCreateView(APIView):
     serializer_class = CreateReviewSerializer
 
-    @extend_schema(tags=["review"])
+    @extend_schema(tags=["Review"])
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
 

@@ -45,7 +45,7 @@ class ProfileView(APIView):
 class ProfileUpdateView(APIView):
     serializer_class = CreateProfileSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def post(self, request):
         try:
             user_pk = request.user.pk
@@ -70,7 +70,7 @@ class ProfileUpdateView(APIView):
 class UserHostedMeetingView(APIView):
     serializer_class = UserMeetingSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def get(self, request):
         user = request.user
         hosted_meeting_ids = MeetingMember.objects.filter(
@@ -89,7 +89,7 @@ class UserHostedMeetingView(APIView):
 class UserJoinedMeetingView(APIView):
     serializer_class = UserMeetingSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def get(self, request):
         user = request.user
         joined_meeting_ids = MeetingMember.objects.filter(
@@ -106,7 +106,7 @@ class UserJoinedMeetingView(APIView):
 class UserLikedMeetingView(APIView):
     serializer_class = UserMeetingSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def get(self, request):
         user = request.user
         liked_meeting_ids = MeetingLike.objects.filter(user=user).values_list(
@@ -123,7 +123,7 @@ class UserLikedMeetingView(APIView):
 class UserHostedReviewView(APIView):
     serializer_class = UserReviewSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def get(self, request):
         user = request.user
         hosted_review_ids = Review.objects.filter(user=user, is_host=True).values_list(
@@ -140,7 +140,7 @@ class UserHostedReviewView(APIView):
 class UserCommentedReviewView(APIView):
     serializer_class = UserReviewSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def get(self, request):
         user = request.user
         commented_review_ids = ReviewComment.objects.filter(user=user).values_list(
@@ -157,7 +157,7 @@ class UserCommentedReviewView(APIView):
 class UserLikedReviewView(APIView):
     serializer_class = UserReviewSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def get(self, request):
         user = request.user
         liked_review_ids = ReviewLike.objects.filter(user=user).values_list(
@@ -175,7 +175,7 @@ class AnotherProfileView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = AnotherProfileSerializer
 
-    @extend_schema(tags=["profile"])
+    @extend_schema(tags=["Profile"])
     def get(self, request, nickname):
         nickname = nickname
 

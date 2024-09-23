@@ -55,11 +55,10 @@ class TimeCategorySerializer(serializers.ModelSerializer):
 
 
 class ReviewCategorySerializer(serializers.ModelSerializer):
-    is_host = serializers.SerializerMethodField()
 
     class Meta:
         model = ReviewCategory
         fields = (
             "id",
-            "is_host",
+            "category",
         )

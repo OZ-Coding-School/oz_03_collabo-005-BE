@@ -113,3 +113,22 @@ class CreateReviewSerializer(serializers.ModelSerializer):
             "content",
             "review_image_url",
         )
+
+class UpdateReviewSerializer(serializers.ModelSerializer):
+    review_uuid = serializers.UUIDField()
+    category_name = serializers.CharField()
+    nickname = serializers.CharField()
+
+    class Meta:
+        model = Review
+        fields = (
+            "review_uuid",
+            "title",
+            "category_name",
+            "nickname",
+            "content",
+            "review_image_url",
+        )
+
+class DeleteReviewSerializer(serializers.Serializer):
+    review_uuid = serializers.UUIDField()

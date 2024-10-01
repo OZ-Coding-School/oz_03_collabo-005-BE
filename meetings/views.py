@@ -33,7 +33,7 @@ class MeetingListView(APIView):
     permission_classes = (AllowAny,)
 
     @extend_schema(
-        tags=["meeting"],
+        tags=["Meeting"],
         responses={
             200: OpenApiResponse(
                 response=inline_serializer(
@@ -89,7 +89,7 @@ class FilterMeetingListView(APIView):
     permission_classes = (AllowAny,)
     serializer_class = MeetingListSerializer
 
-    @extend_schema(tags=["meeting"])
+    @extend_schema(tags=["Meeting"])
     def get(self, request, time_category, location_category):
 
         location_category_id = Location.objects.get(location_name=location_category).id

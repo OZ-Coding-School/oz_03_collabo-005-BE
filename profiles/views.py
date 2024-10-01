@@ -25,7 +25,7 @@ class ProfileView(APIView):
     serializer_class = ProfileSerializer
 
     @extend_schema(
-        tags=["profile"],
+        tags=["Profile"],
         operation_id="user_profile",
     )
     def get(self, request):

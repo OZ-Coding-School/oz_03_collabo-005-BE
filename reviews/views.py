@@ -1,7 +1,7 @@
 from django.db.models import Case, IntegerField, Value, When
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import status
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, ValidationError, PermissionDenied
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -17,6 +17,7 @@ from .serializers import (
     ReviewCommentSerializer,
     ReviewDetailSerializer,
     ReviewListSerializer,
+    UpdateReviewSerializer, DeleteReviewSerializer,
 )
 
 
@@ -172,3 +173,51 @@ class ReviewDetailCreateView(APIView):
             {"created_review": serializer.data, "review_uuid": created_review.uuid},
             status=status.HTTP_200_OK,
         )
+
+
+class ReviewDetailUpdate(APIView):
+
+    serializer_class = UpdateReviewSerializer
+
+    @extend_schema(tags=["Review"])
+    def post(self, request):
+        try:
+            review = Review.objects.get(uuid=request.data["review_uuid"])
+        except Review.DoesNotExist:
+            raise NotFound
+        except KeyError:
+            raise ValidationError("Need UUID")
+
+        # if request.user != review.user:
+        #     raise PermissionDenied
+
+
+        serializer = self.serializer_class(review, data=request.data, partial=True)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors)
+
+        review = serializer.save()
+        serializer = ReviewDetailSerializer(review)
+
+        return Response(serializer.data)
+
+
+class ReviewDetailDelete(APIView):
+    serializer_class = DeleteReviewSerializer
+
+    @extend_schema(tags=["Review"])
+    def post(self, request):
+        try:
+            review = Review.objects.get(uuid=request.data["review_uuid"])
+        except Review.DoesNotExist:
+            raise NotFound
+        except KeyError:
+            raise ValidationError
+
+        if request.user != review.user:
+            raise PermissionDenied
+
+        review.delete()
+
+        return Response(status=status.HTTP_204_NO_CONTENT)

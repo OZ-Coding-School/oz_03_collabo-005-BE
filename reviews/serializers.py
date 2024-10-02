@@ -68,6 +68,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     likes_count = serializers.SerializerMethodField()
     nickname = serializers.SerializerMethodField()
     category_name = serializers.SerializerMethodField()
+    is_host = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
@@ -83,6 +84,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
             "comment_count",
             "likes_count",
             "created_at",
+            "is_host"
         )
 
     @extend_schema_field(serializers.IntegerField)
@@ -100,6 +102,11 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.CharField)
     def get_category_name(self, obj):
         return obj.category.category
+
+    @extend_schema_field(serializers.BooleanField)
+    def get_is_host(self, obj):
+        request = self.context["request"]
+        return obj.user == request.user
 
 
 class CreateReviewSerializer(serializers.ModelSerializer):

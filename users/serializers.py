@@ -34,3 +34,9 @@ class LoginUserSerializer(serializers.Serializer):
             else:
                 raise serializers.ValidationError("로그인 정보가 올바르지 않습니다.")
         return data
+
+
+class DetailUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        exclude = ("password", "is_staff", "is_superuser")

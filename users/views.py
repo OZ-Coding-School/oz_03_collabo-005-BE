@@ -10,9 +10,11 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.exceptions import NotFound, ParseError
 
+from django.utils import timezone
 from .models import CustomUser
-from .serializers import LoginUserSerializer, SignUpUserSerializer
+from .serializers import LoginUserSerializer, SignUpUserSerializer, DetailUserSerializer
 
 
 # 회원가입
@@ -161,3 +163,56 @@ class CustomUserCheckNickView(APIView):
                 status=status.HTTP_400_BAD_REQUEST,
             )
         return Response(status=200)
+
+
+# 회원 탈퇴
+class DeleteUser(APIView):
+    serializer_class = LoginUserSerializer
+    @extend_schema(tags=["User"])
+    def post(self, request):
+        user = request.user
+        try:
+            password = request.data["password"]
+        except KeyError:
+            raise ParseError("Need Password")
+
+        if not user.check_password(password):
+            raise ParseError("Password is not valid")
+
+        user.deleted_at = timezone.localtime(timezone.now()).date()
+        user.is_active = False
+        user.save()
+
+        serializer = DetailUserSerializer(user)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+
+# 회원 탈퇴 취소
+# class CancelDeleteuser(APIView):
+#
+#     serializer_class = LoginUserSerializer
+#     @extend_schema(tags=["User"])
+#     def post(self, request):
+#         user = request.user
+#         try:
+#             password = request.data["password"]
+#         except KeyError:
+#             raise ParseError("Need Password")
+#
+#         if not user.check_password(password):
+#             raise ParseError("Password is not valid")
+#
+#         user.is_active = True
+#         user.deleted_at = None
+#         user.save()
+#
+#         serializer = DetailUserSerializer(user)
+#
+#         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+
+

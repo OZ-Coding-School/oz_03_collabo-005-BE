@@ -75,7 +75,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
     category_name = serializers.SerializerMethodField()
     is_host = serializers.SerializerMethodField()
-    profile_img = serializers.SerializerMethodField()
+    profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
@@ -88,7 +88,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
             "content",
             "review_image_url",
             "hits",
-            "profile_img",
+            "profile_image_url",
             "comment_count",
             "likes_count",
             "created_at",
@@ -117,7 +117,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
         return obj.user == request.user
 
     @extend_schema_field(serializers.URLField)
-    def get_profile_img(self, obj):
+    def get_profile_image_url(self, obj):
         return obj.user.profile_image_url
 
 

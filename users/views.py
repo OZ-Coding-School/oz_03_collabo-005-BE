@@ -214,5 +214,11 @@ class DeleteUser(APIView):
 #         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+# 비밀번호 재설정
+class UpdatePassword(APIView):
+    @extend_schema(tags=["User"])
+    def post(self, request):
+        user = request.user
+        user.pa
 
 

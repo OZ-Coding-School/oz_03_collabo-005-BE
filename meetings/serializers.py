@@ -11,6 +11,7 @@ class MeetingListSerializer(serializers.ModelSerializer):
     age_group_name = serializers.SerializerMethodField()
     gender_group_name = serializers.SerializerMethodField()
     location_name = serializers.SerializerMethodField()
+    profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Meeting
@@ -25,6 +26,7 @@ class MeetingListSerializer(serializers.ModelSerializer):
             "gender_group",
             "gender_group_name",
             "meeting_time",
+            "profile_image_url",
             "meeting_image_url",
             "description",
             "created_at",
@@ -46,6 +48,10 @@ class MeetingListSerializer(serializers.ModelSerializer):
     def get_location_name(self, obj):
         return obj.location.location_name
 
+    @extend_schema_field(serializers.URLField)
+    def get_profile_image_url(self, obj):
+        return obj.user.profile_image_url
+
 
 
 class MeetingDetailSerializer(serializers.ModelSerializer):
@@ -54,6 +60,7 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
     age_group_name = serializers.SerializerMethodField()
     gender_group_name = serializers.SerializerMethodField()
     location_name= serializers.SerializerMethodField()
+    profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Meeting
@@ -72,6 +79,7 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
             "meeting_time",
             "description",
             "meeting_image_url",
+            "profile_image_url",
             "hits",
             "maximum",
             "likes_count",
@@ -100,6 +108,9 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
     def get_location_name(self, obj):
         return obj.location.location_name
 
+    @extend_schema_field(serializers.URLField)
+    def get_profile_image_url(self, obj):
+        return obj.user.profile_image_url
 
 class MeetingMemberSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()

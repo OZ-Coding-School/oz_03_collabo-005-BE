@@ -10,6 +10,7 @@ from reviews.models import Review
 
 class ReviewListSerializer(serializers.ModelSerializer):
     category_name = serializers.SerializerMethodField()
+    profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
@@ -21,6 +22,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
             "title",
             "content",
             "hits",
+            "profile_image_url",
             "review_image_url",
             "created_at",
             "comment_count",
@@ -30,6 +32,9 @@ class ReviewListSerializer(serializers.ModelSerializer):
     def get_category_name(self, obj):
         return obj.category.category
 
+    @extend_schema_field(serializers.URLField)
+    def get_profile_image_url(self, obj):
+        return obj.user.profile_image_url
 
 class ReviewCommentSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
@@ -69,6 +74,7 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
     category_name = serializers.SerializerMethodField()
     is_host = serializers.SerializerMethodField()
+    profile_img = serializers.SerializerMethodField()
 
     class Meta:
         model = Review
@@ -81,10 +87,11 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
             "content",
             "review_image_url",
             "hits",
+            "profile_img",
             "comment_count",
             "likes_count",
             "created_at",
-            "is_host"
+            "is_host",
         )
 
     @extend_schema_field(serializers.IntegerField)
@@ -107,6 +114,10 @@ class ReviewDetailSerializer(serializers.ModelSerializer):
     def get_is_host(self, obj):
         request = self.context["request"]
         return obj.user == request.user
+
+    @extend_schema_field(serializers.URLField)
+    def get_profile_img(self, obj):
+        return obj.user.profile_image_url
 
 
 class CreateReviewSerializer(serializers.ModelSerializer):

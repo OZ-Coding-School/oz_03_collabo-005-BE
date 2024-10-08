@@ -4,7 +4,8 @@ from .views import (
     CustomUserCheckEmailView,
     CustomUserCheckNickView,
     CustomUserLoginView,
-    CustomUserSignUpView, DeleteUser,
+    CustomUserSignUpView,
+    DeleteUser,
 )
 
 urlpatterns = [

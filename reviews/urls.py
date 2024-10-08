@@ -3,9 +3,10 @@ from rest_framework.urls import path
 from .views import (
     FilterReviewListView,
     ReviewDetailCreateView,
+    ReviewDetailDelete,
+    ReviewDetailUpdate,
     ReviewDetailView,
     ReviewListView,
-    ReviewDetailUpdate, ReviewDetailDelete,
 )
 
 urlpatterns = [
@@ -16,7 +17,9 @@ urlpatterns = [
         name="filter_reviews",
     ),
     path("detail/<uuid:uuid>/", ReviewDetailView.as_view(), name="review_detail"),
-    path("detail/create/", ReviewDetailCreateView.as_view(), name="review_detail_create"),
+    path(
+        "detail/create/", ReviewDetailCreateView.as_view(), name="review_detail_create"
+    ),
     path("detail/update/", ReviewDetailUpdate.as_view(), name="review_detail_update"),
     path("detail/delete/", ReviewDetailDelete.as_view(), name="review_detail_delete"),
 ]

@@ -53,13 +53,12 @@ class MeetingListSerializer(serializers.ModelSerializer):
         return obj.user.profile_image_url
 
 
-
 class MeetingDetailSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
     payment_method_name = serializers.SerializerMethodField()
     age_group_name = serializers.SerializerMethodField()
     gender_group_name = serializers.SerializerMethodField()
-    location_name= serializers.SerializerMethodField()
+    location_name = serializers.SerializerMethodField()
     profile_image_url = serializers.SerializerMethodField()
 
     class Meta:
@@ -111,6 +110,7 @@ class MeetingDetailSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.URLField)
     def get_profile_image_url(self, obj):
         return obj.user.profile_image_url
+
 
 class MeetingMemberSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()

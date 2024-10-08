@@ -1,7 +1,7 @@
 from django.db.models import Case, IntegerField, Value, When
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import status
-from rest_framework.exceptions import NotFound, ValidationError, PermissionDenied
+from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -14,10 +14,11 @@ from profiles.views import UserLikedReviewView
 from .models import Review
 from .serializers import (
     CreateReviewSerializer,
+    DeleteReviewSerializer,
     ReviewCommentSerializer,
     ReviewDetailSerializer,
     ReviewListSerializer,
-    UpdateReviewSerializer, DeleteReviewSerializer,
+    UpdateReviewSerializer,
 )
 
 
@@ -190,7 +191,6 @@ class ReviewDetailUpdate(APIView):
 
         # if request.user != review.user:
         #     raise PermissionDenied
-
 
         serializer = self.serializer_class(review, data=request.data, partial=True)
 

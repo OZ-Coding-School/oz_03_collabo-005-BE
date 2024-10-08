@@ -1,3 +1,4 @@
+from django.utils import timezone
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import (
     OpenApiExample,
@@ -6,15 +7,14 @@ from drf_spectacular.utils import (
     extend_schema,
 )
 from rest_framework import status
+from rest_framework.exceptions import NotFound, ParseError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.exceptions import NotFound, ParseError
 
-from django.utils import timezone
 from .models import CustomUser
-from .serializers import LoginUserSerializer, SignUpUserSerializer, DetailUserSerializer
+from .serializers import DetailUserSerializer, LoginUserSerializer, SignUpUserSerializer
 
 
 # 회원가입
@@ -168,6 +168,7 @@ class CustomUserCheckNickView(APIView):
 # 회원 탈퇴
 class DeleteUser(APIView):
     serializer_class = LoginUserSerializer
+
     @extend_schema(tags=["User"])
     def post(self, request):
         user = request.user
@@ -186,8 +187,6 @@ class DeleteUser(APIView):
         serializer = DetailUserSerializer(user)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 
 
 # 회원 탈퇴 취소
@@ -220,5 +219,3 @@ class UpdatePassword(APIView):
     def post(self, request):
         user = request.user
         user.pa
-
-

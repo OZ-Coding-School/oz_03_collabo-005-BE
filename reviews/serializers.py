@@ -36,6 +36,7 @@ class ReviewListSerializer(serializers.ModelSerializer):
     def get_profile_image_url(self, obj):
         return obj.user.profile_image_url
 
+
 class ReviewCommentSerializer(serializers.ModelSerializer):
     nickname = serializers.SerializerMethodField()
     profile_image_url = serializers.SerializerMethodField()
@@ -132,6 +133,7 @@ class CreateReviewSerializer(serializers.ModelSerializer):
             "review_image_url",
         )
 
+
 class UpdateReviewSerializer(serializers.ModelSerializer):
     review_uuid = serializers.UUIDField()
     category_name = serializers.CharField()
@@ -147,6 +149,7 @@ class UpdateReviewSerializer(serializers.ModelSerializer):
             "content",
             "review_image_url",
         )
+
 
 class DeleteReviewSerializer(serializers.Serializer):
     review_uuid = serializers.UUIDField()

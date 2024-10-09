@@ -189,8 +189,8 @@ class ReviewDetailUpdate(APIView):
         except KeyError:
             raise ValidationError("Need UUID")
 
-        # if request.user != review.user:
-        #     raise PermissionDenied
+        if request.user != review.user:
+            raise PermissionDenied
 
         serializer = self.serializer_class(review, data=request.data, partial=True)
 
@@ -198,7 +198,7 @@ class ReviewDetailUpdate(APIView):
             return Response(serializer.errors)
 
         review = serializer.save()
-        serializer = ReviewDetailSerializer(review)
+        serializer = ReviewDetailSerializer(review, context={"request": request})
 
         return Response(serializer.data)
 

@@ -72,7 +72,7 @@ class ReviewCommentSerializer(serializers.ModelSerializer):
 class ReviewDetailSerializer(serializers.ModelSerializer):
     comment_count = serializers.SerializerMethodField()
     likes_count = serializers.SerializerMethodField()
-    nickname = serializers.SerializerMethodField()
+    nickname = serializers.SerializerMethodField(read_only=True)
     category_name = serializers.SerializerMethodField()
     is_host = serializers.SerializerMethodField()
     profile_image_url = serializers.SerializerMethodField()

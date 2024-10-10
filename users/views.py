@@ -1,24 +1,24 @@
-
-from django.utils import timezone
 from django.conf import settings
 from django.core.mail import send_mail
+from django.utils import timezone
 from drf_spectacular.types import OpenApiTypes
-from drf_spectacular.utils import (
-    OpenApiExample,
-    OpenApiResponse,
-    extend_schema,
-)
+from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema
 from rest_framework import status
 from rest_framework.exceptions import ParseError, PermissionDenied
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 
 from .models import CustomUser
-from .serializers import DetailUserSerializer, LoginUserSerializer, SignUpUserSerializer, VerifyEmailSerializer, \
-    SendEmailTokenSerializer
+from .serializers import (
+    DetailUserSerializer,
+    LoginUserSerializer,
+    SendEmailTokenSerializer,
+    SignUpUserSerializer,
+    VerifyEmailSerializer,
+)
 
 
 # 회원가입
@@ -221,6 +221,7 @@ class SendJWTEmail(APIView):
 class VerifyJWTEmail(APIView):
     permission_classes = (AllowAny,)
     serializer_class = VerifyEmailSerializer
+
     @extend_schema(tags=["User"])
     def post(self, request):
         try:

@@ -40,3 +40,11 @@ class DetailUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = ("password", "is_staff", "is_superuser")
+
+
+class SendEmailTokenSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+
+
+class VerifyEmailSerializer(serializers.Serializer):
+    token = serializers.CharField()

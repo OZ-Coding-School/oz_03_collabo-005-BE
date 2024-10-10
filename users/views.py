@@ -1,20 +1,24 @@
+
 from django.utils import timezone
+from django.conf import settings
+from django.core.mail import send_mail
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import (
     OpenApiExample,
-    OpenApiParameter,
     OpenApiResponse,
     extend_schema,
 )
 from rest_framework import status
-from rest_framework.exceptions import NotFound, ParseError
+from rest_framework.exceptions import ParseError, PermissionDenied
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.exceptions import TokenError
 
 from .models import CustomUser
-from .serializers import DetailUserSerializer, LoginUserSerializer, SignUpUserSerializer
+from .serializers import DetailUserSerializer, LoginUserSerializer, SignUpUserSerializer, VerifyEmailSerializer, \
+    SendEmailTokenSerializer
 
 
 # 회원가입
@@ -189,6 +193,48 @@ class DeleteUser(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+# 이메일 인증번호 전송
+class SendJWTEmail(APIView):
+
+    permission_classes = (AllowAny,)
+    serializer_class = SendEmailTokenSerializer
+
+    @extend_schema(tags=["User"])
+    def post(self, request):
+        try:
+            email = request.data["email"]
+        except KeyError:
+            raise ParseError("Need email")
+
+        refresh = RefreshToken()
+        refresh["email"] = email
+        token = str(refresh.access_token)
+
+        subject = "이메일 인증 코드"
+        message = f"이메일 인증을 위해 아래 토큰을 입력해주세요. \n\n{token}"
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
+
+        return Response(status=status.HTTP_200_OK)
+
+
+# 이메일 인증번호 검증
+class VerifyJWTEmail(APIView):
+    permission_classes = (AllowAny,)
+    serializer_class = VerifyEmailSerializer
+    @extend_schema(tags=["User"])
+    def post(self, request):
+        try:
+            token = request.data["token"]
+            AccessToken(token)
+
+            return Response(status=status.HTTP_200_OK)
+        except KeyError:
+            raise ParseError
+
+        except TokenError:
+            raise PermissionDenied
+
+
 # 회원 탈퇴 취소
 # class CancelDeleteuser(APIView):
 #
@@ -213,9 +259,9 @@ class DeleteUser(APIView):
 #         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# 비밀번호 재설정
-class UpdatePassword(APIView):
-    @extend_schema(tags=["User"])
-    def post(self, request):
-        user = request.user
-        user.pa
+# # 비밀번호 재설정
+# class UpdatePassword(APIView):
+#     @extend_schema(tags=["User"])
+#     def post(self, request):
+#         user = request.user
+#         user.pa

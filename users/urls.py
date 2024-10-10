@@ -5,7 +5,7 @@ from .views import (
     CustomUserCheckNickView,
     CustomUserLoginView,
     CustomUserSignUpView,
-    DeleteUser,
+    DeleteUser, SendJWTEmail, VerifyJWTEmail,
 )
 
 urlpatterns = [
@@ -15,4 +15,6 @@ urlpatterns = [
     path("checkNickname/", CustomUserCheckNickView.as_view(), name="check_nick"),
     path("delete/", DeleteUser.as_view(), name="delete_user"),
     # path("cancerDelete/", CancelDeleteuser.as_view(), name="cancel_delete_user"),
+    path("send/email/token/", SendJWTEmail.as_view(), name="send_email_token"),
+    path("verify/email/", VerifyJWTEmail.as_view(), name="verify_email"),
 ]

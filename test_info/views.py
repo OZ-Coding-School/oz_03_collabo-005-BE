@@ -81,6 +81,9 @@ class FTITestResultCreateView(APIView):
             user.fti_type = fti_type_obj
             user.save()
 
+        good_relation_image = FTIType.objects.get(fti_type=fti_type_obj.good_relation).fti_image_url
+        bad_relation_image = FTIType.objects.get(fti_type=fti_type_obj.bad_relation).fti_image_url
+
         return Response(
             {
                 "fti_type": fti_type,
@@ -88,8 +91,10 @@ class FTITestResultCreateView(APIView):
                 "fti_image": fti_type_obj.fti_image_url,
                 "description": fti_type_obj.description,
                 "good_relation": fti_type_obj.good_relation,
+                "good_relation_image": good_relation_image,
                 "good_reason": fti_type_obj.good_reason,
                 "bad_relation": fti_type_obj.bad_relation,
+                "bad_relation_image": bad_relation_image,
                 "bad_reason": fti_type_obj.bad_reason,
             },
             status=status.HTTP_201_CREATED,

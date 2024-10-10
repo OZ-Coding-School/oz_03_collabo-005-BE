@@ -3,6 +3,7 @@ from lib2to3.fixes.fix_input import context
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
+from categories.models import ReviewCategory
 from comments.models import ReviewComment
 from likes.models import ReviewLike
 from reviews.models import Review

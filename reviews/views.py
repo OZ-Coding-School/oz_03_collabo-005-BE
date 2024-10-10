@@ -1,7 +1,7 @@
 from django.db.models import Case, IntegerField, Value, When
 from drf_spectacular.utils import OpenApiResponse, extend_schema, inline_serializer
 from rest_framework import status
-from rest_framework.exceptions import NotFound, PermissionDenied, ValidationError
+from rest_framework.exceptions import NotFound, ParseError, PermissionDenied
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -187,7 +187,7 @@ class ReviewDetailUpdate(APIView):
         except Review.DoesNotExist:
             raise NotFound
         except KeyError:
-            raise ValidationError("Need UUID")
+            raise ParseError("Need UUID")
 
         if request.user != review.user:
             raise PermissionDenied
@@ -196,6 +196,11 @@ class ReviewDetailUpdate(APIView):
 
         if not serializer.is_valid():
             return Response(serializer.errors)
+
+        category_pk = ReviewCategory.objects.get(
+            category=request.data["category_name"]
+        ).pk
+        review.category_id = category_pk
 
         review = serializer.save()
         serializer = ReviewDetailSerializer(review, context={"request": request})

@@ -87,6 +87,10 @@ class FTITestResultCreateView(APIView):
                 "uuid": test_uuid,
                 "fti_image": fti_type_obj.fti_image_url,
                 "description": fti_type_obj.description,
+                "good_relation": fti_type_obj.good_relation,
+                "good_reason": fti_type_obj.good_reason,
+                "bad_relation": fti_type_obj.bad_relation,
+                "bad_reason": fti_type_obj.bad_reason,
             },
             status=status.HTTP_201_CREATED,
         )

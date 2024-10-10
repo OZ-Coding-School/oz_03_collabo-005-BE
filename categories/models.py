@@ -46,6 +46,10 @@ class MeetingGenderGroup(models.Model):
 class FTIType(models.Model):
     fti_type = models.CharField(max_length=10)
     description = models.TextField()
+    good_relation = models.CharField(max_length=255)
+    good_reason = models.CharField(max_length=255)
+    bad_relation = models.CharField(max_length=255)
+    bad_reason = models.CharField(max_length=255)
     fti_image_url = models.URLField()
 
     def __str__(self):

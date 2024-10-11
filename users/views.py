@@ -4,7 +4,7 @@ from django.utils import timezone
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema
 from rest_framework import status
-from rest_framework.exceptions import ParseError, PermissionDenied
+from rest_framework.exceptions import ParseError, PermissionDenied, ValidationError
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -17,6 +17,7 @@ from .serializers import (
     LoginUserSerializer,
     SendEmailTokenSerializer,
     SignUpUserSerializer,
+    UpdatePasswordSerializer,
     VerifyEmailSerializer,
 )
 
@@ -260,9 +261,25 @@ class VerifyJWTEmail(APIView):
 #         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-# # 비밀번호 재설정
-# class UpdatePassword(APIView):
-#     @extend_schema(tags=["User"])
-#     def post(self, request):
-#         user = request.user
-#         user.pa
+# 비밀번호 재설정
+class UpdatePassword(APIView):
+
+    serializer_class = UpdatePasswordSerializer
+
+    @extend_schema(tags=["User"])
+    def post(self, request):
+        user = request.user
+
+        try:
+            old_password = request.data["old_password"]
+            new_password = request.data["new_password"]
+        except KeyError:
+            raise ParseError
+
+        if not user.check_password(old_password):
+            raise ValidationError("Mistake in the password")
+
+        user.set_password(new_password)
+        user.save()
+
+        return Response(status=status.HTTP_200_OK)

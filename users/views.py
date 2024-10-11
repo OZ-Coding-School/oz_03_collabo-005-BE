@@ -1,3 +1,5 @@
+import random
+
 from django.conf import settings
 from django.core.mail import send_mail
 from django.utils import timezone
@@ -281,5 +283,33 @@ class UpdatePassword(APIView):
 
         user.set_password(new_password)
         user.save()
+
+        return Response(status=status.HTTP_200_OK)
+
+
+class ResetPassword(APIView):
+
+    permission_classes = (AllowAny,)
+    serializer_class = UpdatePasswordSerializer(partial=True)
+
+    @extend_schema(tags=["User"])
+    def post(self, request):
+        user = request.user
+        new_password = str(random.randint(100000, 999999))
+        try:
+            old_password = request.data["old_password"]
+        except KeyError:
+            raise ParseError
+
+        if not user.check_password(old_password):
+            raise ValidationError("Mistake in the password")
+
+        user.set_password(new_password)
+        user.save()
+
+        subject = "이메일 인증 코드"
+        message = f"새로운 비밀번호입니다. 보안을 위해 비밀번호를 변경해주세요. \n\n{new_password}"
+
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
         return Response(status=status.HTTP_200_OK)

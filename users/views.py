@@ -334,6 +334,6 @@ class ResetPassword(APIView):
         subject = "이메일 인증 코드"
         message = f"새로운 비밀번호입니다. 보안을 위해 비밀번호를 변경해주세요. \n\n{new_password}"
 
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [])
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
 
         return Response(status=status.HTTP_200_OK)

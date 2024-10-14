@@ -1,3 +1,5 @@
+import random
+
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -61,3 +63,13 @@ class CustomUser(AbstractBaseUser, PermissionsMixin, CommonModel):
 
     def __str__(self):
         return self.email
+
+
+class EmailVerification(CommonModel):
+    email = models.EmailField(unique=True)
+    verification_code = models.CharField(max_length=6)
+
+    def generate_verification_code(self):
+        self.generate_verification_code = str(random.randint(100000, 999999))
+
+        return self.generate_verification_code

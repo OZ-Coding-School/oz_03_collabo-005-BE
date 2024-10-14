@@ -6,14 +6,13 @@ from django.utils import timezone
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema
 from rest_framework import status
-from rest_framework.exceptions import ParseError, PermissionDenied, ValidationError
+from rest_framework.exceptions import ParseError, PermissionDenied, ValidationError, NotFound
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework_simplejwt.exceptions import TokenError
-from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import CustomUser
+from .models import CustomUser, EmailVerification
 from .serializers import (
     DetailUserSerializer,
     LoginUserSerializer,
@@ -197,24 +196,28 @@ class DeleteUser(APIView):
 
 
 # 이메일 인증번호 전송
-class SendJWTEmail(APIView):
+class SendVerificationCode(APIView):
 
     permission_classes = (AllowAny,)
     serializer_class = SendEmailTokenSerializer
 
     @extend_schema(tags=["User"])
     def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         try:
             email = request.data["email"]
+
         except KeyError:
             raise ParseError("Need email")
 
-        refresh = RefreshToken()
-        refresh["email"] = email
-        token = str(refresh.access_token)
-
+        verification_code = EmailVerification.generate_verification_code
+        EmailVerification.objects.create(email=email, verification_code=verification_code)
         subject = "이메일 인증 코드"
-        message = f"이메일 인증을 위해 아래 토큰을 입력해주세요. \n\n{token}"
+        message = f"이메일 인증을 위해 아래 인증 번호를 입력해 주세요. \n\n{verification_code}"
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
 
         return Response(status=status.HTTP_200_OK)
@@ -227,17 +230,28 @@ class VerifyJWTEmail(APIView):
 
     @extend_schema(tags=["User"])
     def post(self, request):
-        try:
-            token = request.data["token"]
-            AccessToken(token)
+        serializer = self.serializer_class(data=request.data)
 
-            return Response(status=status.HTTP_200_OK)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            email = request.data["email"]
+            request_code = request.data["code"]
+            send_code = EmailVerification.objects.get(email=email).verification_code
+
         except KeyError:
             raise ParseError
 
-        except TokenError:
-            raise PermissionDenied
+        except EmailVerification.DoesNotExist:
+            raise NotFound
 
+        if request_code != send_code:
+            raise ValidationError
+
+        EmailVerification.objects.get(email=email).delete()
+
+        return Response(status=status.HTTP_200_OK)
 
 # 회원 탈퇴 취소
 # class CancelDeleteuser(APIView):
@@ -294,22 +308,24 @@ class ResetPassword(APIView):
 
     @extend_schema(tags=["User"])
     def post(self, request):
-        user = request.user
-        new_password = str(random.randint(100000, 999999))
         try:
-            old_password = request.data["old_password"]
+            email = request.data["email"]
+            request_code = request.data["code"]
+            send_code = EmailVerification.objects.get(email=email).verification_code
+            new_password = str(random.randint(100000, 999999))
+
         except KeyError:
             raise ParseError
 
-        if not user.check_password(old_password):
-            raise ValidationError("Mistake in the password")
+        except EmailVerification.DoesNotExist:
+            raise NotFound
 
-        user.set_password(new_password)
-        user.save()
+        if request_code != send_code:
+            raise ValidationError
 
         subject = "이메일 인증 코드"
         message = f"새로운 비밀번호입니다. 보안을 위해 비밀번호를 변경해주세요. \n\n{new_password}"
 
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
+        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [])
 
         return Response(status=status.HTTP_200_OK)

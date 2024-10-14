@@ -47,6 +47,7 @@ class SendEmailTokenSerializer(serializers.Serializer):
 
 
 class VerifyEmailSerializer(serializers.Serializer):
+    email = serializers.EmailField()
     token = serializers.CharField()
 
 

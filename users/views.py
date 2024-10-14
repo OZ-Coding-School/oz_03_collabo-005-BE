@@ -6,7 +6,12 @@ from django.utils import timezone
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import OpenApiExample, OpenApiResponse, extend_schema
 from rest_framework import status
-from rest_framework.exceptions import ParseError, PermissionDenied, ValidationError, NotFound
+from rest_framework.exceptions import (
+    NotFound,
+    ParseError,
+    PermissionDenied,
+    ValidationError,
+)
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -215,7 +220,9 @@ class SendVerificationCode(APIView):
             raise ParseError("Need email")
 
         verification_code = EmailVerification.generate_verification_code
-        EmailVerification.objects.create(email=email, verification_code=verification_code)
+        EmailVerification.objects.create(
+            email=email, verification_code=verification_code
+        )
         subject = "이메일 인증 코드"
         message = f"이메일 인증을 위해 아래 인증 번호를 입력해 주세요. \n\n{verification_code}"
         send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [email])
@@ -252,6 +259,7 @@ class VerifyJWTEmail(APIView):
         EmailVerification.objects.get(email=email).delete()
 
         return Response(status=status.HTTP_200_OK)
+
 
 # 회원 탈퇴 취소
 # class CancelDeleteuser(APIView):

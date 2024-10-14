@@ -231,7 +231,7 @@ class SendVerificationCode(APIView):
 
 
 # 이메일 인증번호 검증
-class VerifyJWTEmail(APIView):
+class VerifyEmail(APIView):
     permission_classes = (AllowAny,)
     serializer_class = VerifyEmailSerializer
 

@@ -24,6 +24,10 @@ class UserFTITestResultSerializer(serializers.Serializer):
 class FTITestResultSerializer(serializers.ModelSerializer):
     description = serializers.SerializerMethodField()
     fti_image_url = serializers.SerializerMethodField()
+    good_relation = serializers.SerializerMethodField()
+    good_reason = serializers.SerializerMethodField()
+    bad_relation = serializers.SerializerMethodField()
+    bad_reason = serializers.SerializerMethodField()
 
     class Meta:
 
@@ -32,6 +36,10 @@ class FTITestResultSerializer(serializers.ModelSerializer):
             "uuid",
             "fti_type",
             "description",
+            "good_relation",
+            "good_reason",
+            "bad_relation",
+            "bad_reason",
             "fti_image_url",
         )
 
@@ -42,6 +50,22 @@ class FTITestResultSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.URLField)
     def get_fti_image_url(self, obj):
         return obj.fti_type.fti_image_url
+
+    @extend_schema_field(serializers.CharField)
+    def get_good_relation(self, obj):
+        return obj.fti_type.good_relation
+
+    @extend_schema_field(serializers.CharField)
+    def get_good_reason(self, obj):
+        return obj.fti_type.good_reason
+
+    @extend_schema_field(serializers.CharField)
+    def get_bad_relation(self, obj):
+        return obj.fti_type.bad_relation
+
+    @extend_schema_field(serializers.CharField)
+    def get_bad_reason(self, obj):
+        return obj.fti_type.bad_reason
 
 
 # TasteTestQuestion

@@ -1,6 +1,8 @@
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
+from rest_framework.exceptions import NotFound
 
+from categories.models import FTIType
 from users.models import CustomUser
 
 from .models import FTITestQuestion, FTITestResult, TasteTestAnswer, TasteTestQuestion
@@ -26,8 +28,10 @@ class FTITestResultSerializer(serializers.ModelSerializer):
     fti_image_url = serializers.SerializerMethodField()
     good_relation = serializers.SerializerMethodField()
     good_reason = serializers.SerializerMethodField()
+    good_relation_img = serializers.SerializerMethodField()
     bad_relation = serializers.SerializerMethodField()
     bad_reason = serializers.SerializerMethodField()
+    bad_relation_img = serializers.SerializerMethodField()
 
     class Meta:
 
@@ -38,8 +42,10 @@ class FTITestResultSerializer(serializers.ModelSerializer):
             "description",
             "good_relation",
             "good_reason",
+            "good_relation_img",
             "bad_relation",
             "bad_reason",
+            "bad_relation_img",
             "fti_image_url",
         )
 
@@ -66,6 +72,26 @@ class FTITestResultSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.CharField)
     def get_bad_reason(self, obj):
         return obj.fti_type.bad_reason
+
+    @extend_schema_field(serializers.URLField)
+    def get_good_relation_img(self, obj):
+        img_name = obj.fti_type.good_relation
+        try:
+            img = FTIType.objects.get(fti_type=img_name).fti_image_url
+        except FTIType.DoesNotExist:
+            raise NotFound
+        return img
+
+    @extend_schema_field(serializers.URLField)
+    def get_bad_relation_img(self, obj):
+        img_name = obj.fti_type.bad_relation
+        try:
+            img = FTIType.objects.get(fti_type=img_name).fti_image_url
+        except FTIType.DoesNotExist:
+            raise NotFound
+        return img
+
+
 
 
 # TasteTestQuestion

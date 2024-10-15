@@ -35,7 +35,7 @@ class FTITestResultView(APIView):
                 {"error": "Test result not found"}, status=status.HTTP_404_NOT_FOUND
             )
 
-        serializer = self.serializer_class(instance=test_result)
+        serializer = self.serializer_class(test_result)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

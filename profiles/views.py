@@ -80,7 +80,7 @@ class UserHostedMeetingView(APIView):
             "-created_at"
         )
 
-        serializer = self.serializer_class(instance=hosted_meeting, many=True)
+        serializer = self.serializer_class(hosted_meeting, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
 

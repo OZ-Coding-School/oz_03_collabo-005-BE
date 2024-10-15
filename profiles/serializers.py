@@ -60,6 +60,7 @@ class UserMeetingSerializer(serializers.ModelSerializer):
     payment_method_name = serializers.SerializerMethodField()
     age_group_name = serializers.SerializerMethodField()
     gender_group_name = serializers.SerializerMethodField()
+    location_name = serializers.SerializerMethodField()
 
     class Meta:
         model = Meeting
@@ -72,6 +73,7 @@ class UserMeetingSerializer(serializers.ModelSerializer):
             "age_group_name",
             "gender_group",
             "gender_group_name",
+            "location_name",
             "meeting_time",
             "meeting_image_url",
             "description",
@@ -88,6 +90,10 @@ class UserMeetingSerializer(serializers.ModelSerializer):
     @extend_schema_field(serializers.CharField)
     def get_gender_group_name(self, obj):
         return obj.gender_group.gender_group
+
+    @extend_schema_field(serializers.CharField)
+    def get_location_name(self, obj):
+        return obj.location.location_name
 
 
 class UserReviewSerializer(serializers.ModelSerializer):

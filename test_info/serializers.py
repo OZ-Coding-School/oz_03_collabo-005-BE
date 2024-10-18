@@ -24,6 +24,7 @@ class UserFTITestResultSerializer(serializers.Serializer):
 
 
 class FTITestResultSerializer(serializers.ModelSerializer):
+    fti_type = serializers.SerializerMethodField()
     description = serializers.SerializerMethodField()
     fti_image_url = serializers.SerializerMethodField()
     good_relation = serializers.SerializerMethodField()
@@ -48,6 +49,10 @@ class FTITestResultSerializer(serializers.ModelSerializer):
             "bad_relation_img",
             "fti_image_url",
         )
+
+    @extend_schema_field(serializers.CharField)
+    def get_fti_type(self, obj):
+        return obj.fti_type.fti_type
 
     @extend_schema_field(serializers.CharField)
     def get_description(self, obj):
@@ -90,8 +95,6 @@ class FTITestResultSerializer(serializers.ModelSerializer):
         except FTIType.DoesNotExist:
             raise NotFound
         return img
-
-
 
 
 # TasteTestQuestion

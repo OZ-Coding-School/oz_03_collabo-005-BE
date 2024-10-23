@@ -51,3 +51,4 @@ class FTITestResult(CommonModel):
         on_delete=models.SET_NULL,
         null=True,
     )
+

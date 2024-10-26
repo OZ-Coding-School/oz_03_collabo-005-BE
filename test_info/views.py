@@ -227,3 +227,17 @@ class UserTasteResultView(APIView):
         user.save()
 
         return Response("Success", status=status.HTTP_200_OK)
+
+
+class FTITestCount(APIView):
+
+    permission_classes = (AllowAny,)
+
+    @extend_schema(
+        tags=["Fti_test"],
+    )
+    def get(self, request):
+        test_list = FTITestResult.objects.filter()
+        test_count = test_list.count()
+
+        return Response({"test_count": test_count}, status=status.HTTP_200_OK)
